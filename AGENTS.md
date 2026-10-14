@@ -162,7 +162,7 @@ UI conventions:
 - Button and IconButton support `xs/sm` at 32/40 px high (icon buttons 32/40 px square). Preserve disabled and loading behavior.
 - Keep `primary/secondary/ghost/danger/quiet` variants and the semantic destructive Button.
 - Apply the five-color palette across all existing UI: #7173FF primary/selection, #FF3C7F
-  destructive/error, #95F447 success, #00E5E3 information, and #FEFE47 warning/pending. Use
+  destructive/error, #95F447 success, #00E5E3 information, and #F2F226 warning/pending. Use
   palette-derived tints and dark text shades; preserve white/neutral surfaces and intrinsic asset colors.
   Use white on purple/pink fills and dark ink on lime/cyan/yellow. Do not add
   arbitrary per-button colors or accent/success Button variants. Icon buttons use 10 px corners and accessible labels.
@@ -224,7 +224,7 @@ with a sample submit callback.
 
 The UI is light-only by explicit user request. RootLayout ignores old theme cookies; theme
 provider, toggle, demo, and dark CSS were removed. Only the Colors demo shows #7173FF,
-#FF3C7F, #95F447, #00E5E3, and #FEFE47 with hex labels below. There is no picker, preview state,
+#FF3C7F, #95F447, #00E5E3, and #F2F226 with hex labels below. There is no picker, preview state,
 root style override, or new persistence. Reset only resets demo state and component selection.
 
 External-service extensions use the shared Axios client → authenticated Route Handler →
@@ -371,14 +371,14 @@ changes, and known limitations.
 
 Product decisions still required (PRD.md section 17 owns the full questions and affected criteria):
 
-| TODO / PRD question IDs | Boundary to preserve until decided |
-| --- | --- |
-| `Q-01`, `Q-04`, `Q-12` | Session/block duration, tie-breaking, class/group edge cases, capacity, and final grade-input limits are not fixed contracts (`FR-01`–`FR-04`). |
-| `Q-02`, `Q-10`, `Q-13` | Level indicators/names/order, assessment scoring, baseline/correction rules, subject selection, and curriculum/template review remain open (`FR-02`–`FR-06`). |
-| `Q-03`, `Q-08`, `Q-09`, `Q-11` | Login/demo identity, product entry/routes, example adaptation, persistence/retention/deletion, and draft/regeneration semantics remain open (`FR-07`–`FR-08`, `ST-01`–`ST-04`). |
-| `Q-05`, `Q-06`, `Q-14` | PDF/board layout, fictional-demo permission, and device/network/performance acceptance need decisions (`FR-05`, `NFR-01`–`NFR-03`, `NFR-08`). |
-| `Q-07` | P0/P1 planning is proposed; the six MVP modules remain in scope until a cut is explicitly accepted. |
-| `Q-15` | The latest Nunito/#7173FF/pastel/10 px corners/light-only/read-only palette foundation is accepted for existing UI. Product-screen compositions still need acceptance; no classroom canvas or new product scope is authorized. |
+| TODO / PRD question IDs        | Boundary to preserve until decided                                                                                                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Q-01`, `Q-04`, `Q-12`         | Session/block duration, tie-breaking, class/group edge cases, capacity, and final grade-input limits are not fixed contracts (`FR-01`–`FR-04`).                                                                                |
+| `Q-02`, `Q-10`, `Q-13`         | Level indicators/names/order, assessment scoring, baseline/correction rules, subject selection, and curriculum/template review remain open (`FR-02`–`FR-06`).                                                                  |
+| `Q-03`, `Q-08`, `Q-09`, `Q-11` | Login/demo identity, product entry/routes, example adaptation, persistence/retention/deletion, and draft/regeneration semantics remain open (`FR-07`–`FR-08`, `ST-01`–`ST-04`).                                                |
+| `Q-05`, `Q-06`, `Q-14`         | PDF/board layout, fictional-demo permission, and device/network/performance acceptance need decisions (`FR-05`, `NFR-01`–`NFR-03`, `NFR-08`).                                                                                  |
+| `Q-07`                         | P0/P1 planning is proposed; the six MVP modules remain in scope until a cut is explicitly accepted.                                                                                                                            |
+| `Q-15`                         | The latest Nunito/#7173FF/pastel/10 px corners/light-only/read-only palette foundation is accepted for existing UI. Product-screen compositions still need acceptance; no classroom canvas or new product scope is authorized. |
 
 TODO: Resolve these choices in their source documents, realign this file, then update affected
 BACKLOG prompts. Block only affected work; do not invent values to unblock it. The PRD records
@@ -437,4 +437,3 @@ the earlier shadcn recommendation as an unaccepted conflict; the shared UI remai
 
 Documentation creation does not verify live authentication, database isolation, or deployment.
 Browser, infrastructure, and dependency-audit checks must be run and reported for the relevant task.
-

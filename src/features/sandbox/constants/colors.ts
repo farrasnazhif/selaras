@@ -3,5 +3,5 @@ export const SANDBOX_COLORS = [
   "#FF3C7F",
   "#95F447",
   "#00E5E3",
-  "#FEFE47",
+  "#F2F226",
 ];

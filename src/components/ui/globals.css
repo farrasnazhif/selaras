@@ -12,65 +12,65 @@
  * White and pastel surfaces, a fixed color palette, and light-only mode.
  * ────────────────────────────────────────────────────────── */
 :root {
-  --page: #FFFFFF;
-  --canvas: #F8F8FC;
-  --surface: #FFFFFF;
-  --inset: #F8F8FC;
-  --hover: #F4F4FF;
-  --hover-2: #E5E6FF;
-  --ink: #25253B;
-  --body: #44465A;
+  --page: #ffffff;
+  --canvas: #f8f8fc;
+  --surface: #ffffff;
+  --inset: #f8f8fc;
+  --hover: #f4f4ff;
+  --hover-2: #e5e6ff;
+  --ink: #25253b;
+  --body: #44465a;
   --ink-2: #606377;
   --ink-3: #606377;
-  --line: #E7E7F0;
-  --line-strong: #D2D3E0;
-  --line-soft: #F0F0F6;
+  --line: #e7e7f0;
+  --line-strong: #d2d3e0;
+  --line-soft: #f0f0f6;
   --grid-line: var(--line);
-  --field: #F8F8FC;
+  --field: #f8f8fc;
   --stripe: color-mix(in srgb, var(--primary) 5%, transparent);
   --stripe-bg: var(--primary-tint);
-  --primary: #7173FF;
-  --primary-hover: #6668E6;
-  --primary-foreground: #FFFFFF;
-  --primary-tint: #EEEEFF;
-  --destructive: #FF3C7F;
-  --destructive-hover: #E53672;
-  --destructive-foreground: #FFFFFF;
-  --focus: #5A5CC4;
+  --primary: #7173ff;
+  --primary-hover: #6668e6;
+  --primary-foreground: #ffffff;
+  --primary-tint: #eeeeff;
+  --destructive: #ff3c7f;
+  --destructive-hover: #e53672;
+  --destructive-foreground: #ffffff;
+  --focus: #5a5cc4;
   --accent: var(--primary);
-  --accent-ink: #4F50A7;
+  --accent-ink: #4f50a7;
   --accent-tint: var(--primary-tint);
   --pink: var(--destructive);
-  --lime: #95F447;
-  --cyan: #00E5E3;
-  --yellow: #FEFE47;
+  --lime: #95f447;
+  --cyan: #00e5e3;
+  --yellow: #f2f226;
   --secondary: var(--cyan);
-  --secondary-tint: #CCFAF9;
-  --warm: #FFFFDA;
-  --lavender: #EEEEFF;
-  --pastel-pink: #FFE8F0;
-  --pastel-yellow: #FFFFDA;
-  --pastel-blue: #CCFAF9;
-  --pastel-mint: #EAFDDA;
+  --secondary-tint: #ccfaf9;
+  --warm: #ffffda;
+  --lavender: #eeeeff;
+  --pastel-pink: #ffe8f0;
+  --pastel-yellow: #ffffda;
+  --pastel-blue: #ccfaf9;
+  --pastel-mint: #eafdda;
   /* Small semantic text shades mix the palette with ink; soft fills mix with white. */
-  --green: #47633F;
-  --green-tint: #EAFDDA;
-  --orange: #5B5B3E;
-  --orange-tint: #FFFFDA;
-  --red: #872F5A;
-  --red-tint: #FFE8F0;
+  --green: #47633f;
+  --green-tint: #eafdda;
+  --orange: #5b5b3e;
+  --orange-tint: #ffffda;
+  --red: #872f5a;
+  --red-tint: #ffe8f0;
   --info-ink: #186876;
-  --info-tint: #CCFAF9;
-  --tooltip-bg: #25253B;
-  --tooltip-fg: #FFFFFF;
-  --tooltip-muted: #E7E7F0;
-  --tooltip-border: #44465A;
+  --info-tint: #ccfaf9;
+  --tooltip-bg: #25253b;
+  --tooltip-fg: #ffffff;
+  --tooltip-muted: #e7e7f0;
+  --tooltip-border: #44465a;
   --shadow-hairline: 0 0 0 1px var(--line);
   --shadow-btn: 0 0 0 1px var(--line);
-  --shadow-card: 0 0 0 1px var(--line), 0 2px 8px rgba(37,37,59,0.06);
-  --shadow-raised: 0 0 0 1px var(--line), 0 8px 24px rgba(37,37,59,0.09);
-  --shadow-overlay: 0 0 0 1px var(--line), 0 18px 50px rgba(37,37,59,0.13);
-  --shadow-floating: 0 8px 28px rgba(37,37,59,0.16);
+  --shadow-card: 0 0 0 1px var(--line), 0 2px 8px rgba(37, 37, 59, 0.06);
+  --shadow-raised: 0 0 0 1px var(--line), 0 8px 24px rgba(37, 37, 59, 0.09);
+  --shadow-overlay: 0 0 0 1px var(--line), 0 18px 50px rgba(37, 37, 59, 0.13);
+  --shadow-floating: 0 8px 28px rgba(37, 37, 59, 0.16);
   --shadow-inset-field: none;
 }
 @theme inline {
@@ -698,9 +698,6 @@
   border-radius: 99px;
   background: var(--primary-foreground);
 }
-
-
-
 
 .records-cell {
   height: 35px;
