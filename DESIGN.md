@@ -2,7 +2,7 @@
 
 **Versi:** 2.5 — extra-small and small buttons\
 **Tanggal:** 14 Oktober 2026\
-**Status:** Apply to existing starter UI; future Selaras features remain unimplemented
+**Status:** Shared design plus an authorized UI-only Selaras preview; functional product contracts remain open
 
 The user's explicit Classroomscreen specification supersedes the prior neutral visual direction.
 The user selected restyling existing screens and demos, without adding the classroom canvas.
@@ -38,7 +38,7 @@ centered form up to 448 px; project detail stays a readable form up to 640 px.
 | Label/input/error gap        | 8 px; metadata micro-gap 4 px                                                     |
 | Action gap                   | 8 px; actions wrap naturally on narrow screens                                    |
 | Modal                        | 24/28 px existing padding, 20 px radius, constrained viewport and internal scroll |
-| Touch actions                | Button xs/sm 32/40 px; IconButton 32/40 px square; input 48 px                    |
+| Touch actions                | Button xs/sm 32/40 px; IconButton 32/40 px square; input 48 px; Select 32 px       |
 
 Retain the landing's single centered button; its backdrop and auth may use a subtle lavender
 radial wash. Dashboard summary cards use lavender; project icons use pastel blue. Sandbox
@@ -122,7 +122,9 @@ IconButton is 32 px square for xs and 40 px square for sm, with 10 px radius. No
 primary, secondary, ghost, danger, and quiet remain. Press scale stays 0.98.
 
 Primary hover uses #6668E6; destructive hover uses #E53672; secondary uses raised surface and hairline.
-Inputs/Select triggers have 48 px minimum height, 10 px radius, raised background, 16 px text.
+Inputs have 48 px minimum height and 16 px text. Select triggers and option rows use 32 px
+minimum height, 14 px text, 10 px horizontal padding, and 4 px vertical padding. Controls retain
+10 px radius and raised backgrounds. This compact shared Select sizing follows the latest user request.
 Textareas retain their taller content area. Focus is a visible 3 px accent focus outline with
 3 px offset; input focus also uses the primary-soft halo. Invalid input keeps danger border and
 explicit error text. Disabled/loading keeps its label and prevents duplicate actions.
@@ -305,3 +307,89 @@ penerapan visual starter tidak menyelesaikan kontrak produk atau membuat backlog
 - [Widget behavior](https://help.classroomscreen.com/article/180-widget-behavior).
 
 Tautan ini menjaga provenance referensi, bukan instruksi menyalin branding atau klaim kesesuaian aksesibilitas Selaras. Tidak ada nilai referensi yang dianggap token produksi terukur.
+
+
+## DES-17 — Accepted UI-only product preview
+
+The user authorized the existing UI components for a guided session flow plus a separate
+progress page, with placeholders for unresolved values and content (`UI-01`). This accepts
+prototype compositions only; DQ/Q decisions for the functional product remain open.
+
+- Original entry and guided-session routes are superseded by DES-18 and DES-22.
+  Use shared Stepper, Card, Input, Select, Button, Dialog, Badge, Tabs, and EmptyState.
+- Progress: class-separated comparison table on desktop and student cards on mobile.
+  Observation/history dialogs are local previews; level changes stay unset.
+- The preview shell uses shared SidebarNav (224 px expanded, 52 px collapsed) and Drawer on mobile.
+  Primary rows navigate between the three preview routes; its unused secondary list is hidden.
+  The desktop grid follows the sidebar's current width. Keep a 1200 px content max,
+  16/32/48 px responsive gutters, 24 px card padding, and 16/24 px panel gaps. Existing starter
+  layouts and landing remain intact. Main copy is Indonesian; the preview has its own lang attribute.
+- Each screen has one h1; 24 px section headings, 20 px card headings, 14/16 px body text.
+  Keep white cards, the current five-color tokens, xs/sm Buttons, and semantic states.
+- Fictional student names and example group membership are labeled. Local fictional-student entry, class-preserving
+  membership and observation edits are enabled. No scheduling/scoring algorithm is implied.
+- Levels, timings, assessment questions, worksheet contents, and PDF fields remain explicitly
+  unset. Disabled generation/export actions explain their missing input/content. No fake success.
+- The app stores no data across reloads. No Supabase, auth facade, AI, new persistence, or PDFs.
+  The sandbox's Open app button points to this public UI preview.
+
+
+## DES-18 — Screenshot content and breadcrumb hierarchy
+
+The user's four screenshots supersede DES-17's wizard/placeholder content for the preview
+(`UI-02`). Retain the shared Nunito/palette/xs-sm controls and SidebarNav; the screenshots
+provide content and organization, rather than a change to the typeface or black button styling.
+
+- Class list: compact page header + create action, one linked class card, phase and fictional-data
+  badges, student count, last-session date, and a quiet demo-data note.
+- Class detail: Breadcrumbs, class title/phase/data badges, Siswa/Level/Progres/Sesi Tabs.
+  Level tab contains class-separated Tables with both Select level controls, local-state status,
+  diagnostic rubric dialog, and two rubric Cards. Use the reference's seven/eight roster split.
+- Session builder: four labeled controls (subject/duration/block/date), a template-preview action,
+  a two-lane rotation table, three principle Cards, and preview/save actions.
+- Session detail: four-level Breadcrumbs, subject/date title, summary, board and print actions,
+  read-only two-lane session blocks, and class-separated task/group summaries.
+- Main heading 28–32 px; section titles 20 px; table/body 14 px; helpers 12 px. Keep 16/24 px
+  spacing, white cards, quiet tinted table/group headers. Level selects use the shared 32 px height.
+- On small screens, the session grid becomes stacked blocks; Tables retain accessible horizontal
+  scroll. Controls wrap; sidebar remains in the shared Drawer. Print hides editing chrome and
+  preserves monochrome-readable content without choosing a final paper size.
+- Screenshot timings, five-level rubrics, and literacy activities are example content. Label
+  memory-only saves clearly; do not repeat unsupported synchronized/backend or V1–V5 claims.
+
+## DES-19 — Flat cards and sidebar account footer
+
+The user requested shadow-free app cards and an avatar/email dropdown in the sidebar footer
+(`UI-03`). Selaras Card and Table surfaces use a 1 px hairline border with no resting/hover
+shadow. Remove shadow utilities from linked cards; retain focus indicators and overlay elevation.
+Use the shared SidebarNav footer slot, Avatar, Button, and DropdownMenu. Show a clearly labeled
+demo profile (Guru Demo, guru@selaras.example). The menu contains only Settings and Sign out;
+both remain visibly disabled in the public UI preview because no settings page exists and the
+demo profile has no authenticated session (`UI-07`, `Q-03`).
+The avatar remains usable when the sidebar is collapsed; hide the copy then. The mobile Drawer
+uses the same footer. Do not imply that the demo profile is authenticated.
+
+## DES-20 — Student card search, group filter, and pagination
+
+The user's student-tab request (`UI-04`) adds shared SearchInput and Select beside each
+class-card title. Search by name and filter by the existing group labels; wrap the header
+controls at narrow widths. Keep the current white, border-only Card and shared Table.
+Show the filtered result count and five rows per page, with shared Pagination below the table
+only when more than five results remain. Each class has independent controls; search/filter
+changes reset its page. Keep AddStudentDialog available for empty results. Other tabs retain
+their existing scope; this overrides the earlier exclusion of filters only for these cards.
+
+## DES-21 — Class selector in the detail header
+
+Place a shared compact Select beside the phase Badge above the class title and description
+(`UI-05`). Use a 256 px width capped by the available space; wrap the row on narrow screens.
+Show the current class title as the selected option and all locally available classrooms.
+Selection immediately navigates to that classroom while retaining the active detail tab.
+Reset the tab's local controls when changing classrooms; retain the shared preview data.
+
+## DES-22 — Indonesian product paths
+
+Use `/kelas` without an application prefix (`UI-06`). Class tabs use `siswa`, `level`,
+`progres`, and `sesi`; new sessions use `sesi/baru`, and saved sessions use `sesi/[sessionId]`
+under the current class. Breadcrumb labels and all shared navigation/selector links follow
+these paths. The route-group name is implementation-only and does not appear in URLs.

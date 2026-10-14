@@ -16,6 +16,19 @@ Open http://localhost:3000/sandbox. No environment variables or Supabase account
 
 Dependencies and `pnpm-lock.yaml` are installed. Use `pnpm install --frozen-lockfile` for reproducible team and CI installs.
 
+## Selaras UI preview
+
+Open [Kelas](http://localhost:3000/kelas), or use **Open app** in the sandbox. The public
+preview follows the supplied screenshot hierarchy: class list, Siswa/Level/Progres/Sesi tabs,
+a session builder, and a read-only saved session. The example class is
+[kelas-rangkap-2-3](http://localhost:3000/kelas/kelas-rangkap-2-3).
+
+Fictional student levels, observations, classes, group moves, and session snapshots use local
+state only. Reloading resets the preview. The screenshot's literacy content and 70/15-minute
+timing are fixtures, not a scheduling engine. Print/Save PDF opens the browser's print dialog;
+other unprovided teaching content remains unavailable. No Supabase configuration is needed.
+The starter authentication and private project routes remain separate.
+
 ## Connect Supabase
 
 ```sh

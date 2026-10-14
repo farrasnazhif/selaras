@@ -228,3 +228,16 @@ owners of affected in-progress work before implementation continues.
 
 Detailed planning/review prompts: [team workflow](docs/team-workflow.md).
 Installation, Supabase, commands, UI files, and deployment: [setup guide](docs/setup.md).
+
+
+## Selaras UI preview
+
+Open `/kelas` (or **Open app** in the sandbox). A class has Siswa, Level, Progres,
+and Sesi tabs. The example class is `/kelas/kelas-rangkap-2-3`; create its session at
+`/kelas/kelas-rangkap-2-3/sesi/baru` and view the supplied example at
+`/kelas/kelas-rangkap-2-3/sesi/literasi-2026-10-14`.
+
+The four supplied screenshots provide the roster, five-level rubrics, and 70-minute literacy
+session fixture. Edits and saved snapshots are local and reset on reload. No backend,
+scheduler engine, AI, or persistent storage is integrated. Print/Save PDF uses the browser's
+print dialog. Numeracy activities and other unspecified teaching content remain unavailable.

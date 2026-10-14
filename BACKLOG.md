@@ -6,6 +6,23 @@ Status: Not generated — complete the product decisions in [PRD.md](PRD.md) and
 No product implementation tickets are defined yet. Do not treat the format below as a Ready
 ticket or invent product requirements to fill it.
 
+## Current authorized preview
+
+The user directly requested a complete UI-only Selaras preview (`UI-01`, `DES-17`): class-based
+navigation, level/rubric content and nested session screens from four supplied screenshots
+(`UI-02`, `DES-18`), using shared controls and local fictional data. This supersedes the earlier
+guided-flow placeholders; unspecified content remains unresolved. This does not create Ready backend/domain tickets or resolve
+the open product contracts. The latest visual refinement (`UI-03`, `DES-19`) removes app card
+shadows and uses a demo avatar/email dropdown in the sidebar footer. Tests are not run at the user's request; lint/typecheck/build remain
+applicable. The student-tab refinement (`UI-04`, `DES-20`) adds independent local name search,
+group filters, and five-row pagination to each class card using existing shared controls.
+The header class selector (`UI-05`, `DES-21`) navigates directly between available classrooms
+while keeping the active detail tab.
+The account dropdown contains only disabled Settings and Sign out actions in this public demo
+(`UI-07`, `DES-19`); enabling them awaits resolution of `Q-03`.
+Product URLs now use Bahasa Indonesia without an application prefix (`UI-06`, `DES-22`);
+all preview navigation and setup links follow the renamed routes.
+
 ## Working agreement
 
 - This file owns ticket scope, acceptance criteria, dependencies, and implementation prompts.

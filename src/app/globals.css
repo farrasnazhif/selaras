@@ -455,7 +455,7 @@
     overflow-y: auto;
   }
   .ui-select-trigger {
-    @apply flex items-center justify-between gap-3 text-left;
+    @apply flex min-h-8 items-center justify-between gap-2 px-2.5 py-1 text-left text-sm leading-5;
   }
   .ui-select-trigger[data-placeholder] {
     color: var(--ink-3);
@@ -464,6 +464,9 @@
     @apply flex min-h-11 cursor-default items-center justify-between gap-3 px-3 py-2 text-sm;
     border-radius: calc(var(--radius-control) - 2px);
     outline: none;
+  }
+  .ui-select-popup .ui-option {
+    @apply min-h-8 gap-2 px-2.5 py-1;
   }
   .ui-option[data-highlighted] {
     background: var(--hover-2);
@@ -847,5 +850,47 @@
   }
   50% {
     opacity: 0.45;
+  }
+}
+
+.selaras-shell .ui-card,
+.selaras-shell .ui-table-scroll {
+  box-shadow: none;
+  border: 1px solid var(--line);
+}
+
+[data-sidebar-collapsed="true"] .sidebar-account-copy {
+  display: none;
+}
+
+@media print {
+  .selaras-shell {
+    display: block !important;
+    background: white;
+    --ink: #000000;
+    --body: #000000;
+    --ink-2: #444444;
+    --accent-ink: #000000;
+    --primary: #000000;
+    --primary-tint: #F2F2F2;
+  }
+  .selaras-sidebar,
+  .selaras-mobile-nav,
+  .selaras-shell .print-hidden,
+  .skip-link {
+    display: none !important;
+  }
+  .selaras-shell #main-content {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+  .selaras-shell .ui-card {
+    box-shadow: none;
+    border: 1px solid #DDDDDD;
+    break-inside: avoid;
+  }
+  .selaras-shell li {
+    break-inside: avoid;
   }
 }

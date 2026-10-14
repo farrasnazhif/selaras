@@ -7,14 +7,24 @@ export default function HomePage() {
       id="main-content"
       className="landing-page min-h-dvh flex items-center justify-center p-6"
     >
-      <Button
-        variant="primary"
-        nativeButton={false}
-        role="link"
-        render={<Link href="/sandbox" />}
-      >
-        Open sandbox
-      </Button>
+      <div className="flex gap-2">
+        <Button
+          variant="primary"
+          nativeButton={false}
+          role="link"
+          render={<Link href="/sandbox" />}
+        >
+          Open sandbox
+        </Button>
+        <Button
+          variant="secondary"
+          nativeButton={false}
+          role="link"
+          render={<Link href="/kelas" />}
+        >
+          Open Selaras
+        </Button>
+      </div>
     </main>
   );
 }

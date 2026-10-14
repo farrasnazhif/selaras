@@ -9,7 +9,7 @@
 
 > **Konvensi:** **[BRIEF]** adalah kebutuhan yang ditandai berasal dari Product Brief v4 dalam draf PRD yang tersedia. **[STARTER]** adalah perilaku atau batasan repositori yang dipertahankan, bukan keputusan produk baru. **[USULAN]** belum disetujui dan tidak boleh dijadikan persyaratan implementasi. **[ASUMSI]** belum divalidasi. Jangan mempresentasikan asumsi atau target sebagai hasil penelitian.
 
-**Sumber dan batas pemeriksaan:** Product Brief v4 tidak ditemukan sebagai berkas terpisah; isi draf PRD sebelumnya menjadi sumber brief untuk revisi ini. Kode, migrasi, konfigurasi, dan tes starter diperiksa secara statis; fitur Selaras belum tersedia dan layanan live tidak diverifikasi. Metadata event dan referensi eksternal dipertahankan dari draf, bukan dikonfirmasi ulang.
+**Sumber dan batas pemeriksaan:** Product Brief v4 tidak ditemukan sebagai berkas terpisah; isi draf PRD sebelumnya menjadi sumber brief untuk revisi ini. Kode, migrasi, konfigurasi, dan tes starter diperiksa secara statis; fitur Selaras fungsional belum tersedia dan layanan live tidak diverifikasi. Prototipe UI tanpa backend ditambahkan sesuai `UI-01`. Metadata event dan referensi eksternal dipertahankan dari draf, bukan dikonfirmasi ulang.
 
 **ID stabil:** Pertahankan `FR-01`–`FR-06` yang sudah ada. `FR-07`–`FR-08` melengkapi kepemilikan dan keadaan gagal; `NFR-*` untuk kualitas, `ST-*` untuk keputusan starter, `J-*` untuk perjalanan, `SCR-*` untuk layar, dan `Q-*` untuk pertanyaan terbuka. Jangan menomori ulang ID saat urutan dokumen berubah. Acceptance criteria menggunakan ID induk dengan akhiran `AC-*`. Keputusan terbuka menghalangi bagian terkait, bukan otomatis seluruh produk.
 
@@ -300,6 +300,100 @@ Layar produk di bawah adalah kebutuhan alur, sedangkan pemisahan halaman dan rou
 | SCR-07 | `/progress`                 | Progres (`FR-06`)                  | Penilaian sebelumnya/terbaru dan naik/tetap/turun; tanpa baseline menunggu `Q-10`.                                    |
 
 **Navigasi kembali [USULAN]:** wizard kembali ke langkah sebelumnya tanpa menghapus input. Penyimpanan setelah refresh dan dampak edit terhadap hasil yang sudah dibuat belum diputuskan (`Q-11`). Tidak ada dashboard analitik kompleks dalam lingkup.
+
+### UI-01 — Prototipe antarmuka tanpa backend [instruksi pengguna]
+
+**Riwayat:** komposisi wizard/placeholder berikut digantikan oleh `UI-02`; batas tanpa backend dan data fiktif tetap berlaku.
+
+Pengguna menyetujui guided session flow dan halaman progres terpisah untuk pratinjau UI.
+Route awal digantikan oleh path Bahasa Indonesia tanpa prefix pada `UI-06`; bukan keputusan akses produksi.
+Gunakan 15 siswa fiktif dari skenario demo dan state lokal selama halaman aplikasi terbuka.
+Nama/definisi level, durasi/blok, isi tes, tugas, dan format PDF memakai placeholder sampai
+keputusan final tersedia. Jangan menghasilkan jadwal, menilai tes, mengekspor PDF, atau
+menampilkan level/perubahan palsu. Penambahan siswa fiktif, catatan observasi, dan pemindahan anggota adalah interaksi
+lokal untuk meninjau UI; bukan penyimpanan siswa atau kontrak domain final.
+
+**UI-01-AC-01:** SCR-01–SCR-07 tersedia, wizard dapat maju/mundur, dan state lokal tetap ada
+saat berpindah halaman pratinjau. Semua data ditandai fiktif; reload mengembalikan sampel.
+**UI-01-AC-02:** kontrol dan dialog memakai shared UI; konfigurasi, catatan observasi, dan
+pemindahan anggota dapat dicoba tanpa Supabase/API. Anggota hanya dipindah dalam kelasnya.
+**UI-01-AC-03:** pilihan level, tes, waktu, tugas, dan PDF belum ditentukan memakai placeholder;
+tidak ada klaim jadwal valid, hasil tes, unduhan berhasil, atau kenaikan level.
+**UI-01-AC-04:** starter auth/dashboard/projects, `/` tombol sandbox, dan seluruh demo tetap
+tersedia. Sandbox menyediakan tautan ke pratinjau aplikasi.
+
+Q-01–Q-15 tetap terbuka untuk implementasi produk, selain pilihan navigasi prototipe di atas.
+Prototipe ini bukan MVP fungsional atau bukti acceptance FR-01–FR-08.
+
+### UI-02 — Konten dan hierarki dari empat screenshot [instruksi pengguna terbaru]
+
+Empat screenshot menggantikan wizard/placeholder `UI-01` sebagai arah konten pratinjau.
+Gunakan `/kelas` → `/kelas/[classId]` dengan tab Siswa/Level/Progres/Sesi →
+`/kelas/[classId]/sesi/baru` dan `/kelas/[classId]/sesi/[sessionId]` (`UI-06`).
+Breadcrumb: Kelas → Kelas Rangkap 2-3 → Sesi → Susun Sesi Baru atau Literasi, 14 Okt 2026.
+`/sesi` dan `/progres` mengarah ke kelas contoh melalui redirect.
+
+**UI-02-AC-01:** daftar rombel, detail kelas dengan empat tab, matriks level literasi/numerasi,
+rubrik pada screenshot, pembuat sesi, dan detail sesi tersedia memakai shared UI/SidebarNav.
+**UI-02-AC-02:** lima label level dan rubrik screenshot adalah konten contoh yang disetujui
+untuk UI; perubahan level, catatan, rombel, dan sesi hanya disimpan dalam state lokal.
+**UI-02-AC-03:** contoh Literasi memakai 70 menit, blok 15 menit, pembukaan/penutup 5 menit,
+dan kegiatan yang diberikan screenshot. Susun jadwal menampilkan template contoh, bukan
+scheduler pedagogis final. Konten numerasi yang tidak diberikan tetap belum tersedia.
+**UI-02-AC-04:** gunakan roster screenshot level (7 siswa Kelas 2, 8 siswa Kelas 3). Screenshot
+sesi menunjukkan 8+7; jumlah kelompok/kelas pada UI dihitung dari roster untuk konsistensi.
+**UI-02-AC-05:** simpan/tersimpan berarti state pratinjau sementara, bukan backend/autosave
+persisten. Cetak/Simpan PDF membuka dialog cetak browser; versi papan tulis dapat dilihat.
+Tidak ada Supabase, AI, backend, atau klaim validasi lengkap V1–V5.
+
+Ini menerima komposisi dan fixture UI yang terlihat, bukan kontrak produksi untuk TaRL,
+indikator kurikulum, aturan scheduler, baseline, retensi, atau format PDF final. Q-* yang
+masih terkait tetap terbuka; isi tes diagnostik tidak diperoleh dari gambar rubrik saja.
+
+### UI-03 — Kartu tanpa shadow dan footer profil [instruksi pengguna]
+
+**UI-03-AC-01:** kartu/tabel aplikasi Selaras memakai border tipis tanpa shadow, termasuk hover
+pada kartu yang ditautkan. Indikator fokus dan perilaku kontrol tetap dipertahankan.
+**UI-03-AC-02:** footer SidebarNav menampilkan Avatar, nama dan email contoh, serta dropdown;
+avatar tetap dapat dibuka saat sidebar collapsed dan pada Drawer mobile.
+**UI-03-AC-03:** identitas ditandai demo, bukan akun autentikasi; keputusan profil produksi
+tetap terbuka (`Q-03`).
+
+### UI-04 — Pencarian, filter, dan halaman daftar siswa [instruksi pengguna]
+
+**UI-04-AC-01:** tiap kartu kelas pada tab Siswa menampilkan pencarian nama dan filter
+kelompok Biru/Hijau/Oranye di samping judul; kontrol membungkus pada layar sempit.
+**UI-04-AC-02:** tampilkan maksimal lima siswa per halaman. Pagination muncul jika hasil
+setelah pencarian/filter melebihi lima; masing-masing kelas memiliki state terpisah.
+**UI-04-AC-03:** pencarian/filter digabungkan dalam kelas yang sama, menampilkan jumlah hasil,
+dan kembali ke halaman pertama ketika kontrol berubah. Data kosong tetap dapat ditambah.
+Ini menerima pencarian/filter lokal untuk tab Siswa saja, bukan layanan pencarian backend
+atau perubahan lingkup layar lain.
+
+### UI-05 — Pemilih kelas pada header detail [instruksi pengguna]
+
+**UI-05-AC-01:** header detail kelas menyediakan Select di samping badge fase, dengan kelas
+aktif terpilih dan opsi semua rombel yang tersedia dalam pratinjau lokal.
+**UI-05-AC-02:** memilih rombel lain langsung membuka detail rombel tersebut pada tab yang
+sama; breadcrumb, judul, fase, dan konten mengikuti rombel baru. State pencarian/filter tab
+tidak terbawa ke rombel lain. Tidak menambahkan rombel fiktif atau backend baru.
+
+### UI-06 — Path Bahasa Indonesia tanpa prefix aplikasi [instruksi pengguna]
+
+**UI-06-AC-01:** halaman rombel memakai `/kelas`; detail memakai `/kelas/[classId]` dan
+tab `/siswa`, `/level`, `/progres`, `/sesi`. Sesi baru memakai `/sesi/baru` di dalam kelas,
+dan detail sesi memakai `/sesi/[sessionId]` di dalam kelas. Tidak ada prefix `/app`.
+**UI-06-AC-02:** semua tautan, breadcrumb, navigasi, dan pemilih kelas mengikuti path baru.
+Shell/provider memakai route group yang tidak muncul dalam URL; data pratinjau tetap terpisah
+per rombel. Starter `/`, sandbox, auth, dashboard, dan projects tetap tersedia.
+
+### UI-07 — Opsi dropdown akun [instruksi pengguna]
+
+**UI-07-AC-01:** dropdown avatar hanya menampilkan Settings dan Sign out.
+**UI-07-AC-02:** kedua opsi dinonaktifkan dalam pratinjau publik karena Settings belum punya
+halaman dan profil demo tidak terautentikasi. Jangan mengarahkan ke halaman rekaan atau
+memanggil logout terhadap sesi starter yang tidak terkait. Aktifkan setelah keputusan identitas
+dan tujuan pengaturan diselesaikan pada `Q-03`.
 
 ## 8. Model data konseptual [USULAN]
 

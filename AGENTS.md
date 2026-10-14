@@ -16,12 +16,19 @@ authentication, confirmation retry, a protected example dashboard, private per-u
 CRUD, and a public sandbox with 81 demos. The landing page is one centered `/sandbox` button.
 These examples remain available under `ST-01`–`ST-06`; projects are not Selaras sessions.
 
-**Planned, not implemented:** Selaras screens, domain logic, student records, level history,
-grouping, scheduling, worksheet content, PDF export, and progress. No Selaras schema or feature
+**UI-only preview:** `/kelas`, `/sesi`, and `/progres` use existing UI controls, class-oriented
+navigation, fictional students, and local React state (`UI-01`/`UI-02`). The latest screenshots
+supply example levels/rubrics and literacy session content; production contracts remain open.
+There are no backend calls or product schemas.
+
+**Planned, not implemented:** Selaras domain logic, persisted student records, level history,
+automatic grouping/scheduling, reviewed teaching content, dedicated PDF export, and persisted progress. No Selaras schema or feature
 tickets exist yet. Proposed routes, tables, level names, API contracts, and owners in PRD.md are
 not accepted implementation contracts. Resolve affected `Q-*` questions before Ready tickets.
 Login/demo access and persistence are still open; preserve the existing private-access boundary.
-Attachment storage, application search/filtering, and realtime are outside the supplied MVP.
+Attachment storage, backend search/filtering, and realtime are outside the supplied MVP.
+The user explicitly authorized local name search, group filters, and five-row pagination on
+the preview's Siswa class cards (`UI-04`); other application filtering remains outside scope.
 
 ## Repository Structure
 
@@ -37,8 +44,9 @@ Attachment storage, application search/filtering, and realtime are outside the s
 - `src/app/(auth)/`: Public login and registration routes.
 - `src/app/(dashboard)/`: Protected dashboard, project list, and project-detail routes.
 - `src/app/sandbox/`: Only `page.tsx`; sandbox behavior belongs in its feature.
-- `src/features/`: Implemented auth, projects, and sandbox, organized into purpose-specific
-  subfolders. Selaras feature folders are not present; their boundaries belong in future tickets.
+- `src/app/(selaras)/`: Public UI-only preview with Indonesian product paths and no `/app` prefix.
+- `src/features/`: Auth, projects, sandbox, and the local Selaras UI preview, organized into
+  purpose-specific category subfolders. The Selaras preview has no feature API/backend modules.
 - `src/components/ui/`: One flat reusable component library, CSS tokens, catalog, and MIT notice.
 - `src/components/layout/`: The authenticated application shell.
 - `src/providers/`: Query cache, authenticated-user lifecycle, and light-only rendering (theme provider removed).
@@ -160,6 +168,8 @@ UI conventions:
   default size sm (40 px), optional xs (32 px) for every variant, and 0.98 press scale.
   Primary #7173FF and destructive #FF3C7F fills use white, bold 19 px text; legacy md/lg size props fall back to sm.
 - Button and IconButton support `xs/sm` at 32/40 px high (icon buttons 32/40 px square). Preserve disabled and loading behavior.
+- Shared Select triggers and option rows use 32 px minimum height, 14 px text, and compact
+  padding. Keep Base UI keyboard/focus behavior and use shared sizing in feature tables.
 - Keep `primary/secondary/ghost/danger/quiet` variants and the semantic destructive Button.
 - Apply the five-color palette across all existing UI: #7173FF primary/selection, #FF3C7F
   destructive/error, #95F447 success, #00E5E3 information, and #F2F226 warning/pending. Use
@@ -169,6 +179,11 @@ UI conventions:
 - For button-like navigation, use Button with `nativeButton={false}`, `role="link"`, and
   `render={<Link href="…" />}`; do not nest buttons and anchors.
 - Keep inline text links, navigation rows, and linked cards in their own link presentation.
+- The Selaras preview uses the shared SidebarNav for desktop and mobile navigation. Use
+  `listLabel={null}` when there is no secondary list; retain its native collapse behavior.
+- Selaras app cards and table surfaces use borders with no resting or hover shadows. Its
+  sidebar footer uses shared Avatar/DropdownMenu with a labeled demo profile and only the
+  disabled Settings/Sign out options; do not connect its demo identity to starter auth (`Q-03`).
 - Toasts use neutral surfaces, status icons, and subtle type tints without colored borders.
 - Preserve accessible labels, errors, focus, keyboard navigation, and reduced-motion behavior.
   Filled action labels must retain large-bold-text/hover contrast; destructive states stay semantic.
@@ -329,6 +344,11 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
   PRD owns behavior, accepted DESIGN decisions own presentation, this file owns implementation
   conventions, and BACKLOG owns task scope/prompts. Identify conflicts instead of silently
   selecting a rule. Preserve stable PRD requirement/acceptance IDs in tickets and validation.
+- The user authorized the UI-only Selaras preview (`UI-01`). The latest four screenshots (`UI-02`, `DES-18`) supersede the guided-flow placeholders with
+  class tabs and nested session routes. Use their supplied fixture content and breadcrumb hierarchy;
+  derive counts from the level screenshot's 7+8 roster and preserve shared SidebarNav.
+  Memory-only saves and browser print must be identified accurately. This does not settle
+  production auth/routes, pedagogical content, scheduling, persistence, or PDF contracts.
 - Templates/TODOs are not product decisions. Do not implement an unresolved requirement or
   invent missing behavior to mark a ticket Ready; continue independent authorized work.
 - PRD labels `[USULAN]`/`[ASUMSI]` and its `Q-*` table identify unresolved choices. Proposed

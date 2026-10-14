@@ -186,6 +186,21 @@ test("the full sandbox renders one unified catalog with the extracted controls",
   assert.match(markup, /Reset sandbox/);
 });
 
+test("SidebarNav supports primary navigation without a secondary list", () => {
+  const SidebarNav = load(resolve(root, "src/components/ui/sidebar-nav")).default as ComponentType<{
+    header: ReactNode; listLabel: null; newChatLabel: null; activeNav: string;
+    navItems: { key: string; label: string; icon: ReactNode }[];
+  }>;
+  const markup = render(createElement(SidebarNav, {
+    header: "Selaras", listLabel: null, newChatLabel: null, activeNav: "/sesi",
+    navItems: [{ key: "/sesi", label: "Rencana sesi", icon: null }],
+  }));
+  assert.match(markup, /aria-label="Rencana sesi" aria-current="page"/);
+  assert.match(markup, /Collapse sidebar/);
+  assert.ok(!markup.includes("Supplier records"));
+  assert.ok(!markup.includes('placeholder="Search'));
+});
+
 test("Accordion and Dropdown destinations render their sidebar entries and actual controls", () => {
   const Sandbox = load(resolve(root, "src/features/sandbox/components/sandbox"))
     .Sandbox as ComponentType<{ initialComponent: string }>;

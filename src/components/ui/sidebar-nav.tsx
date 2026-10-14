@@ -66,7 +66,7 @@ type SidebarNavProps = {
   children?: ReactNode;
   navItems?: SidebarNavItem[];
   newChatLabel?: string | null;
-  listLabel?: string;
+  listLabel?: string | null;
   activeTitle?: string | null;
   className?: string;
   fill?: boolean;
@@ -76,6 +76,7 @@ type SidebarNavProps = {
   activeNav?: string;
   onNavigate?: (key: string) => void;
   /** footer call-to-action — defaults to the demo "Upgrade" button */
+  footer?: ReactNode;
   footerLabel?: string;
   footerIcon?: ReactNode;
   onFooterClick?: () => void;
@@ -249,6 +250,7 @@ export default function SidebarNav({
   onPick,
   activeNav,
   onNavigate,
+  footer,
   footerLabel = "Upgrade",
   footerIcon,
   onFooterClick,
@@ -312,7 +314,7 @@ export default function SidebarNav({
   return (
     <aside
       data-sidebar-collapsed={collapsed}
-      aria-label={`${listLabel} navigation`}
+      aria-label={`${listLabel ?? "Sidebar"} navigation`}
       className={`relative flex shrink-0 overflow-hidden transition-[width] ${fill ? "h-full" : "h-[600px]"} ${className}`}
       style={
         {
@@ -431,6 +433,7 @@ export default function SidebarNav({
           </div>
         )}
         <div className="mt-3 flex min-h-0 flex-1 flex-col">
+          {listLabel !== null && <>
           <div
             className="sidebar-copy relative mx-2 mb-1 h-8 shrink-0"
             inert={collapsed}
@@ -540,11 +543,14 @@ export default function SidebarNav({
               )}
             </GlideGroup>
           </div>
+          </>}
         </div>
         <div
-          className="sidebar-copy mx-2 mt-3 w-[208px] border-t border-line pt-3"
-          inert={collapsed}
+          className={`${footer === undefined ? "sidebar-copy w-[208px]" : ""} mx-2 mt-3 border-t border-line pt-3`}
+          style={footer === undefined ? undefined : { width: collapsed ? 36 : 208 }}
+          inert={footer === undefined && collapsed}
         >
+          {footer === undefined ? (
           <Button
             type="button"
             variant="primary"
@@ -555,6 +561,7 @@ export default function SidebarNav({
             {footerIcon}
             {footerLabel}
           </Button>
+          ) : footer}
         </div>
       </div>
     </aside>
