@@ -20,6 +20,7 @@ test("one searchable sandbox list contains every imported and shared demo", () =
     "switches",
     "tabs",
     "data-states",
+    "colors",
   ]) {
     assert.ok(ids.includes(id), `Missing sandbox entry: ${id}`);
   }
@@ -51,6 +52,7 @@ test("one searchable sandbox list contains every imported and shared demo", () =
 });
 
 test("direct sandbox destinations resolve Accordion and Dropdown and safely default invalid values", () => {
+  assert.equal(getSandboxComponentId("colors"), "colors");
   assert.equal(getSandboxComponentId("accordion"), "accordion");
   assert.equal(getSandboxComponentId("dropdown-menu"), "dropdown-menu");
   for (const value of [undefined, null, "missing", "customization", ["accordion"], "toString"]) {

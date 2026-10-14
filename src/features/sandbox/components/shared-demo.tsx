@@ -5,7 +5,8 @@ import { Tabs } from "@/components/ui/tabs";
 import { EXTENDED_DEMOS } from "./extended-demo";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Plus, Settings, Trash2 } from "lucide-react";
+import { IconButton } from "@/components/ui/icon-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -31,44 +32,67 @@ export function SharedDemo({
         <section aria-label="Button variants" className="space-y-3">
           <h3 className="text-xs font-medium text-muted">Variants</h3>
           <div className="flex flex-wrap gap-3">
-            {([
-              "primary",
-              "secondary",
-              "ghost",
-              "danger",
-              "quiet",
-            ] as const).map((variant) => (
+            {(
+              ["primary", "secondary", "ghost", "danger", "quiet"] as const
+            ).map((variant) => (
               <Button
                 key={variant}
+                size="sm"
                 variant={variant}
                 onClick={() => setMessage(`${variant} button clicked.`)}
               >
-                {variant === "danger" ? "Destructive" : variant.charAt(0).toUpperCase() + variant.slice(1)}
+                {variant === "danger"
+                  ? "Destructive"
+                  : variant.charAt(0).toUpperCase() + variant.slice(1)}
               </Button>
             ))}
           </div>
         </section>
-        <section aria-label="Button sizes and states" className="space-y-3">
-          <h3 className="text-xs font-medium text-muted">Sizes & states</h3>
-          {(["sm", "md", "lg"] as const).map((size) => (
-            <div key={size} className="flex flex-wrap items-center gap-3">
-              <span className="w-16 text-xs text-muted">
-                {size === "sm" ? "Small" : size === "md" ? "Medium" : "Large"}
-              </span>
-              <Button
-                size={size}
-                onClick={() => setMessage(`${size} button clicked.`)}
-              >
-                Continue <ArrowUpRight size={14} />
-              </Button>
-              <Button size={size} disabled>
-                Disabled
-              </Button>
-              <Button size={size} loading>
-                Saving…
-              </Button>
-            </div>
-          ))}
+        <section aria-label="Button states" className="space-y-3">
+          <h3 className="text-xs font-medium text-muted">States</h3>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button onClick={() => setMessage("Button clicked.")}>
+              Continue <ArrowUpRight size={14} />
+            </Button>
+            <Button disabled>
+              Disabled
+            </Button>
+            <Button loading>
+              Saving…
+            </Button>
+          </div>
+        </section>
+        <section aria-label="Icon buttons" className="space-y-3">
+          <h3 className="text-xs font-medium text-muted">Icon buttons</h3>
+          <div className="flex flex-wrap gap-3">
+            <IconButton
+              label="Add item"
+              variant="primary"
+              onClick={() => setMessage("Add item clicked.")}
+            >
+              <Plus size={20} />
+            </IconButton>
+            <IconButton
+              label="Settings"
+              variant="secondary"
+              onClick={() => setMessage("Settings clicked.")}
+            >
+              <Settings size={20} />
+            </IconButton>
+            <IconButton
+              label="Delete item"
+              variant="danger"
+              onClick={() => setMessage("Delete item clicked.")}
+            >
+              <Trash2 size={20} />
+            </IconButton>
+            <IconButton label="Disabled icon action" disabled>
+              <Settings size={20} />
+            </IconButton>
+            <IconButton label="Loading icon action" loading>
+              <Plus size={20} />
+            </IconButton>
+          </div>
         </section>
         <p role="status" className="text-xs text-muted min-h-4">
           {message}
@@ -137,10 +161,7 @@ export function SharedDemo({
       <div className="space-y-5 w-full max-w-xs">
         <label className="flex items-center justify-between gap-4 text-sm">
           Notifications
-          <Switch
-            checked={checked}
-            onCheckedChange={setChecked}
-          />
+          <Switch checked={checked} onCheckedChange={setChecked} />
         </label>
         <label className="flex items-center justify-between gap-4 text-sm">
           Off by default
@@ -159,11 +180,29 @@ export function SharedDemo({
 
   if (id === "tabs")
     return (
-      <Tabs label="Project views" defaultValue="overview" className="w-full max-w-md" items={[
-        { value: "overview", label: "Overview", content: "Everything you need to start your next project." },
-        { value: "activity", label: "Activity", content: "Your sample project was updated just now." },
-        { value: "settings", label: "Settings", disabled: true, content: "Settings unavailable." },
-      ]} />
+      <Tabs
+        label="Project views"
+        defaultValue="overview"
+        className="w-full max-w-md"
+        items={[
+          {
+            value: "overview",
+            label: "Overview",
+            content: "Everything you need to start your next project.",
+          },
+          {
+            value: "activity",
+            label: "Activity",
+            content: "Your sample project was updated just now.",
+          },
+          {
+            value: "settings",
+            label: "Settings",
+            disabled: true,
+            content: "Settings unavailable.",
+          },
+        ]}
+      />
     );
 
   if (id === "data-states")
@@ -171,8 +210,15 @@ export function SharedDemo({
       <div className="w-full max-w-lg space-y-4">
         <label className="field text-sm">
           Preview state
-          <Select value={state} onValueChange={(value) => { if (value) setState(value as typeof state); }}
-            options={["loading", "empty", "error", "unavailable"].map((value) => ({ value, label: value }))} />
+          <Select
+            value={state}
+            onValueChange={(value) => {
+              if (value) setState(value as typeof state);
+            }}
+            options={["loading", "empty", "error", "unavailable"].map(
+              (value) => ({ value, label: value }),
+            )}
+          />
         </label>
         <DataState
           state={state}

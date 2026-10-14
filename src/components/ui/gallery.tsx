@@ -19,10 +19,10 @@ export function ComponentPreview({
   const [replay, setReplay] = useState(0);
   return (
     <section aria-label={`${title} preview`}>
-      <div className="flex items-start justify-between gap-3 mb-5">
-        <div>
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <p className="text-sm text-muted mt-1">{caption}</p>
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+        <div className="min-w-0 flex-1 basis-48">
+          <h2 className="text-2xl leading-[1.25] font-[750]">{title}</h2>
+          <p className="text-sm leading-5 text-muted mt-2">{caption}</p>
         </div>
         <Button
           variant="secondary"
@@ -40,14 +40,16 @@ export function ComponentPreview({
           aria-label={`${title} variant`}
         >
           {variants.map((value) => (
-            <button
+            <Button
               type="button"
+              variant="quiet"
+              size="sm"
               key={value}
               aria-pressed={variant === value}
               onClick={() => setVariant(value)}
             >
               {value}
-            </button>
+            </Button>
           ))}
         </div>
       )}

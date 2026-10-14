@@ -9,7 +9,8 @@ import { ProjectForm } from "./project-form";
 import { DataState } from "@/components/ui/data-state";
 import { Notice } from "@/components/ui/notice";
 import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { projectSchema } from "../validations/project";
 
@@ -25,7 +26,7 @@ export function ProjectDetail({ id }: { id: string }) {
     <>
       <Button
         variant="quiet"
-        className="mb-7"
+        className="mb-6"
         nativeButton={false}
         role="link"
         render={<Link href="/projects" />}
@@ -59,9 +60,9 @@ export function ProjectDetail({ id }: { id: string }) {
               </div>
             </div>
           </div>
-          <div className="panel max-w-2xl">
+          <Card className="max-w-[640px]">
             {(saved || params.get("created") === "1") && (
-              <div className="mb-5">
+              <div className="mb-4">
                 <Notice tone="success">
                   {saved ? "Project saved." : "Project created. Make it yours."}
                 </Notice>
@@ -87,15 +88,15 @@ export function ProjectDetail({ id }: { id: string }) {
                 }
               }}
             />
-          </div>
-          <div className="max-w-2xl mt-8 flex flex-wrap gap-4 items-center justify-between border-t border-line pt-6">
+          </Card>
+          <div className="max-w-[640px] mt-6 flex flex-wrap gap-4 items-center justify-between border-t border-line pt-6">
             <div>
-              <h2 className="font-medium text-sm">Delete project</h2>
+              <h2 className="font-[750] text-2xl leading-[1.25]">Delete project</h2>
               <p className="text-xs text-muted mt-1">
                 Permanently remove this project and its details.
               </p>
             </div>
-            <Dialog
+            <AlertDialog
               title="Delete this project?"
               description={`“${project.name}” will be permanently deleted. This cannot be undone.`}
               open={confirm}
@@ -104,45 +105,31 @@ export function ProjectDetail({ id }: { id: string }) {
                 setConfirm(next);
               }}
               busy={remove.isPending}
+              error={remove.error ? "We couldn’t delete the project. Please try again." : undefined}
               trigger={
-                <Button variant="danger">
-                  <Trash2 size={15} />
+                <Button variant="danger" >
+                  <Trash2 size={16} aria-hidden="true" />
                   Delete project
                 </Button>
               }
             >
-              {remove.error && (
-                <div className="mb-5">
-                  <Notice>
-                    We couldn’t delete the project. Please try again.
-                  </Notice>
-                </div>
-              )}
-              <div className="flex gap-3 justify-end">
-                <Button
-                  variant="secondary"
-                  disabled={remove.isPending}
-                  onClick={() => setConfirm(false)}
-                >
-                  Keep project
-                </Button>
-                <Button
-                  variant="danger"
-                  loading={remove.isPending}
-                  onClick={async () => {
-                    try {
-                      await remove.mutateAsync(id);
-                      setConfirm(false);
-                      router.replace("/projects");
-                    } catch {
-                      /* Keep confirmation open on failure. */
-                    }
-                  }}
-                >
-                  {remove.isPending ? "Deleting…" : "Delete permanently"}
-                </Button>
-              </div>
-            </Dialog>
+              <Button
+                variant="danger"
+
+                loading={remove.isPending}
+                onClick={async () => {
+                  try {
+                    await remove.mutateAsync(id);
+                    setConfirm(false);
+                    router.replace("/projects");
+                  } catch {
+                    /* Keep confirmation open on failure. */
+                  }
+                }}
+              >
+                {remove.isPending ? "Deleting…" : "Delete permanently"}
+              </Button>
+            </AlertDialog>
           </div>
         </>
       )}

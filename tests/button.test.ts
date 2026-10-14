@@ -26,7 +26,7 @@ const { Button } = exports;
 
 test("buttons retain defaults, labels, submit semantics, and disabled state", () => {
   const normal = renderToStaticMarkup(createElement(Button, null, "Continue"));
-  assert.match(normal, /button-ghost button-md/);
+  assert.match(normal, /button-ghost button-sm/);
   assert.ok(!normal.includes('aria-busy="true"'));
   assert.ok(!normal.includes('disabled=""'));
 
@@ -37,6 +37,15 @@ test("buttons retain defaults, labels, submit semantics, and disabled state", ()
   assert.match(disabled, /type="submit"/);
   assert.match(disabled, />Save<\/button>/);
   assert.ok(!disabled.includes("<svg"));
+});
+
+test("buttons default to small and normalize legacy size requests", () => {
+  const primary = renderToStaticMarkup(createElement(Button, { variant: "primary" }, "Continue"));
+  assert.match(primary, /button-primary button-sm/);
+  for (const size of ["xs", "sm", "md", "lg"] as const) {
+    const markup = renderToStaticMarkup(createElement(Button, { variant: "primary", size }, "Continue"));
+    assert.ok(markup.includes("button-sm"));
+  }
 });
 
 test("loading disables every size/variant, marks it busy, and preserves its label", () => {
@@ -58,7 +67,7 @@ test("loading disables every size/variant, marks it busy, and preserves its labe
       assert.match(markup, /data-loading="true"/);
       assert.ok(!markup.includes("data-accent="));
       assert.ok(markup.includes(`button-${variant}`));
-      assert.ok(markup.includes(`button-${size}`));
+      assert.ok(markup.includes("button-sm"));
       assert.match(markup, /aria-label="Save project"/);
       assert.match(markup, /type="submit"/);
       assert.match(markup, /<svg[^>]*aria-hidden="true"/);
@@ -86,7 +95,7 @@ test("link buttons render a single anchor with navigation and disabled semantics
     assert.match(markup, /role="link"/);
     assert.match(markup, /target="_blank"/);
     assert.match(markup, /rel="noreferrer"/);
-    assert.match(markup, /button-secondary button-md/);
+    assert.match(markup, /button-secondary button-sm/);
     assert.match(markup, /Open sandbox<\/a>/);
     if (state !== "normal") assert.match(markup, /aria-disabled="true"/);
     if (state === "loading") assert.match(markup, /aria-busy="true"/);

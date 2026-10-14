@@ -16,6 +16,7 @@ import * as api from "../api/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/ui/notice";
+import { Card } from "@/components/ui/card";
 
 export function AuthForm({
   mode,
@@ -40,12 +41,12 @@ export function AuthForm({
     resolver: zodResolver(signup ? registerSchema : loginSchema),
   });
   return (
-    <div className="max-w-md w-full">
+    <Card className="max-w-md w-full">
       <p className="eyebrow">{signup ? "Let’s get started" : "Welcome back"}</p>
-      <h1 className="text-3xl font-semibold tracking-tight mt-3">
+      <h1 className="text-[32px] leading-[1.2] font-[750] tracking-[-0.4px] mt-2">
         {signup ? "Make room for your ideas." : "Pick up where you left off."}
       </h1>
-      <p className="text-muted text-sm mt-3 mb-8">
+      <p className="text-muted text-base leading-relaxed mt-2 mb-6">
         {signup
           ? "One account. Your own private workspace."
           : "Sign in to your private workspace and keep building."}
@@ -98,9 +99,9 @@ export function AuthForm({
               );
             }
           })}
-          className="space-y-5"
+          className="space-y-4"
         >
-          <fieldset disabled={!configured} className="space-y-5">
+          <fieldset disabled={!configured} className="space-y-4 min-w-0">
             <div className="field">
               <label htmlFor="email">Email address</label>
               <Input
@@ -151,7 +152,7 @@ export function AuthForm({
               : signup
                 ? "Create account"
                 : "Sign in"}
-            <ArrowRight size={16} />
+            <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </form>
       )}
@@ -170,6 +171,6 @@ export function AuthForm({
       >
         Need a new confirmation email?
       </Link>
-    </div>
+    </Card>
   );
 }

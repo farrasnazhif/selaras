@@ -32,7 +32,7 @@ export function Dialog({
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className="dialog-backdrop" />
         <BaseDialog.Popup className="dialog-popup">
-          <BaseDialog.Title className="text-xl font-semibold tracking-tight pr-8">
+          <BaseDialog.Title className="text-2xl leading-[1.25] font-[750] pr-8">
             {title}
           </BaseDialog.Title>
           <BaseDialog.Description className="mt-2 text-sm text-muted">

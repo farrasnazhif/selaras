@@ -35,8 +35,8 @@ export function ProjectForm({
   });
   const busy = pending || isSubmitting;
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-      <fieldset disabled={busy} className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <fieldset disabled={busy} className="space-y-4 min-w-0">
         <div className="field">
           <label htmlFor="project-name">
             Project name <span className="text-accent">*</span>
@@ -115,7 +115,7 @@ export function ProjectForm({
         </div>
       </fieldset>
       {error && <Notice>{error}</Notice>}
-      <div className="flex justify-end gap-3 pt-2">
+      <div className="flex flex-wrap justify-end gap-2 pt-2">
         {onCancel && (
           <Button
             type="button"
@@ -126,7 +126,7 @@ export function ProjectForm({
             Cancel
           </Button>
         )}
-        <Button variant="primary" type="submit" loading={busy}>
+        <Button variant="primary" type="submit" loading={busy} className="w-full sm:w-auto">
           {busy ? "Saving…" : submitLabel}
         </Button>
       </div>

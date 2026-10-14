@@ -21,6 +21,7 @@ import {
   X as Xmark,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
 import { Shimmer } from "@/components/ui/shimmer";
 import { StreamText } from "@/components/ui/stream-text";
 /* ─────────────────────────────────────────────────────────
@@ -94,11 +95,6 @@ const icons = {
   close: <Xmark {...iconProps} />,
   retry: <Refresh {...iconProps} />,
 };
-/* the single "keep" affirm — solid ink with a hairline (not the atom's filled
- * highlight) shadow, so it stays a local one-off rather than a Button variant */
-const primary =
-  "inline-flex h-7 shrink-0 items-center gap-1 rounded-full bg-ink px-2.5 text-[12.5px] font-normal text-canvas shadow-hairline transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-[0.96]";
-
 const DEFAULT_ACTIONS: SelectionActionSet = {
   primary: [
     { id: "Explain", icon: icons.explain },
@@ -290,7 +286,7 @@ export default function SelectionActions({
           {passage.lead}
           <span
             ref={selectionRef}
-            className="box-decoration-clone rounded-[3px] bg-[color-mix(in_srgb,var(--accent)_14%,var(--surface))] text-ink dark:bg-accent-tint"
+            className="box-decoration-clone rounded-[3px] bg-[color-mix(in_srgb,var(--accent)_14%,var(--surface))] text-ink"
           >
             {mode === "idle" || mode === "thinking" ? (
               passage.original
@@ -316,11 +312,9 @@ export default function SelectionActions({
             willChange: "transform",
           }}
         >
-          {/* A 36px pill wraps 28px controls at a 4px inset. The controls
-              resolve to a 14px radius, preserving the concentric curve. */}
           <div
             ref={barRef}
-            className="flex h-9 w-fit max-w-[calc(100vw-48px)] items-center justify-center gap-0.5 overflow-hidden rounded-full bg-surface p-1 font-sans font-normal text-ink shadow-overlay"
+            className="flex h-12 w-fit max-w-[calc(100vw-48px)] items-center justify-center gap-0.5 overflow-hidden rounded-full bg-surface p-1 font-sans font-normal text-ink shadow-overlay"
             style={{
               width:
                 mode === "idle" && hasPrompt && typingWidth
@@ -360,10 +354,10 @@ export default function SelectionActions({
               )}
               {mode === "result" && (
                 <>
-                  <button type="button" onClick={reset} className={primary}>
+                  <Button type="button" variant="primary" size="sm" onClick={reset}>
                     {icons.check}
                     {copy.keep}
-                  </button>
+                  </Button>
                   <Button
                     type="button"
                     variant="quiet"
@@ -375,14 +369,15 @@ export default function SelectionActions({
                     {copy.discard}
                   </Button>
                   <span className="mx-0.5 h-4 w-px shrink-0 bg-line" />
-                  <button
+                  <IconButton
                     type="button"
-                    aria-label="Try again"
+                    label="Try again"
+                    variant="quiet"
+                    size="sm"
                     onClick={() => run(action)}
-                    className="flex size-7 shrink-0 items-center justify-center rounded-full text-ink-3 transition-[background-color,color,transform] duration-150 hover:bg-hover-2 hover:text-ink-2 active:scale-[0.96]"
                   >
                     {icons.retry}
-                  </button>
+                  </IconButton>
                 </>
               )}
               {mode === "idle" && (
@@ -468,7 +463,7 @@ export default function SelectionActions({
                     <div
                       className="flex min-w-0 items-center gap-0.5 overflow-hidden transition-[max-width,opacity,margin] duration-400"
                       style={{
-                        maxWidth: expanded ? 262 : 0,
+                        maxWidth: expanded ? 360 : 0,
                         opacity: expanded ? 1 : 0,
                         marginLeft: expanded ? 2 : 0,
                         transitionTimingFunction: "cubic-bezier(0.23,1,0.32,1)",
@@ -491,14 +486,15 @@ export default function SelectionActions({
                       ))}
                     </div>
                     <span className="mx-0.5 h-4 w-px shrink-0 bg-line" />
-                    <button
+                    <IconButton
                       type="button"
-                      aria-label={
+                      variant="quiet"
+                      size="sm"
+                      label={
                         expanded ? "Show fewer actions" : "Show more actions"
                       }
                       aria-expanded={expanded}
                       onClick={() => setExpanded((value) => !value)}
-                      className="flex size-7 shrink-0 items-center justify-center rounded-full text-ink transition-[background-color,transform] duration-200 hover:bg-hover active:scale-[0.96]"
                     >
                       <span
                         className="flex transition-transform duration-400"
@@ -512,25 +508,26 @@ export default function SelectionActions({
                       >
                         {icons.chevron}
                       </span>
-                    </button>
+                    </IconButton>
                   </div>
                   <div
                     className="flex min-w-0 items-center overflow-hidden transition-[max-width,opacity,transform] duration-400"
                     style={{
-                      maxWidth: hasPrompt ? 30 : 0,
+                      maxWidth: hasPrompt ? 42 : 0,
                       opacity: hasPrompt ? 1 : 0,
                       transform: hasPrompt ? "scale(1)" : "scale(0.88)",
                       transitionTimingFunction: "cubic-bezier(0.23,1,0.32,1)",
                     }}
                   >
-                    <button
+                    <IconButton
                       type="button"
-                      aria-label="Send edit instruction"
+                      label="Send edit instruction"
+                      variant="primary"
+                      size="sm"
                       onClick={() => run(prompt.trim())}
-                      className="flex size-7 shrink-0 items-center justify-center rounded-full bg-ink text-surface transition-[opacity,transform] duration-200 active:scale-[0.94]"
                     >
                       {icons.send}
-                    </button>
+                    </IconButton>
                   </div>
                 </>
               )}

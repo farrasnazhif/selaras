@@ -36,7 +36,7 @@ Distinguish implemented behavior from planned behavior. Inspect source before na
 or commands, and preserve existing build commands and architecture boundaries.
 
 Keep the current section order. Preserve pnpm, feature category folders, shared UI/Base UI
-behavior, cookie-based SSR auth/theme, ownership enforcement, and accessibility unless
+behavior, cookie-based SSR auth, light-only UI, ownership enforcement, and accessibility unless
 an explicit accepted requirement changes them.
 
 Describe how PRD.md, DESIGN.md, and BACKLOG.md guide implementation.
@@ -128,7 +128,7 @@ validations, tests, and migrations. If a referenced document or dependency contr
 is unavailable, report the gap instead of assuming the requirement.
 
 Check every acceptance criterion, interface contract, failure state, ownership rule,
-cache interaction, design decision, keyboard behavior, and relevant mobile/theme state.
+cache interaction, design decision, keyboard behavior, and relevant mobile/palette state.
 Prioritize concrete correctness, security, accessibility, and regression risks.
 
 Report actionable findings with severity, file/line, failure scenario, and correction.

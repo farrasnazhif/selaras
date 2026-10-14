@@ -1,116 +1,137 @@
-# DESIGN — Selaras
+# DESIGN — Selaras, inspired by Classroomscreen
 
-**Versi:** 1.0 — spesifikasi desain produk untuk ditinjau\
+**Versi:** 2.3 — single button size and Colors-only palette\
 **Tanggal:** 14 Oktober 2026\
-**Status:** Dokumentasi saja; layar Selaras belum diimplementasikan
+**Status:** Apply to existing starter UI; future Selaras features remain unimplemented
 
-Dokumen ini memetakan `SCR-01`–`SCR-07` dan kebutuhan PRD ke UI yang sudah ada. **[TETAP]** berarti aturan starter/user yang dipertahankan. **[RANCANGAN]** berarti komposisi produk dan ukuran konkret yang disusun dalam pekerjaan desain ini, bukan nilai yang diukur dari referensi atau bukti persetujuan tim. **[TERBUKA]** berarti keputusan belum tersedia; jangan menebaknya untuk membuat tiket Ready. Ukuran rancangan dapat ditinjau tanpa mengubah token global.
+The user's explicit Classroomscreen specification supersedes the prior neutral visual direction.
+The user selected restyling existing screens and demos, without adding the classroom canvas.
+This document keeps stable `DES-*` / `DQ-*` IDs and the planned product-screen mappings below.
+PRD still owns behavior; product identities, levels, schedules, PDF content, and routes remain open.
+Supplied values are reproduction proposals accepted for this restyle, not measured production tokens.
 
-PRD.md tetap menentukan perilaku/lingkup; AGENTS.md menentukan implementasi. Route, login demo, nama level, parameter jadwal, dan format ekspor belum menjadi kontrak final. ID `DES-*` dan `DQ-*` stabil untuk referensi backlog. Dokumen ini tidak menyetujui jawaban baru untuk `Q-*` PRD.
+## 1. DES-01 — Accepted visual direction and scope
 
-## 1. DES-01 — Penggunaan referensi dan arah produk
+The user supplied the Classroomscreen-inspired specification and explicitly selected **restyle
+existing UI**. Its palette, Nunito Sans typography, larger controls, rounded surfaces, and derived
+visual foundation replaces the former Inter/neutral/compact-button conventions. Keep Beautiful UI,
+Base UI behavior, Lucide, authentication, project CRUD, the centered sandbox landing link, and
+all public demos, except the removed Theme Toggle demo; Colors replaces it. Do not add a classroom canvas, widgets, marketing pages, or product features.
 
-Referensi yang tersedia adalah dokumen Classroomscreen pada DESIGN.md sebelumnya. Dokumen itu menyebut peninjauan situs/help publik, dengan warna, font, dimensi, dark theme, dan motion sebagai perkiraan. Tidak ada lampiran gambar tambahan yang ditemukan dalam pemeriksaan ini. Revisi ini memakai isi referensi lokal; tidak mengklaim audit browser baru atau token resmi Classroomscreen.
+This is an inspired design using supplied reproduction values, not measured Classroomscreen
+production CSS. Do not copy its logo, photography, brand assets, or claim certified accessibility.
+Existing functional layouts remain; future Selaras screen compositions below stay proposed.
 
-| Kualitas referensi | Penerapan Selaras | Batas |
-| --- | --- | --- |
-| Alat guru terasa ramah, sederhana, dan langsung berguna | Satu judul tugas, petunjuk pendek, kegiatan utama terlihat sebelum rincian | Bahasa/label final `DQ-06`; tidak menambah panel tutorial/desain. |
-| Isi pengajaran mudah dibaca | Nama kelas/kelompok jelas, waktu dan status guru terbaca, instruksi tugas lebih besar dari metadata | Tidak menjanjikan mode proyektor atau whiteboard interaktif. |
-| Pemisahan isi dan kontrol | Kontrol sesi di awal/akhir bagian; tugas dan jadwal memperoleh ruang utama | Tidak mengadopsi widget bar, drag/resize, atau floating toolbar. |
-| Permukaan ringan dan whitespace di dalam panel | Canvas netral, Card yang ada, jarak konsisten 8/12/16/24 px | Tidak menyalin palet pastel, indigo, foto, logo, slogan, atau branding referensi. |
+## 2. DES-02 — Layout, spacing, and density
 
-**[TETAP] Fondasi visual:** Inter normal, Beautiful UI/Base UI, Lucide, satu library di `src/components/ui/`, tindakan primer netral, radius dan shadows yang ada. Tidak menambah shadcn, font baru, brand assets, atau token warna baru. Spesifikasi referensi lama tentang Nunito Sans, tombol pill 48 px, indigo, marketing hero, dan classroom canvas tidak menjadi instruksi implementasi Selaras.
+Use a maximum 1200 px main content container, excluding the existing 240 px sidebar. Fluid
+gutters: 16 px mobile, 32 px at 768 px, 48 px at 1024 px, and 64 px at 1280 px. These are adaptation
+values for the existing starter, not a requirement to rebuild its navigation. Auth stays a
+centered form up to 448 px; project detail stays a readable form up to 640 px.
 
-**[RANCANGAN] Karakter:** tenang, terbaca, dan cukup ringkas untuk guru menyiapkan satu sesi. Kepadatan sedang pada formulir, lebih ringkas pada daftar, lapang pada tugas. Penanda kemampuan berada dalam area guru; keluaran siswa memakai nama kelompok netral. Tidak menampilkan grafik analitik tambahan atau klaim dampak belajar.
+| Element | Applied design |
+| --- | --- |
+| Main vertical padding | 32 px mobile; 48 px desktop |
+| Cards | 24 px padding, 20 px radius, hairline and soft small shadow |
+| Widget/demo preview surfaces | 14 px radius, 16/24 px responsive padding, white background, no gradient |
+| Section spacing | 32 px; related form fields 16 px; paired panels 24 px |
+| Label/input/error gap | 8 px; metadata micro-gap 4 px |
+| Action gap | 8 px; actions wrap naturally on narrow screens |
+| Modal | 24/28 px existing padding, 20 px radius, constrained viewport and internal scroll |
+| Touch actions | Button 40 px; IconButton 40 px square; input 48 px |
 
-## 2. DES-02 — Layout, spacing, dan kepadatan
+Retain the landing's single centered button; its backdrop and auth may use a subtle lavender
+radial wash. Dashboard summary cards use lavender; project icons use pastel blue. Sandbox
+previews are always white. Only the Colors catalog entry shows read-only color swatches with their hex values below. Assign these roles consistently, not random
+colors per control. Do not add a shared branded header or a marketing hero.
 
-**[TETAP] Beranda `/`:** satu Button terpusat menuju `/sandbox`; seluruh demo sandbox tetap publik. Auth, dashboard, dan proyek contoh tetap tersedia. Tidak menambahkan header bermerek bersama. Lokasi titik masuk Selaras dan perubahan navigasi AppShell menunggu PRD `Q-03`/`Q-08` (`DQ-01`).
+## 3. DES-03 — Typography and icons
 
-**[RANCANGAN] Kontainer isi Selaras:** gunakan area isi route yang ditetapkan kelak, lebar penuh hingga 1040 px, terpusat pada area main yang tersedia. Ini lebar isi, tidak termasuk sidebar. Form konfigurasi maksimal 640 px. Jangan mengubah `.app-content`, sidebar 240 px, atau layout starter secara global. Jika memakai AppShell, gunakan gutter yang sudah ada; tidak menambah gutter kedua. Jika layar baru berdiri sendiri setelah keputusan route, gutter rancangan adalah 16 px mobile dan 24 px desktop.
+Use Nunito Sans from the existing Google Fonts CSS import, with system-ui/Apple/Segoe UI/sans-serif
+fallback. Body is 16 px/1.55, weight 400. Keep a monospace font only for code and technical samples.
 
-| Elemen | Nilai rancangan | Pemakaian |
-| --- | --- | --- |
-| Ruang atas/bawah isi | 24 px mobile, 32 px desktop | Dalam area main; shell yang sudah memberi padding tidak ditambah lagi. |
-| Jarak antarbagian | 24 px | Judul → isi; antarbagian kelas/hasil. |
-| Jarak antar-panel | 16 px | Dua kelas, kelompok, dan kartu tugas. |
-| Padding Card | 20 px bawaan | Pertahankan `.ui-card`; jangan override library menjadi kartu dekoratif besar. |
-| Jarak dalam form | 16 px antarfield; 8 px label/input/error | Gunakan pola `.field` yang ada. |
-| Jarak label/metadata | 4–8 px | Nama, kelas, tanggal; bukan instruksi panjang. |
-| Baris roster/progres mobile | Padding vertikal 12 px; gap 12 px | Tinggi mengikuti isi, bukan baris fixed yang memotong nama/error. |
-| Tombol berdampingan | 8 px antarButton | Gap internal Button tetap sesuai size yang ada. |
-| Pemisah daftar | 1 px `--line` | Tanpa zebra berwarna menurut kelas atau level. |
+| Role | Supplied / adapted size, weight, line-height |
+| --- | --- |
+| Marketing display (only if separately scoped) | 64/52/42/34 px, 800/800/800/750, 1.08–1.16 |
+| Existing page heading | 32 px, 750, 1.2, -0.4 px tracking |
+| Section/dialog heading | 24 px, 750, 1.25, -0.2 px tracking |
+| Card/widget title | 20 px, 700, 1.3 |
+| Body / compact body | 16/14 px, 400, 1.55/1.5 |
+| Navigation | 15 px, 700, 1.4 |
+| Default Button | 14 px, 750, 20 px line-height |
+| Caption | 12 px, 600, 1.4 |
+| Future board instructions | 32 px, 700, 1.25; no new projector mode implied |
 
-Urutan bagian: judul dan konteks → field/hasil utama → kesalahan/status yang terkait → tindakan. Metadata tidak mendahului pekerjaan utama. Satu tindakan primer pada satu form/bagian aktif; tindakan sekunder tetap terlihat dengan label teks. Tidak ada footer tindakan fixed/sticky yang menutupi input atau keyboard mobile.
+Retain compact typography in code, chart labels, dense tables, and imported component demos;
+those are purposeful presentations, not marketing headings. Shared font, surfaces, accent,
+radii, and shadows still apply to them. Long names/instructions wrap. Use tabular numerals for
+counts/time; meaningful text never depends solely on color.
 
-Bila wizard beberapa langkah diputuskan, gunakan Stepper sebagai indikator, bukan navigasi klik. Label langkah mengikuti layar yang disepakati; jangan mengunci jumlah langkah dari route usulan PRD. Tombol kembali/lanjut dan aturan pemulihan input menunggu `Q-08`/`Q-11`.
+Use existing Lucide icons and preserve component-specific technical/source artwork. Normal
+application icons are about 20 px; compact controls may keep 12–16 px icons. Decorative icons
+are hidden from accessibility; icon-only actions have explicit names.
 
-## 3. DES-03 — Hierarki tipografi dan ikon
+## 4. DES-04 — Light-only palette and color sandbox
 
-**[TETAP]** Gunakan `--font-ui` = Inter dan ukuran shared controls. Tidak memakai font display referensi, uppercase pada nama siswa, atau judul hero marketing.
+The user removed dark mode. RootLayout does not read the old theme cookie or install a theme
+provider; CSS has one light palette, and the theme toggle/demo is removed. Auth SSR remains intact.
 
-| Peran | Ukuran / line-height / bobot rancangan | Isi |
-| --- | --- | --- |
-| Judul layar (h1) | 24 / 32 px / 600 | Satu judul per layar; tetap 24 px di mobile. |
-| Judul bagian (h2) | 18 / 28 px / 600 | Kelas, kelompok, rencana sesi. |
-| Judul panel/item (h3) | 16 / 24 px / 500 | Nama kelompok/tugas. |
-| Isi kerja | 14 / 20 px / 400 | Petunjuk guru, nama siswa, rincian aktivitas. |
-| Label field | 14 / 20 px / 500 | Ikuti field yang ada; wajib ada label yang terhubung. |
-| Metadata/helper | 12 / 18 px / 400 | Tanggal, jumlah anggota, fase; gunakan `--ink-2`. |
-| Instruksi papan tulis | 18 / 28 px / 500 | Isi utama di layar, tidak menentukan ukuran cetak. |
-| Waktu jadwal | 14 / 20 px / 500, angka tabular | Rentang menit; tidak memakai font kode. |
-| Button md | 12.5 px / leading-none / 500 | Konvensi shared Button, bukan override dari tabel isi. |
+| Role | Value |
+| --- | --- |
+| Page / raised Card / sandbox preview | #FFFFFF |
+| Supporting canvas / inset | #F8F8FC |
+| Main / body / muted text | #25253B / #44465A / #606377 |
+| Border | #E7E7F0 |
+| Default primary | #7173FF |
+| Default hover / tint | #6668E6 / #F1F1FF |
+| Text on primary/destructive fills | #FFFFFF, bold 19 px labels |
+| Accent ink / focus | #5152B7 |
+| Display palette | #7173FF, #FF3C7F, #95F447, #00E5E3, #FEFE47 |
+| Destructive Button fill / hover | #FF3C7F / #E53672 |
+| Success / warning / danger | #23765A / #946000 / #AD3B50 |
 
-Nilai h1/h2/h3/isi di atas berlaku pada komposisi fitur baru. Table/List/DescriptionList memiliki tipografi lebih ringkas; gunakan sebagai metadata atau komposisi yang sesuai, bukan mengubah semua shared controls. Nama panjang dan instruksi membungkus; jangan memotong satu-satunya teks yang dibutuhkan untuk memilih siswa/aktivitas. Label level final tetap `Q-02`.
+The Colors demo displays the five supplied swatches, each with its hex label below. The sidebar has no palette.
+There is no color picker, selectable preset, palette editing, preview override, or persistence.
+Primary stays #7173FF; destructive Buttons use a solid #FF3C7F background. Both use white text.
+Filled primary/destructive labels use bold 19 px typography so their contrast qualifies for
+large-text readability while primary defaults remain compact at 40 px height. Error field,
+notice, and badge tones keep their existing readable semantic text colors.
 
-Lucide saja: 16 px pada tindakan/metadata, 20 px pada heading/status, 24 px pada empty state. Pilihan rancangan: `Users` untuk kelompok, `Clock` untuk waktu, `BookOpen` untuk tugas, `Download` untuk PDF, `ArrowUp`/`Minus`/`ArrowDown` dengan teks naik/tetap/turun. Ikon dekoratif `aria-hidden`; tindakan penting memakai ikon dan label, bukan ikon sendiri. Kelas dan kelompok dibedakan dengan teks, tidak dengan satu warna per kelas.
+Tokens stay in `src/components/ui/globals.css`; aliases, font, and component styles stay in
+`src/app/globals.css`. Existing shadows and card radii remain; Buttons and IconButtons use 10 px
+corners. The sandbox preview itself never uses a gradient or pastel background.
 
-## 4. DES-04 — Surfaces, token, dan dua tema
+## 5. DES-05 — Shared controls, states, and accessibility
 
-Sumber token yang diperiksa: `src/components/ui/globals.css`; alias, font, dan style komponen aplikasi: `src/app/globals.css`. Gunakan variabel yang ada, bukan menyalin hex referensi. Tidak ada perubahan token global yang diperlukan untuk rancangan ini.
+Keep the shared Button API and Base UI behavior. Primary/secondary actions use 10 px corners.
+Every variant uses only small: 40 px height and 16 px horizontal padding. Legacy xs/md/lg
+size requests fall back to sm. Primary/destructive labels are white, bold 19 px with 24 px
+line-height; other labels use 14 px with 20 px line-height. Internal gap stays 8 px.
+IconButton is always 40 px square with 10 px radius. No new variants:
+primary, secondary, ghost, danger, and quiet remain. Press scale stays 0.98.
 
-| Pemakaian | Token yang ada | Light | Dark |
-| --- | --- | --- | --- |
-| Latar halaman | `--page` / alias `--background` | Netral hampir putih | Netral gelap |
-| Area pendukung/shell | `--canvas` | Netral sedikit lebih gelap dari halaman | Netral sedikit lebih terang dari halaman |
-| Card/menu/dialog | `--surface` | Putih | Permukaan gelap terangkat |
-| Field/header tabel/area mandiri | `--inset` | Netral lembut | Gelap terbenam |
-| Teks utama | `--ink` / `--foreground` | Ink gelap | Ink terang |
-| Metadata | `--ink-2` / `--muted` | Ink sekunder | Ink sekunder terang |
-| Hover / selection | `--hover`, `--hover-2`, `--primary-tint` | Tint netral | Tint netral terang |
-| Batas | `--line`, `--line-strong` | Hairline netral | Hairline netral terang |
-| Aksi normal | `--primary`, `--primary-foreground` | Ink dengan teks terang | Ink terang dengan teks gelap |
-| Kesalahan/destruktif | `--red`, `--red-tint` / `--danger`, `--danger-soft` | Semantik error yang ada | Pasangan semantik dark yang ada |
-| Konfirmasi/warning | `--green`/`--green-tint`, `--orange`/`--orange-tint` | Tint status terbatas | Tint status dark yang ada |
+Primary hover uses #6668E6; destructive hover uses #E53672; secondary uses raised surface and hairline.
+Inputs/Select triggers have 48 px minimum height, 10 px radius, raised background, 16 px text.
+Textareas retain their taller content area. Focus is a visible 3 px accent focus outline with
+3 px offset; input focus also uses the primary-soft halo. Invalid input keeps danger border and
+explicit error text. Disabled/loading keeps its label and prevents duplicate actions.
 
-`--accent` adalah alias primer netral dalam starter, bukan izin indigo. Status berhasil/gagal boleh memakai tone semantik yang ada; tindakan normal tetap netral. Badge level/kelas/kelompok gunakan `tone="neutral"` secara eksplisit, bukan mapping status proyek `active/completed`. Naik/tetap/turun selalu punya teks dan ikon; jangan menyamakan penurunan level dengan error merah/destructive.
+Use Card for surfaces; Dialog for ordinary forms and AlertDialog for destructive confirmation.
+AlertDialog supports a shared trigger for focus return and inline failure feedback. Keep neutral
+cancel actions, busy dismissal protection, focus trap, Escape behavior, and actual mutation errors.
+Toasts retain readable surfaces, status icons/tints, and no colored borders. Do not replace
+forms with instructional panels or add unrequested application filters.
 
-Radius aktual: chip 6 px, control 8 px, card 10 px, window 14 px dari `--radius` = 10 px. Dialog saat ini memakai radius 10 px; pertahankan style komponen, jangan memaksa seluruh overlay menjadi 14 px. Elevasi memakai `--shadow-card` untuk Card, `--shadow-btn` untuk Button sekunder, dan `--shadow-overlay` untuk popup/dialog; tidak menambahkan drop shadow buatan atau gradient.
-
-**Tema [TETAP]:** RootLayout membaca cookie `theme` dan merender `data-theme`; ThemeProvider/`applyTheme` menyimpan preferensi setahun untuk seluruh situs. Navigasi, reset sandbox, dan portal tidak mereset tema. Jangan menetapkan tema terang pada halaman tugas untuk menyerupai kertas. Format PDF dapat memakai latar putih setelah format cetak diputuskan; itu bukan penggantian tema UI. Lokasi ThemeToggle baru menunggu keputusan shell, tetapi komponen/provider yang ada dipakai bila diperlukan.
-
-## 5. DES-05 — Kontrol, perilaku Base UI, dan tindakan
-
-| Kebutuhan | Komponen yang ada | Aturan |
-| --- | --- | --- |
-| Submit/lanjut/generate/unduh | `Button` (`button.tsx`) | Primer netral, loading mempertahankan label dan menonaktifkan submit ganda. `md` 32 px pada desktop; `lg` 40 px untuk aksi utama mobile. Tidak menambah size 44/48 px. |
-| Kembali/batal/tindakan tambahan | `Button` secondary/ghost/quiet | Label teks; tindakan navigasi memakai render Link dengan `nativeButton={false}`, `role="link"`. Jangan menumpuk anchor dan button. |
-| Hapus yang telah disetujui | `Button` danger + `AlertDialog` | Sebut objek dan dampak; jangan membuat fitur hapus dari usulan PRD. Batal netral; busy mencegah tutup/submit ulang. |
-| Isian nama/angka | `Input`, pola `.field` | Label + helper + field error; gunakan `type="number"` hanya jika nilai/aturan durasi disepakati. `NumberInput` bukan wajib. |
-| Pilihan kelas/level | `Select` atau `RadioGroup` | Nilai/options menunggu kontrak; tidak memilih default produk yang belum diputuskan. Select trigger diberi ID/nama terakses melalui `triggerProps`. |
-| Detail terpisah | `Dialog` | Pertahankan focus trap, Escape, fokus kembali, title/description, scroll popup, dan busy. Jangan hand-roll overlay. |
-| Status proses | `Spinner`, `Skeleton`, `Notice` | Label spesifik tindakan; skeleton dekoratif dan status teks terakses. Kesalahan dekat sumbernya, bukan hanya toast. |
-| Konfirmasi singkat | `ToastProvider`/`useToast` bila diperlukan | Permukaan netral, ikon/tint semantik, tanpa border berwarna. Provider ini tersedia tetapi belum dipasang global; jangan menganggap toast otomatis aktif. |
-
-Shared Button tetap: gap md 6 px, press scale 0.98, rounded-control, size xs/sm/md/lg = 24/28/32/40 px, serta variant primary/secondary/ghost/danger/quiet. Jangan memberi warna/shape per tombol. Kontrol form `.input` saat ini min-height 38 px dan border control 8 px.
-
-Pada mobile gunakan tombol berlabel dan `lg` untuk aksi utama, jarak 8–12 px agar tidak berdesakan; jangan mengecilkan target dengan ikon xs untuk aksi penting. Pilihan standar target sentuh yang lebih besar memerlukan keputusan eksplisit (`DQ-05`), bukan override diam-diam pada shared Button. Perilaku Base UI untuk Select, RadioGroup, Tabs, Dialog, dan AlertDialog dipertahankan.
+Button-like links retain `nativeButton={false}`, `role="link"`, and rendered Link; navigation rows
+and linked cards keep their own presentation. Reduced motion follows the existing CSS. All
+statuses have text as well as color. Keyboard, focus return, palette labels, and 360 px/browser checks are
+required; rendering and palette contrast checks alone do not prove interactions.
 
 ## 6. DES-06 — SCR-01: Titik masuk sesi
 
 **PRD:** `J-01`, `Q-03`, `Q-08`, `ST-01`–`ST-04`. **[TERBUKA]** Lokasi, login/demo identity, daftar sesi, sesi terakhir, dan navigasi produk.
 
-**[RANCANGAN untuk area yang kelak disepakati]:** judul h1, satu kalimat konteks, satu Button primer berlabel “Buat sesi”; jarak judul → konteks 8 px dan konteks → tindakan 16 px. Jangan menambahkan KPI, daftar contoh sesi, avatar guru, atau hero/foto tanpa kebutuhan. Bila ada label data demo, tampilkan sebagai Notice info di area konteks.
+**[RANCANGAN untuk area yang kelak disepakati]:** judul h1, satu kalimat konteks, satu Button primer indigo berlabel “Buat sesi”; jarak judul → konteks 8 px dan konteks → tindakan 16 px. Jangan menambahkan KPI, daftar contoh sesi, avatar guru, atau hero/foto tanpa kebutuhan. Bila ada label data demo, tampilkan sebagai Notice info di area konteks.
 
 **Reuse:** `Button`, `Notice`; `AppShell` hanya jika route terlindungi diputuskan. `/` tetap tombol `/sandbox`; komposisi ini tidak ditempelkan ke beranda atau mengganti dashboard/proyek contoh. Komposisi daftar/sesi terakhir baru dapat dirancang setelah `DQ-01` dijawab.
 
@@ -150,9 +171,9 @@ Pindah anggota tetap tindakan eksplisit yang dapat dioperasikan keyboard. Rancan
 
 **PRD:** `FR-04`, `NFR-07`; parameter `Q-01`/`Q-13`.
 
-**[RANCANGAN]:** h1, ringkasan kelas/fase/durasi yang diketahui, lalu blok waktu berurutan. Satu Card per interval dengan header rentang waktu 14 px dan konteks kegiatan bersama bila ada. Isi blok memiliki dua bagian kelas, gap 16 px; dua kolom mulai 768 px, bertumpuk di mobile. Tiap kelompok menunjukkan nama, aktivitas, dan teks status “Bimbingan guru” atau “Mandiri”. Tidak membuat kolom baru untuk setiap kelompok di layar 360 px.
+**[RANCANGAN]:** h1, ringkasan kelas/fase/durasi yang diketahui, lalu blok waktu berurutan. Satu Card per interval dengan header rentang waktu 16 px dan konteks kegiatan bersama bila ada. Isi blok memiliki dua bagian kelas, gap 16 px; dua kolom mulai 768 px, bertumpuk di mobile. Tiap kelompok menunjukkan nama, aktivitas, dan teks status “Bimbingan guru” atau “Mandiri”. Tidak membuat kolom baru untuk setiap kelompok di layar 360 px.
 
-Status bimbingan memakai Badge primary netral/ikon `Users`; status mandiri memakai Badge neutral dengan teks. Pembeda ini tidak menggantikan aturan guru tunggal. Kegiatan bersama satu fase ditampilkan sebagai satu kegiatan bersama dengan kelas yang terlibat, bukan dua penugasan guru simultan. Siswa level rendah diprioritaskan sesuai hasil domain, bukan dengan urutan visual yang menyembunyikan konflik.
+Status bimbingan memakai Badge primary indigo/ikon `Users`; status mandiri memakai Badge neutral dengan teks. Pembeda ini tidak menggantikan aturan guru tunggal. Kegiatan bersama satu fase ditampilkan sebagai satu kegiatan bersama dengan kelas yang terlibat, bukan dua penugasan guru simultan. Siswa level rendah diprioritaskan sesuai hasil domain, bukan dengan urutan visual yang menyembunyikan konflik.
 
 Validasi gagal muncul sebagai Notice error sebelum blok/tindakan; sebut interval dan kelompok yang bermasalah bila diketahui, tanpa menganggap konflik mustahil. Jangan menampilkan status siap/unduhan berhasil untuk hasil invalid. Durasi, distribusi menit, dan alur koreksi/generate ulang tetap terbuka. Tidak menambahkan editor drag jadwal, mode live, atau countdown.
 
@@ -164,11 +185,11 @@ Validasi gagal muncul sebagai Notice error sebelum blok/tindakan; sebut interval
 
 **[RANCANGAN]:** urutan kelas → kelompok, satu bagian tugas yang dapat dibaca per kelompok. Heading memuat kelas, nama kelompok netral, dan mapel jika diketahui; isi utama instruksi/contoh, lalu tindakan PDF/papan tulis. Desktop boleh dua kolom Card; mobile satu kolom. Tidak menggabungkan tugas beberapa kelompok menjadi teks panjang tanpa heading. Tidak menambahkan selector template atau tombol AI pada alur wajib.
 
-Konten tugas layar memakai isi 14/20 px; instruksi utama papan tulis 18/28 px dengan batas baris alami. Aktivitas level terendah tidak bergantung pada instruksi panjang; tempat gambar/benda konkret harus bermakna sesuai konten yang ditinjau, bukan gambar dekoratif dari referensi. Alternatif teks/penjelasan guru mendampingi media yang membutuhkannya; aset dan indikator pedagogis belum diputuskan.
+Konten tugas layar memakai isi 16 px/1.55; instruksi utama papan tulis 32 px/1.25 dengan batas baris alami. Aktivitas level terendah tidak bergantung pada instruksi panjang; tempat gambar/benda konkret harus bermakna sesuai konten yang ditinjau, bukan gambar dekoratif dari referensi. Alternatif teks/penjelasan guru mendampingi media yang membutuhkannya; aset dan indikator pedagogis belum diputuskan.
 
-Button Download + label PDF tetap primer netral untuk tindakan ekspor; status loading/gagal berada di dekat tindakan. Versi papan tulis adalah bagian terstruktur dari tugas, bukan mode whiteboard/fullscreen baru. Pemilihan Tabs atau tampilan terpisah, cakupan satu/paket PDF, preview aktual PDF, ukuran kertas, margin, gambar hitam-putih, dan nomor halaman tetap `DQ-07`; jangan menganggap Card HTML sama dengan file PDF.
+Button Download + label PDF memakai primer indigo untuk tindakan ekspor; status loading/gagal berada di dekat tindakan. Versi papan tulis adalah bagian terstruktur dari tugas; restyle ini tidak menambahkan mode whiteboard/fullscreen baru. Pemilihan Tabs atau tampilan terpisah, cakupan satu/paket PDF, preview aktual PDF, ukuran kertas, margin, gambar hitam-putih, dan nomor halaman tetap `DQ-07`; jangan menganggap Card HTML sama dengan file PDF.
 
-**Tema layar:** gunakan `--surface`/`--ink` pada kedua tema. **Keluaran cetak:** hindari label kemampuan dan UI interaktif; rancangan prinsipnya terbaca hitam-putih, dengan nama kelompok netral dan pemisahan kegiatan yang jelas. Ukuran font cetak dan pagination belum ditetapkan. File berhasil diunduh bisa dibuka offline; tidak ada badge aplikasi “offline ready”.
+**Tema layar:** gunakan `--surface`/`--ink` pada mode terang tunggal. **Keluaran cetak:** hindari label kemampuan dan UI interaktif; rancangan prinsipnya terbaca hitam-putih, dengan nama kelompok netral dan pemisahan kegiatan yang jelas. Ukuran font cetak dan pagination belum ditetapkan. File berhasil diunduh bisa dibuka offline; tidak ada badge aplikasi “offline ready”.
 
 **Reuse:** `Card`, `Button`, `Notice`, `Spinner`, `Badge`; `Tabs` hanya bila mode tampilan diputuskan. **Gap:** komposisi worksheet/board dan pembuatan PDF milik fitur; tidak ada viewer/exporter PDF khusus yang sudah tersedia. Tidak otomatis membutuhkan library UI baru atau storage lampiran.
 
@@ -196,7 +217,7 @@ Naik/tetap/turun memakai label dan ikon netral (`ArrowUp`/`Minus`/`ArrowDown`), 
 | Berhasil | Status teks di area terkait; toast opsional | Setelah operasi benar-benar selesai; tidak menyimpulkan dampak belajar. |
 | AI gagal/tidak dipakai | Tugas template tetap terlihat | Tidak menghalangi jadwal atau menambahkan promosi fitur AI. |
 
-**Aksesibilitas [TETAP]:** satu h1, hierarki h2/h3, main landmark/skip link yang ada, label kontrol yang unik termasuk nama siswa/kelas, fokus terlihat 2 px dengan offset 3 px dari CSS saat ini, navigasi Tab yang mengikuti urutan baca. Pertahankan keyboard/indikator pilihan Base UI dan fokus kembali pada pemicu dialog. Untuk dialog controlled tanpa trigger, uji dan sediakan target kembali yang benar; jangan mengklaim semua komposisi otomatis mengembalikan fokus.
+**Aksesibilitas [TETAP]:** satu h1, hierarki h2/h3, main landmark/skip link yang ada, label kontrol yang unik termasuk nama siswa/kelas, fokus terlihat 3 px dengan offset 3 px dari CSS saat ini, navigasi Tab yang mengikuti urutan baca. Pertahankan keyboard/indikator pilihan Base UI dan fokus kembali pada pemicu dialog. Untuk dialog controlled tanpa trigger, uji dan sediakan target kembali yang benar; jangan mengklaim semua komposisi otomatis mengembalikan fokus.
 
 Semua status memiliki teks selain warna. Validasi dan proses memberi pengumuman terakses tanpa membacakan ulang seluruh daftar. Hindari memasang `role="alert"` pada setiap rerender validasi. Nama/level tidak diumumkan di toast global tanpa kebutuhan. Tidak mengubah RLS atau kontrol akses melalui presentasi.
 
@@ -204,11 +225,11 @@ Semua status memiliki teks selain warna. Validasi dan proses memberi pengumuman 
 | --- | --- | --- |
 | 360–767 px | Satu kolom; dua kelas tetap berurutan; field/tombol membungkus | Tidak ada overflow halaman, label tertutup, atau aksi di bawah overlay keyboard. |
 | 768–899 px | Dua kolom untuk pasangan field/roster/kelas dalam blok jadwal jika isi muat | Kelompok tetap satu kolom per bagian sampai ≥900 px. |
-| ≥900 px | Maksimal tiga Card kelompok per kelas; kontainer isi ≤1040 px | Jangan hitung sidebar sebagai lebar isi atau membuat panel <240 px. |
+| ≥900 px | Maksimal tiga Card kelompok per kelas; kontainer isi ≤1200 px | Jangan hitung sidebar sebagai lebar isi atau membuat panel <240 px. |
 
 Lebar di tabel adalah ruang main yang tersedia, bukan viewport mentah setelah sidebar. Bila ruang tidak cukup, turun ke susunan satu kolom. Tabel desktop boleh scroll dalam region bernama/focusable yang disediakan Table; layar utama tetap tidak scroll horizontal. Roster/progres mobile memiliki komposisi alternatif tanpa menyembunyikan data penting. Periksa zoom 200%/400%, nama panjang, enam kelompok, keyboard mobile, dan popup Select dekat tepi layar.
 
-Reduced motion mengikuti CSS/provider yang ada: tanpa animasi dekoratif/drag, shimmer/spinner tidak menjadi satu-satunya bukti proses, press scale mengikuti aturan shared Button. Popup/menu/dialog memakai portal dan token tema; z-index existing popup 60, dialog 50, toast 70 dipertahankan, bukan skala layer baru. Scroll dialog tetap di popup yang tersedia.
+Reduced motion mengikuti CSS/provider yang ada: tanpa animasi dekoratif/drag, shimmer/spinner tidak menjadi satu-satunya bukti proses, press scale mengikuti aturan shared Button. Popup/menu/dialog memakai portal dan token aplikasi; z-index existing popup 60, dialog 50, toast 70 dipertahankan, bukan skala layer baru. Scroll dialog tetap di popup yang tersedia.
 
 ## 14. DES-14 — Inventaris reuse dan gap yang beralasan
 
@@ -221,8 +242,8 @@ Semua nama/path di bawah telah diperiksa secara statis. UI Selaras belum ada; ma
 | Jadwal interval dan dua kelas | `timeline.tsx` menerima `time` + `dateTime`, bukan interval dan matriks aktivitas | Komposisi Card + list/section pada fitur, tanpa tanggal fiktif, chart, atau DnD. |
 | Worksheet/board/PDF | Card/Notice/Button ada; tidak ada exporter/viewer PDF khusus | Pisahkan komposisi konten fitur dan artifact PDF; format/dependency hanya setelah keputusan `DQ-07`/ticket. |
 | State tabel kosong | `table.tsx` hard-code “No results found.” | Tampilkan EmptyState saat kosong; jangan memakai search/DataTable untuk menghindari copy tersebut. |
-| Lokalisasi yang belum diputuskan | Stepper/Timeline aria-label, Dialog close, AlertDialog Cancel, ThemeToggle/Toast labels memiliki teks Inggris | Setelah `DQ-06`, tambahkan props copy minimum di komponen terkait jika perlu; pertahankan callers, defaults, dan semantik. |
-| Batas target sentuh | Button lg 40 px, Input min-height 38 px | Uji tugas mobile; keputusan perubahan standar ukuran `DQ-05`. Jangan menambah size/override per fitur diam-diam. |
+| Lokalisasi yang belum diputuskan | Stepper/Timeline aria-label, Dialog close, AlertDialog Cancel, Toast labels memiliki teks Inggris | Setelah `DQ-06`, tambahkan props copy minimum di komponen terkait jika perlu; pertahankan callers, defaults, dan semantik. |
+| Batas target sentuh | Default Button/input 48 px, IconButton 44 px; compact sizes remain intentional | Uji tugas mobile dan zoom; jangan membuat ukuran per-control tanpa kebutuhan. |
 
 Tidak ada gap yang membenarkan penggantian Base UI atau Beautiful UI. Jika tiket kelak menambah kontrol reusable, letakkan tetap di `src/components/ui/`, sertakan demo sandbox dan license notice. Komposisi yang khusus siswa/kelompok/jadwal tetap di folder kategori fitur; tidak membuat wrapper generik untuk setiap layar.
 
@@ -236,21 +257,23 @@ Pertanyaan ini menambah konteks presentasi, tanpa mengubah pertanyaan/keputusan 
 | DQ-02 | Apa nama/indikator/urutan level, mapel, tes, grade limits, dan parameter jadwal final? | DES-07–DES-10, DES-12; FR-01–FR-04/FR-06; Q-01/Q-02/Q-04/Q-12/Q-13. |
 | DQ-03 | Apa data minimum/alur tambah-edit-hapus siswa; bagaimana pemindahan manual dikonfirmasi, dan kelompok kosong/timpang dijelaskan? | DES-08–DES-09; FR-01–FR-03/FR-07; Q-04/Q-09. Inline atau dialog pemindahan belum dipilih. |
 | DQ-04 | Apa aturan kembali, reload/keluar, generate ulang, dan edit setelah hasil dibuat? | DES-02/DES-07–DES-11/DES-13; FR-03–FR-06/FR-08; Q-08/Q-11. Tidak menjanjikan autosave/draft recovery. |
-| DQ-05 | Perangkat/jaringan/ambang uji apa, dan apakah standar target sentuh harus melebihi ukuran kontrol starter? | DES-02–DES-05/DES-13; NFR-01/NFR-03/NFR-09; Q-14/Q-15. Pertahankan shared sizes sampai diputuskan. |
+| DQ-05 | Perangkat/jaringan/ambang uji apa, dan bagaimana kontrol compact memenuhi kebutuhan uji sentuh? | DES-02–DES-05/DES-13; NFR-01/NFR-03/NFR-09; Q-14/Q-15. Shared sizes mengikuti DES-05; hardware/performance acceptance tetap terbuka. |
 | DQ-06 | Apakah UI dan label aksesibilitas seluruhnya Bahasa Indonesia? Apa copy final, istilah level, format tanggal/waktu, serta label demo? | DES-03/DES-05–DES-14; Q-02/Q-06/Q-10. Contoh copy Indonesia di dokumen ini belum kontrak lokalisasi. |
 | DQ-07 | Apa bank tugas/visual yang ditinjau, mode tampilan worksheet/board, cakupan paket PDF, ukuran/orientasi, font/margin cetak, serta penyimpanan hasil? | DES-11/DES-14; FR-05/FR-07; Q-05/Q-09/Q-13. Jangan menambahkan gambar pedagogis rekaan. |
 | DQ-08 | Apa baseline, tanpa pembanding, histori lengkap/koreksi, serta bentuk UI pembaruan? | DES-12; FR-06; Q-02/Q-10. Dialog/Accordion histori belum keputusan. |
-| DQ-09 | Apakah tim menerima komposisi/ukuran rancangan dan kualitas referensi yang dipilih di DES-01–DES-14? | Semua layar; Q-15. Rancangan mempertahankan Inter/netral/shared Button; jika ingin mengubah konvensi, putuskan eksplisit dan realign AGENTS.md lebih dulu. |
+| DQ-09 | Apakah tim menerima komposisi/ukuran rancangan dan kualitas referensi yang dipilih di DES-01–DES-14? | Semua layar; Q-15. Fondasi Nunito/primary #7173FF/10 px controls/light-only diterima untuk restyle; komposisi layar produk tetap perlu ditinjau. |
 
 Prioritas/cut scope tetap PRD `Q-07`; enam modul tidak dihapus oleh desain. Izin demo fiktif tetap `Q-06`; pilihan penyimpanan/akses tidak diselesaikan oleh tampilan. Tidak ada ticket/owner baru dibuat di dokumen ini.
 
 ## 16. Verifikasi dan catatan alignment
 
-Revisi ini membaca PRD, AGENTS, reference sebelumnya, komponen, token, dan provider tema secara statis. Tidak ada perubahan UI, token, dependency, schema, route, atau provider. Ukuran rancangan bukan hasil pengukuran layout Selaras yang sudah berjalan.
+Restyle mengubah shared tokens, font, ukuran kontrol, dan presentasi layar starter. Tidak ada perubahan dependency, schema, auth/data API, route, atau cache privat; theme provider dihapus sesuai permintaan. Hasil verifikasi aktual dilaporkan saat implementasi; jangan menganggap rencana pemeriksaan sebagai bukti browser.
 
-Untuk implementasi kelak: cocokkan tiket dengan DES/PRD IDs; uji light/dark dari cookie saat reload/navigasi, popup/overlay, keyboard/fokus kembali, reduced motion, 360 px dan zoom; uji nama panjang, empty/error/busy states, semua kelas/kelompok, output hitam-putih dan PDF offline setelah format ditentukan. Jalankan typecheck/lint/tests/build sesuai AGENTS; tes render tidak menggantikan pemeriksaan browser.
+Untuk implementasi kelak: cocokkan tiket dengan DES/PRD IDs; uji light-only dengan cookie theme lama, palet statis dan label hex, popup/overlay, keyboard/fokus kembali, reduced motion, 360 px dan zoom; uji nama panjang, empty/error/busy states, semua kelas/kelompok, output hitam-putih dan PDF offline setelah format ditentukan. Jalankan typecheck/lint/tests/build sesuai AGENTS; tes render tidak menggantikan pemeriksaan browser.
 
-**Konflik dokumentasi yang masih perlu alignment:** AGENTS.md saat ini mendeskripsikan DESIGN.md sebagai reference Classroomscreen dengan Nunito/indigo/48 px pills dan canvas. Bagian itu menjadi catatan historis setelah revisi ini; rancangan aktif di sini mempertahankan fondasi UI. PRD `Q-15` tetap terbuka untuk penerimaan komposisi. PRD/AGENTS/BACKLOG tidak diubah dalam pekerjaan ini. Setelah keputusan desain diterima, realign AGENTS dan prompt backlog terkait; jangan memakai prompt generik canvas dari reference lama.
+**Alignment:** AGENTS.md dan keputusan fondasi visual ST-06 PRD mengikuti instruksi pengguna
+Nunito/#7173FF/10 px controls/light-only. Q-15/DQ-09 tetap menyangkut komposisi layar Selaras yang belum dibangun;
+penerapan visual starter tidak menyelesaikan kontrak produk atau membuat backlog Ready.
 
 ### Sumber lokal yang diperiksa
 
@@ -259,8 +282,8 @@ Untuk implementasi kelak: cocokkan tiket dengan DES/PRD IDs; uji light/dark dari
 - [Button](src/components/ui/button.tsx), [Card](src/components/ui/card.tsx), [Input](src/components/ui/input.tsx), [Select](src/components/ui/select.tsx), [RadioGroup](src/components/ui/radio-group.tsx).
 - [Dialog](src/components/ui/dialog.tsx), [AlertDialog](src/components/ui/alert-dialog.tsx), [Notice](src/components/ui/notice.tsx), [Badge](src/components/ui/badge.tsx).
 - [Table](src/components/ui/table.tsx), [DataTable](src/components/ui/data-table.tsx), [List](src/components/ui/list.tsx), [Timeline](src/components/ui/timeline.tsx), [Stepper](src/components/ui/stepper.tsx), [Tabs](src/components/ui/tabs.tsx), [DescriptionList](src/components/ui/description-list.tsx).
-- [EmptyState](src/components/ui/empty-state.tsx), [DataState](src/components/ui/data-state.tsx), [Spinner](src/components/ui/spinner.tsx), [Skeleton](src/components/ui/skeleton.tsx), [Toasts](src/components/ui/toast.tsx), [ThemeToggle](src/components/ui/theme-toggle.tsx).
-- [RootLayout](src/app/layout.tsx), [ThemeProvider](src/providers/theme-provider.tsx), [Theme helpers](src/lib/theme.ts).
+- [EmptyState](src/components/ui/empty-state.tsx), [DataState](src/components/ui/data-state.tsx), [Spinner](src/components/ui/spinner.tsx), [Skeleton](src/components/ui/skeleton.tsx), [Toasts](src/components/ui/toast.tsx).
+- [RootLayout](src/app/layout.tsx), [Color palette](src/features/sandbox/components/color-palette.tsx), [Palette values](src/features/sandbox/constants/colors.ts).
 
 ### URL asal referensi (diwarisi, tidak diverifikasi ulang)
 

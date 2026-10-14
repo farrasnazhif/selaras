@@ -238,6 +238,18 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 
 **Belum diputuskan:** penyimpanan draft saat reload, keluar dari wizard, serta perubahan input setelah jadwal dibuat (`Q-11`). Mempertahankan isian saat submit gagal tidak menjanjikan pemulihan setelah browser ditutup.
 
+### FR-09 — Color sandbox [instruksi pengguna]
+
+- Primary #7173FF, destructive Button background #FF3C7F; keduanya memakai teks putih yang tebal dan terbaca.
+- Semua Button/IconButton hanya memakai ukuran sm (40 px); ukuran lama xs/md/lg fallback ke sm. Button/IconButton memakai radius 10 px.
+- Colors demo saja menampilkan #7173FF, #FF3C7F, #95F447, #00E5E3, #FEFE47, dengan hex di bawah swatch.
+- Tidak ada color picker, preset selectable, accent preview state, atau persistensi warna. Preview card tetap putih tanpa gradient.
+- Aplikasi hanya mode terang; cookie theme lama diabaikan. Error form/notice tetap memakai tone semantik yang terbaca.
+
+**FR-09-AC-01:** lima warna dan hex ditampilkan hanya di Colors demo; tidak ada palet sidebar atau kontrol memilih/mengedit warna.
+**FR-09-AC-02:** semua varian Button/IconButton memakai sm, termasuk permintaan ukuran lama; filled primary/destructive memakai teks putih yang memenuhi kontras teks besar tebal.
+**FR-09-AC-03:** cookie theme=dark tidak dapat mengaktifkan dark mode; icon Buttons tetap terakses dan input/error/loading behavior dipertahankan.
+
 ## 6. Persyaratan nonfungsional
 
 | ID | Area | Requirement / acceptance evidence |
@@ -250,7 +262,7 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 | NFR-06 | Ketahanan | AI gagal tidak menghalangi jadwal atau tugas template [BRIEF]; bukti `FR-05-AC-04`. |
 | NFR-07 | Auditabilitas | Aturan penjadwalan dapat dijelaskan dan diuji tanpa AI [BRIEF]; bukti `FR-04-AC-01`–`AC-03`. |
 | NFR-08 | Demo | Alur inti demo kurang dari 90 detik [BRIEF]. Gunakan kelas 2 + 3 dan 15 siswa fiktif; durasi demo bukan batas jumlah siswa produk. |
-| NFR-09 | Aksesibilitas dan tema | Pertahankan label, kesalahan, fokus, keyboard, reduced motion, dan tema tersimpan [STARTER]. Periksa kedua tema dan fokus kembali dari dialog; navigasi tidak mereset tema. |
+| NFR-09 | Aksesibilitas dan tema | Pertahankan label, kesalahan, fokus, keyboard, reduced motion, dan mode terang tunggal [instruksi pengguna terbaru]. Periksa fokus kembali dari dialog dan palet statis dan kontras tombol; cookie theme lama tidak mengaktifkan dark mode. |
 
 **Data demo:** seluruh nama dan profil siswa fiktif, dengan penanda jelas. Jangan mengklaim persona simulasi sebagai wawancara guru. Konfirmasi izin data fiktif secara tertulis kepada penyelenggara sesuai draf brief (`Q-06`).
 
@@ -304,7 +316,7 @@ Untuk hackathon, satu database dan satu aplikasi web sudah cukup. Pilihan penyim
 
 **Fondasi yang tersedia [STARTER]:** Next.js App Router, strict TypeScript, Tailwind CSS, Beautiful UI dengan Base UI dan Lucide, Supabase SSR/Postgres, TanStack Query, React Hook Form, dan Zod. Gunakan UI bersama di `src/components/ui/`; tidak menambahkan shadcn/ui.
 
-**Konflik draf:** rekomendasi shadcn/ui pada PRD sebelumnya bertentangan dengan AGENTS.md dan library yang tersedia. Rekomendasi itu tidak dianggap keputusan produk yang diterima. DESIGN.md memuat referensi Classroomscreen dengan usulan font/palet yang berbeda dari Inter/netral starter; penerapannya belum disetujui (`Q-15`). Revisi ini tidak mengubah DESIGN.md atau aturan UI.
+**Konflik draf:** rekomendasi shadcn/ui pada PRD sebelumnya bertentangan dengan AGENTS.md dan library yang tersedia. Rekomendasi itu tidak dianggap keputusan produk yang diterima. Pengguna kemudian menyetujui restyle UI yang sudah ada dengan spesifikasi Classroomscreen: Nunito Sans, pastel, primary #7173FF, tombol bersudut 10 px, dan mode terang saja. Pengguna meminta Colors demo dengan palet statis; palet sidebar dihapus atas instruksi terbaru. Fondasi visual mengikuti DESIGN.md/AGENTS.md terbaru; komposisi layar produk masih `Q-15`.
 
 **Jalur data [STARTER]:** komponen → hook TanStack Query → API fitur → Supabase SDK dengan RLS untuk CRUD biasa. Route Handler dipakai untuk integrasi eksternal terautentikasi dan implementasi server-only bila dibutuhkan. Lokasi pembuatan PDF, persistensi Selaras, serta kontrak domain di bawah masih usulan, bukan alasan menambah backend baru.
 
@@ -432,7 +444,7 @@ Lakukan uji tugas dengan guru kelas rangkap; ukur waktu menyusun sesi, apakah ja
 
 **Demo alur inti:** `J-01` memakai kelas 2 + 3 dan 15 siswa fiktif, memberi level tanpa tes, membuat serta mengedit kelompok per kelas, menghasilkan jadwal tanpa konflik guru dengan prioritas level terendah, lalu membuka/mengunduh tugas PDF dan papan tulis dalam kurang dari 90 detik (`NFR-08`). Ini bukti alur inti, bukan bukti seluruh MVP.
 
-**MVP lengkap:** memenuhi `FR-01`–`FR-08` dan kriteria nonfungsional yang diputuskan, termasuk `J-02`/histori progres `FR-06` dan tes yang opsional bagi guru setelah kontraknya diputuskan. Uji satu fase 3 + 4 selain demo lintas fase 2 + 3. Verifikasi akses antar-guru bila menggunakan akun, keadaan gagal, tema/keyboard/360 px, dan PDF offline. Kriteria berlabel usulan/tertunda belum dapat dianggap lulus sebelum keputusan terkait dibuat; pengurangan lingkup membutuhkan jawaban `Q-07`.
+**MVP lengkap:** memenuhi `FR-01`–`FR-08` dan kriteria nonfungsional yang diputuskan, termasuk `J-02`/histori progres `FR-06` dan tes yang opsional bagi guru setelah kontraknya diputuskan. Uji satu fase 3 + 4 selain demo lintas fase 2 + 3. Verifikasi akses antar-guru bila menggunakan akun, keadaan gagal, mode terang/keyboard/360 px, dan PDF offline. Kriteria berlabel usulan/tertunda belum dapat dianggap lulus sebelum keputusan terkait dibuat; pengurangan lingkup membutuhkan jawaban `Q-07`.
 
 T01–T13 di bagian 12 adalah rencana uji yang mengacu pada acceptance criteria, bukan hasil tes. Tes starter yang tersedia menguji auth/project contracts, query keys, tema, katalog, helper, dan rendering komponen; belum membuktikan kebutuhan Selaras. Revisi dokumentasi ini tidak menjalankan atau mengklaim kelulusan tes runtime, browser, RLS, maupun deployment.
 
@@ -456,7 +468,7 @@ Jawaban berikut tidak boleh ditebak saat membuat tiket Ready. Bila suatu kebutuh
 | Q-12 | Apakah tepat dua tingkat berbeda kelas 1–6 menjadi batas input final? Apa yang dilakukan untuk pasangan yang tidak didukung? | FR-01, SCR-02, FR-01-AC-03 |
 | Q-13 | Siapa menyusun/meninjau template dan capaian pembelajaran fase A/B/C untuk literasi/numerasi? Mapel dipilih per sesi atau dapat digabung? | FR-02, FR-04–FR-05, SCR-02, SCR-05–SCR-06, bagian 11 |
 | Q-14 | Apa perangkat, browser, jaringan, dan ambang performa untuk acceptance mobile? | NFR-01, NFR-03, SCR-01–SCR-07 |
-| Q-15 | Kualitas visual apa dari referensi Classroomscreen yang diterima untuk Selaras? Apakah perubahan Inter/palet netral diperlukan? Selaraskan DESIGN.md dan AGENTS.md sebelum implementasi perubahan. | ST-06, NFR-09, semua layar |
+| Q-15 | Fondasi Nunito/#7173FF/pastel/10 px/light-only diterima lewat instruksi pengguna untuk restyle UI yang sudah ada. Apakah komposisi layar produk yang direncanakan diterima? Restyle tidak menambahkan classroom canvas. | ST-06, NFR-09, semua layar |
 
 ### Keputusan eksplisit tentang starter
 
@@ -468,11 +480,11 @@ Status **pertahankan** di bawah mengikuti batas repositori saat ini; status **be
 | ST-02 | Dashboard terlindungi menampilkan `ProjectsView`; `AppShell` bernavigasi Overview/Projects/sandbox | **Pertahankan contoh; adaptasi produk belum diputuskan (`Q-08`).** Tidak menyebut statistik proyek sebagai progres belajar. |
 | ST-03 | CRUD `projects` dengan `name`, `description`, `status`, `user_id`, RLS, constraints, dan query keys per pengguna | **Pertahankan contoh dan batas kepemilikan.** Bukan model sesi Selaras; tidak mengganti nama tabel atau mengonversi data menjadi siswa/sesi tanpa keputusan `Q-08`/`Q-09`. |
 | ST-04 | `/` berisi satu tombol terpusat menuju `/sandbox` | **Pertahankan**, termasuk halaman tanpa shared branded header. Usulan CTA buat sesi/sesi terakhir pada beranda sebelumnya bertentangan dengan guardrail; lokasi entry produk menunggu `Q-08`. |
-| ST-05 | Sandbox publik dengan 81 demo, katalog pencarian, dan state contoh (`src/features/sandbox/`) | **Pertahankan seluruh demo publik.** Pencarian katalog bukan pencarian data aplikasi; tidak menghubungkan demo ke siswa privat atau mengubahnya menjadi layar produk. |
-| ST-06 | Beautiful UI/Base UI/Lucide, shared Button, Inter/netral, tema cookie SSR | **Gunakan ulang dan pertahankan aksesibilitas/tema.** Tidak menambah shadcn atau library kedua. Referensi visual tidak otomatis menyetujui perubahan token (`Q-15`). |
+| ST-05 | Sandbox publik dengan 81 demo, katalog pencarian, dan state contoh (`src/features/sandbox/`) | **Pertahankan seluruh demo publik selain Theme Toggle yang dihapus atas instruksi pengguna.** Colors demo dengan palet statis tersedia, tanpa palet sidebar; pencarian katalog bukan pencarian data aplikasi; tidak menghubungkan demo ke siswa privat atau mengubahnya menjadi layar produk. |
+| ST-06 | Beautiful UI/Base UI/Lucide, shared Button, Nunito/#7173FF/pastel, mode terang tunggal | **Gunakan ulang dan pertahankan aksesibilitas.** Restyle Nunito/#7173FF/pastel/10 px/light-only disetujui pengguna untuk UI yang ada; tidak menambah shadcn atau library kedua. Komposisi layar produk tetap `Q-15`. |
 | ST-07 | Shared Axios dan controls AI/upload tersedia sebagai fondasi/demonstrasi; integrasi AI, storage lampiran, search/filter aplikasi, realtime belum diimplementasikan | **Tidak masuk MVP wajib.** AI hanya variasi opsional dengan fallback template, tidak menentukan alokasi guru. Upload/storage, search aplikasi, dan realtime memerlukan lingkup eksplisit terpisah. |
 
-Tidak ada fitur contoh yang disetujui untuk dihapus dalam brief yang tersedia. Keputusan mempertahankan di atas tidak menjadikan CRUD proyek sebagai fitur produk Selaras. Konflik dengan guardrail starter dicatat untuk keputusan berikutnya; dokumen lain dan kode tetap tidak diubah.
+Theme Toggle/dark mode dihapus atas instruksi pengguna terbaru; auth/dashboard/projects tetap tersedia. Keputusan mempertahankan di atas tidak menjadikan CRUD proyek sebagai fitur produk Selaras. Guardrail mengikuti instruksi visual pengguna terbaru; keputusan perilaku Selaras yang masih terbuka tidak diimplementasikan oleh restyle.
 
 ## 18. Referensi dari Product Brief v4
 

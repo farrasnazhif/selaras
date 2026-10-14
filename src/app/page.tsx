@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <main
       id="main-content"
-      className="min-h-dvh flex items-center justify-center p-6"
+      className="landing-page min-h-dvh flex items-center justify-center p-6"
     >
       <Button
         variant="primary"

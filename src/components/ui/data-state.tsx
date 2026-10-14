@@ -18,9 +18,9 @@ export function DataState({
   return (
     <div className="data-state" role={loading ? "status" : undefined}>
       <span className="state-icon">
-        <Icon size={26} className={loading ? "animate-spin" : ""} />
+        <Icon size={24} aria-hidden="true" className={loading ? "animate-spin motion-reduce:animate-none" : ""} />
       </span>
-      <h2 className="mt-4 font-semibold">
+      <h2 className="mt-4 text-2xl leading-[1.25] font-[750]">
         {loading
           ? "Getting your projects…"
           : empty
@@ -38,7 +38,7 @@ export function DataState({
               ? "It may have been removed, or you may not have access."
               : "Check your connection and try again. Your work is still there."}
       </p>
-      <div className="mt-5">
+      <div className="mt-6 flex flex-wrap justify-center gap-2">
         {onRetry && (
           <Button variant="secondary" onClick={onRetry}>
             Try again

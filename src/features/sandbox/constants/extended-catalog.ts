@@ -305,10 +305,4 @@ export const EXTENDED_COMPONENTS = [
     "caption": "Combined search, selection, and reset controls.",
     "file": "filter-bar.tsx"
   },
-  {
-    "id": "theme-toggle",
-    "title": "Theme Toggle",
-    "caption": "The shared cookie-persisted appearance control.",
-    "file": "theme-toggle.tsx"
-  }
 ] as const;

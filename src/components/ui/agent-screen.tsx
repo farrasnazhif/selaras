@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 /* ─────────────────────────────────────────────────────────
  * AGENT SCREEN (live viewer)
  * Watch an agent work. The resting card is a framed capture of
- * the agent's screen; hover reveals an "Open" pill (the blue
- * accent Button). Open expands to a full-width viewer where you
+ * the agent's screen; hover reveals an "Open" Button.
+ * Open expands to a full-width viewer where you
  * can "Teach a task" — which starts recording — collapse
  * (recording keeps running, the card shows a red REC badge), and
  * end it.
@@ -285,14 +285,15 @@ export default function AgentScreen({
   const controls = (
     <div className="flex shrink-0 items-center gap-1.5">
       {recording ? (
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={endRecording}
-          className="inline-flex h-[27px] items-center gap-1.5 rounded-full bg-red pl-2.5 pr-3 text-[13px] font-medium leading-none text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] transition-[transform,filter] duration-150 ease-out hover:brightness-95 active:scale-[0.96]"
         >
-          <span className="size-2.5 rounded-[2px] bg-white" />
+          <span aria-hidden="true" className="size-2.5 rounded-[2px] bg-current" />
           End
-        </button>
+        </Button>
       ) : (
         <Button
           variant="secondary"
@@ -367,7 +368,7 @@ export default function AgentScreen({
         <BaseDialog.Portal>
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
             <BaseDialog.Backdrop
-              className="absolute inset-0 bg-black/60 dark:bg-black/75"
+              className="absolute inset-0 bg-black/60"
               style={{ animation: "fade-in 180ms ease-out both" }}
             />
             <BaseDialog.Popup

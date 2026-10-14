@@ -16,20 +16,20 @@ export function ProjectCard({
     <>
       <div className="flex items-start justify-between">
         <span className="project-icon">
-          <Folder size={20} />
+          <Folder size={20} aria-hidden="true" />
         </span>
         <Badge status={project.status} />
       </div>
-      <h3 className="font-semibold text-lg mt-5 break-words">{project.name}</h3>
+      <h3 className="font-bold text-xl leading-[1.3] mt-4 break-words">{project.name}</h3>
       <p className="text-sm text-muted mt-2 line-clamp-2 min-h-10 break-words">
         {project.description ||
           "No description yet. Every great project starts with an idea."}
       </p>
-      <div className="flex items-center justify-between mt-6 pt-4 border-t border-line text-xs text-muted">
+      <div className="flex flex-wrap gap-2 items-center justify-between mt-4 pt-4 border-t border-line text-xs text-muted">
         <span>
           Updated {new Date(project.updated_at).toISOString().slice(0, 10)}
         </span>
-        <ArrowUpRight size={17} />
+        <ArrowUpRight size={16} aria-hidden="true" />
       </div>
     </>
   );

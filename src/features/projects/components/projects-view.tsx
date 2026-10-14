@@ -7,6 +7,7 @@ import { CreateProject } from "./create-project";
 import { ProjectCard } from "./project-card";
 import { DataState } from "@/components/ui/data-state";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export function ProjectsView({ dashboard = false }: { dashboard?: boolean }) {
   const query = useProjects();
@@ -34,7 +35,7 @@ export function ProjectsView({ dashboard = false }: { dashboard?: boolean }) {
       ) : (
         <>
           {dashboard && (
-            <div className="grid gap-4 sm:grid-cols-3 mb-10">
+            <div className="overview-stats grid gap-6 sm:grid-cols-3 mb-8">
               {[
                 {
                   label: "Total projects",
@@ -53,19 +54,19 @@ export function ProjectsView({ dashboard = false }: { dashboard?: boolean }) {
                   Icon: CircleCheck,
                 },
               ].map(({ label, value, Icon }) => (
-                <div className="stat-card" key={label}>
+                <Card key={label}>
                   <div className="flex justify-between text-muted">
                     <span className="text-sm">{label}</span>
-                    <Icon size={18} />
+                    <Icon size={16} aria-hidden="true" />
                   </div>
-                  <p className="text-3xl font-semibold mt-4">{value}</p>
-                </div>
+                  <p className="text-2xl leading-8 font-semibold tabular-nums mt-4">{value}</p>
+                </Card>
               ))}
             </div>
           )}
           {dashboard && (
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold">Recent projects</h2>{" "}
+            <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
+              <h2 className="text-2xl leading-[1.25] font-[750]">Recent projects</h2>{" "}
               <Button
                 variant="quiet"
                 nativeButton={false}

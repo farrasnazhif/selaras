@@ -12,7 +12,7 @@ pnpm install
 pnpm run dev
 ```
 
-Open http://localhost:3000/sandbox. No environment variables or Supabase account are needed for the landing page and sandbox. Browse one searchable sidebar containing all 81 component demos, with a shared preview and variant/replay controls. Direct previews: [Accordion](http://localhost:3000/sandbox?component=accordion) and [Dropdown](http://localhost:3000/sandbox?component=dropdown-menu). Component search stays visible while the sidebar list scrolls. Light/dark mode persists in a cookie across refreshes and navigation; the sandbox makes no Supabase requests.
+Open http://localhost:3000/sandbox. No environment variables or Supabase account are needed for the landing page and sandbox. Browse one searchable sidebar containing all 81 component demos, with a shared preview and variant/replay controls. Direct previews: [Accordion](http://localhost:3000/sandbox?component=accordion) and [Dropdown](http://localhost:3000/sandbox?component=dropdown-menu). Component search stays visible while the sidebar list scrolls. The UI is light-only. Only the Colors demo shows the five supplied swatches and hex labels without a picker or live color changes. The sandbox makes no Supabase requests.
 
 Dependencies and `pnpm-lock.yaml` are installed. Use `pnpm install --frozen-lockfile` for reproducible team and CI installs.
 
@@ -61,7 +61,7 @@ For deployments, update the Site URL and allowed callback origins to the deploye
 | `pnpm run build` / `pnpm start` | Production build / server                                  |
 | `pnpm run typecheck`            | Strict TypeScript check                                    |
 | `pnpm run lint`                 | ESLint                                                     |
-| `pnpm test`                     | Node tests for contracts, theme persistence, chart scaling |
+| `pnpm test`                     | Node tests for contracts, palette display and color contrast, chart scaling |
 | `pnpm run test:rls`             | Real two-user database isolation check                     |
 | `pnpm run db:types`             | Generate types from the local Supabase schema              |
 
@@ -69,16 +69,16 @@ The RLS check needs two different, disposable, confirmed users and the `RLS_TEST
 
 ## UI components and styles
 
-All reusable components live in `src/components/ui/`. The button demo shows standard variants, small/medium/large sizes, and disabled/loading states. Use `loading` for async actions, `variant="primary"` for affirmative actions, and `variant="danger"` for destructive actions.
+All reusable components live in `src/components/ui/`. The button demo shows standard variants in one small size, and disabled/loading states. Use `loading` for async actions, `variant="primary"` for affirmative actions, and `variant="danger"` for destructive actions.
 
-- `src/components/ui/globals.css`: Beautiful UI light/dark design tokens, keyframes, and catalog component CSS.
+- `src/components/ui/globals.css`: Beautiful UI light-mode design tokens, keyframes, and catalog component CSS.
 - `src/app/globals.css`: app token aliases and matching styles for the rest of the app.
 - `src/components/ui/`: one flat component library containing the 21 catalog components, shared controls and feedback, tokens, and source license; see [design rules](../DESIGN.md).
 - `src/app/sandbox/page.tsx`: thin public gallery route.
 - `src/features/sandbox/`: gallery demos in `components/`, catalog data in `constants/`, and component-selection checks in `validations/`.
 - `src/features/projects/components/`: feature forms and cards; the sandbox reuses the project form.
 
-Change shared colors and radii in the design token files. The sandbox contains component previews and a theme toggle; it has no customization page or live accent/radius controls. The UI uses the neutral primary color for highlights and actions in both themes. Light/dark mode is a saved preference; the root layout reads the cookie and renders the correct theme before hydration. Reading this cookie makes pages render at request time. Keep focus styles, labels, error associations, and Base UI’s keyboard behavior intact. There is no Storybook or separate app to maintain.
+Change shared colors and radii in the design token files. The sandbox contains component previews, a read-only Colors demo without a sidebar palette. It has no customization page or radius controls. The UI defaults to #7173FF with 10 px button corners and white preview cards. Dark mode and its cookie-based provider/toggle are removed; old theme cookies are ignored. All Button/IconButton variants use only small (40 px), with legacy size props falling back to small, and primary #7173FF/destructive #FF3C7F Buttons use white labels. Keep focus styles, labels, error associations, and Base UI’s keyboard behavior intact. There is no Storybook or separate app to maintain.
 
 ## Architecture and reuse
 

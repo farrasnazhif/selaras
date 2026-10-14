@@ -62,6 +62,7 @@ const DEFAULT_RECENTS: SidebarRecent[] = [
 ];
 type SidebarNavProps = {
   header?: ReactNode;
+  children?: ReactNode;
   navItems?: SidebarNavItem[];
   newChatLabel?: string | null;
   listLabel?: string;
@@ -236,6 +237,7 @@ function WorkspaceMenu({
 }
 export default function SidebarNav({
   header,
+  children,
   navItems = NAV_ITEMS,
   newChatLabel = "New chat",
   listLabel = "Chats",
@@ -422,6 +424,7 @@ export default function SidebarNav({
             />
           ))}
         </GlideGroup>
+        {children && <div className="mx-4 mt-3 shrink-0" hidden={collapsed}>{children}</div>}
         <div className="mt-3 flex min-h-0 flex-1 flex-col">
           <div
             className="sidebar-copy relative mx-2 mb-1 h-8 shrink-0"

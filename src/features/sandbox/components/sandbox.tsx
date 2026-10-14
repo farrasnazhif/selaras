@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Command, RotateCcw, Menu, Layers3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -13,6 +12,7 @@ import SidebarNav from "@/components/ui/sidebar-nav";
 import { REGISTRY } from "@/components/ui/registry";
 import { SANDBOX_COMPONENTS } from "../constants/catalog";
 import { SharedDemo } from "./shared-demo";
+import { ColorPalette } from "./color-palette";
 
 export function Sandbox({ initialComponent = "buttons" }: { initialComponent?: string }) {
   const [open, setOpen] = useState(false);
@@ -85,7 +85,7 @@ export function Sandbox({ initialComponent = "buttons" }: { initialComponent?: s
               onOpenChange={setNavigationOpen}
               trigger={
                 <Button variant="secondary">
-                  <Menu size={16} />
+                  <Menu size={16} aria-hidden="true" />
                   Browse components
                 </Button>
               }
@@ -102,8 +102,7 @@ export function Sandbox({ initialComponent = "buttons" }: { initialComponent?: s
                 One component library. Explore the details, then make it yours.
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <ThemeToggle />
+            <div className="flex flex-wrap items-center gap-2">
               <Button
                 variant="secondary"
                 nativeButton={false}
@@ -122,7 +121,9 @@ export function Sandbox({ initialComponent = "buttons" }: { initialComponent?: s
               variants={demo?.variants}
             >
               {(variant) =>
-                Demo ? (
+                selected === "colors" ? (
+                  <ColorPalette />
+                ) : Demo ? (
                   <Demo variant={variant} />
                 ) : (
                   <SharedDemo id={selected} onOpenDialog={startCreate} />

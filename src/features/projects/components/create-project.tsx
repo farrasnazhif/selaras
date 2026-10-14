@@ -23,8 +23,8 @@ export function CreateProject() {
       }}
       busy={create.isPending}
       trigger={
-        <Button variant="primary">
-          <Plus size={16} />
+        <Button variant="primary" >
+          <Plus size={16} aria-hidden="true" />
           New project
         </Button>
       }

@@ -3,12 +3,17 @@ import { META } from "../../../components/ui/meta.ts";
 import { EXTENDED_COMPONENTS } from "./extended-catalog.ts";
 
 export const SANDBOX_COMPONENTS = [
+  {
+    id: "colors",
+    title: "Colors",
+    caption: "The five shared colors with hex labels.",
+  },
   ...EXTENDED_COMPONENTS,
   ...META.map(({ id, title, caption }) => ({ id, title, caption })),
   {
     id: "buttons",
     title: "Buttons",
-    caption: "Variants, sizes, and disabled/loading states.",
+    caption: "Variants, one small size, and disabled/loading states.",
   },
   {
     id: "inputs",

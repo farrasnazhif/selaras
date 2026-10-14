@@ -29,19 +29,16 @@ function load(path: string): Record<string, unknown> {
   return exports;
 }
 
-const ThemeProvider = load(resolve(root, "src/providers/theme-provider")).ThemeProvider as ComponentType<{ initialTheme: "light" | "dark"; children?: ReactNode }>;
 const demos = load(resolve(root, "src/features/sandbox/components/extended-demo")).EXTENDED_DEMOS as Record<string, ComponentType>;
 const SharedDemo = load(resolve(root, "src/features/sandbox/components/shared-demo")).SharedDemo as ComponentType<{ id: string; onOpenDialog: () => void }>;
-const render = (child: ReactNode, theme: "light" | "dark" = "light") => renderToStaticMarkup(createElement(ThemeProvider, { initialTheme: theme }, child));
+const render = (child: ReactNode) => renderToStaticMarkup(child);
 
-test("every additional catalog entry has a real demo that renders in both themes", () => {
+test("every additional catalog entry has a real demo that renders", () => {
   assert.deepEqual(Object.keys(demos).sort(), EXTENDED_COMPONENTS.map((entry) => entry.id).sort());
-  for (const theme of ["light", "dark"] as const) {
-    for (const entry of EXTENDED_COMPONENTS) {
-      const markup = render(createElement(SharedDemo, { id: entry.id, onOpenDialog: () => {} }), theme);
-      assert.ok(markup.length > 20, `Empty demo: ${entry.id} (${theme})`);
-      assert.ok(!markup.includes("NaN"), `Invalid numbers: ${entry.id}`);
-    }
+  for (const entry of EXTENDED_COMPONENTS) {
+    const markup = render(createElement(SharedDemo, { id: entry.id, onOpenDialog: () => {} }));
+    assert.ok(markup.length > 20, `Empty demo: ${entry.id}`);
+    assert.ok(!markup.includes("NaN"), `Invalid numbers: ${entry.id}`);
   }
   for (const entry of EXTENDED_COMPONENTS) assert.ok(SANDBOX_COMPONENTS.some((item) => item.id === entry.id));
 });
@@ -110,24 +107,22 @@ test("badges accept arbitrary labels and map project statuses to primary or sema
 
 test("the full sandbox renders one unified catalog with the extracted controls", () => {
   const Sandbox = load(resolve(root, "src/features/sandbox/components/sandbox")).Sandbox as ComponentType;
-  for (const theme of ["light", "dark"] as const) {
-    const markup = render(createElement(Sandbox), theme);
-    for (const entry of SANDBOX_COMPONENTS) assert.ok(markup.includes(entry.title), `Missing sidebar entry: ${entry.id}`);
-    assert.ok(!markup.includes("Workspace preview"));
-    assert.ok(!markup.includes("Your code, your design"));
-    assert.ok(!markup.includes("Customization"));
-    assert.ok(!markup.includes("Simulate save failure"));
-    assert.doesNotMatch(markup, /<legend[^>]*>Accent color<\//);
-    assert.ok(!markup.includes("Button accent colors"));
-    assert.ok(!markup.includes("data-accent="));
-    assert.ok(!markup.includes("button-accent"));
-    assert.ok(!markup.includes("button-success"));
-    assert.match(markup, /button-danger/);
-    assert.match(markup, />Destructive<\/button>/);
-    assert.ok(!markup.includes("Corner radius"));
-    assert.match(markup, /aria-label="Use (light|dark) mode"/);
-    assert.match(markup, /Reset sandbox/);
-  }
+  const markup = render(createElement(Sandbox));
+  for (const entry of SANDBOX_COMPONENTS) assert.ok(markup.includes(entry.title), `Missing sidebar entry: ${entry.id}`);
+  assert.ok(!markup.includes("Workspace preview"));
+  assert.ok(!markup.includes("Customization"));
+  assert.ok(!markup.includes("Simulate save failure"));
+  assert.ok(!markup.includes('aria-label="Color palette"'));
+  assert.ok(!markup.includes('type="color"'));
+  assert.ok(!markup.includes("Accent presets"));
+  assert.ok(!markup.includes("Use dark mode"));
+  assert.ok(!markup.includes("Theme Toggle"));
+  assert.ok(!markup.includes("Corner radius"));
+  assert.match(markup, /button-danger/);
+  assert.match(markup, />Destructive<\/button>/);
+  assert.match(markup, /aria-label="Add item"/);
+  assert.match(markup, /aria-label="Settings"/);
+  assert.match(markup, /Reset sandbox/);
 });
 
 
@@ -163,4 +158,47 @@ test("toast types render decorative status icons, readable content, and dismissa
   assert.match(markup, /aria-hidden="true" class="ui-toast-icon"/);
   assert.match(markup, /Your input is preserved/);
   assert.match(markup, /aria-label="Dismiss notification"/);
+});
+
+test("destructive confirmations expose one shared, accessible trigger", () => {
+  const AlertDialog = load(resolve(root, "src/components/ui/alert-dialog")).AlertDialog as ComponentType<{
+    open: boolean; onOpenChange: () => void; title: string; description: string; trigger: ReactNode; children?: ReactNode;
+  }>;
+  const Button = load(resolve(root, "src/components/ui/button")).Button as ComponentType<{ variant: string; children?: ReactNode }>;
+  const markup = render(createElement(AlertDialog, {
+    open: false, onOpenChange: () => {}, title: "Delete project?", description: "This cannot be undone.",
+    trigger: createElement(Button, { variant: "danger" }, "Delete project"),
+  }));
+  assert.equal((markup.match(/<button/g) ?? []).length, 1);
+  assert.match(markup, /aria-haspopup="dialog"/);
+  assert.match(markup, /aria-expanded="false"/);
+  assert.match(markup, /button-danger/);
+  assert.match(markup, /Delete project<\/button>/);
+});
+
+
+test("Colors shows only the supplied swatches and hex labels", () => {
+  const Sandbox = load(resolve(root, "src/features/sandbox/components/sandbox")).Sandbox as ComponentType<{ initialComponent: string }>;
+  const markup = render(createElement(Sandbox, { initialComponent: "colors" }));
+  assert.match(markup, /aria-label="Colors" aria-current="page"/);
+  for (const color of ["#7173FF", "#FF3C7F", "#95F447", "#00E5E3", "#FEFE47"]) {
+    assert.ok(markup.includes(`background-color:${color}`));
+    assert.ok(markup.includes(`>${color}</p>`));
+  }
+  assert.ok(!markup.includes('type="color"'));
+  assert.ok(!markup.includes("Primary action"));
+  assert.ok(!markup.includes("Accent presets"));
+});
+
+test("loading icon buttons show one indicator and retain their accessible label", () => {
+  const IconButton = load(resolve(root, "src/components/ui/icon-button")).IconButton as ComponentType<{
+    label: string; variant: string; loading: boolean; children?: ReactNode;
+  }>;
+  const markup = render(createElement(IconButton, { label: "Saving item", variant: "primary", loading: true }, createElement("svg", { "data-icon": "plus" })));
+  assert.match(markup, /aria-label="Saving item"/);
+  assert.match(markup, /aria-busy="true"/);
+  assert.match(markup, /disabled=""/);
+  assert.match(markup, /button-primary button-sm/);
+  assert.equal((markup.match(/<svg/g) ?? []).length, 1);
+  assert.ok(!markup.includes('data-icon="plus"'));
 });

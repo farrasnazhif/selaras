@@ -2,111 +2,69 @@
 
 /* Uses Tailwind’s installed shadow scale instead of the upstream shadow plugin. */
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 /* GENERIC FOUNDATION — tokens, @theme, base rules, the primitive-*
  * spacing utilities, and shared keyframes below are needed by EVERY
  * component. Blocks tagged COMPONENT-SPECIFIC further down belong to
  * one primitive each. */
 /* ──────────────────────────────────────────────────────────
  * Beautiful UI — design tokens
- * Cool near-white canvas, white cards, hairline borders, layered
- * single-digit-opacity shadows, a neutral ink ramp, and semantic
- * color used sparingly as a condiment.
+ * Classroomscreen-inspired palette supplied by the user.
+ * White and pastel surfaces, a fixed color palette, and light-only mode.
  * ────────────────────────────────────────────────────────── */
 :root {
-  /* surfaces — cool, blue-tinted neutrals */
-  --page: oklch(0.985 0.001 286.376);
-  --canvas: oklch(0.961 0.002 247.84);
-  --surface: oklch(1 0 0);
-  --inset: oklch(0.979 0.002 247.839);
-  --hover: oklch(0.97 0.002 247.839);
-  --hover-2: oklch(0.933 0.003 247.86);
-
-  /* ink ramp */
-  --ink: oklch(0.247 0.006 258.361);
-  --ink-2: oklch(0.506 0.01 264.477);
-  --ink-3: oklch(0.695 0.009 264.505);
-  /* borders — solid and crisp, not alpha */
-  --line: oklch(0.946 0.003 264.542);
-  --line-strong: oklch(0.912 0.005 258.326);
-  --line-soft: oklch(0.966 0.002 264.542);
-  --grid-line: color-mix(in srgb, var(--line) 78%, transparent);
-  --field: oklch(0.961 0.001 286.375);
-  --stripe: oklch(0.405 0 0 / 0.075);
-  --stripe-bg: oklch(0.97 0 0);
-
-  /* Imported components use accent aliases for the neutral primary color. */
-  --primary: var(--ink);
-  --primary-foreground: var(--canvas);
-  --primary-tint: var(--hover-2);
+  --page: #FFFFFF;
+  --canvas: #F8F8FC;
+  --surface: #FFFFFF;
+  --inset: #F8F8FC;
+  --hover: #F1F1FF;
+  --hover-2: #E5E6FF;
+  --ink: #25253B;
+  --body: #44465A;
+  --ink-2: #606377;
+  --ink-3: #606377;
+  --line: #E7E7F0;
+  --line-strong: #D2D3E0;
+  --line-soft: #F0F0F6;
+  --grid-line: var(--line);
+  --field: #F8F8FC;
+  --stripe: rgb(101 84 192 / 0.05);
+  --stripe-bg: #F4F0FF;
+  --primary: #7173FF;
+  --primary-hover: #6668E6;
+  --primary-foreground: #FFFFFF;
+  --primary-tint: #F1F1FF;
+  --destructive: #FF3C7F;
+  --destructive-hover: #E53672;
+  --destructive-foreground: #FFFFFF;
+  --focus: #5152B7;
   --accent: var(--primary);
-  --accent-ink: var(--primary);
+  --accent-ink: #5152B7;
   --accent-tint: var(--primary-tint);
-  /* semantic */
-  --green: oklch(0.603 0.155 150.883);
-  --green-tint: oklch(0.958 0.017 159.118);
-  --orange: oklch(0.689 0.179 49.902);
-  --orange-tint: oklch(0.964 0.021 67.581);
-  --red: oklch(0.621 0.192 23.042);
-  --red-tint: oklch(0.956 0.017 17.462);
-  /* chart overlays — neutral system colors with enough contrast on either theme */
-  --tooltip-bg: oklch(0.272 0.008 264.435);
-  --tooltip-fg: oklch(0.976 0.002 247.839);
-  --tooltip-muted: oklch(0.731 0.008 260.731);
-  --tooltip-border: oklch(0.356 0.007 264.474);
-  /* shadows — our solid hairline ring + shadow-plugin's smooth layered stacks
-   * (--shadow-xs…lg come from Tailwind) so every surface reads
-   * consistently across the app. */
+  --secondary: #4F9C91;
+  --secondary-tint: #E4F4EF;
+  --warm: #FFF8EB;
+  --lavender: #F4F0FF;
+  --pastel-pink: #FBE3E9;
+  --pastel-yellow: #FFF0BE;
+  --pastel-blue: #DDEEFF;
+  --pastel-mint: #DDF3E6;
+  --green: #23765A;
+  --green-tint: #E4F4EF;
+  --orange: #946000;
+  --orange-tint: #FFF0BE;
+  --red: #AD3B50;
+  --red-tint: #FBE3E9;
+  --tooltip-bg: #25253B;
+  --tooltip-fg: #FFFFFF;
+  --tooltip-muted: #E7E7F0;
+  --tooltip-border: #44465A;
   --shadow-hairline: 0 0 0 1px var(--line);
-  --shadow-btn: 0 0 0 1px var(--line-strong), var(--shadow-xs);
-  --shadow-card: 0 0 0 1px var(--line), var(--shadow-sm);
-  --shadow-raised: 0 0 0 1px var(--line), var(--shadow-md);
-  --shadow-overlay: 0 0 0 1px var(--line), var(--shadow-lg);
-  --shadow-inset-field: inset 0 1px 2px oklch(0 0 0 / 0.12);
-}
-:root[data-theme="dark"] {
-  --page: oklch(0.209 0.004 264.477);
-  --canvas: oklch(0.231 0.004 264.487);
-  --surface: oklch(0.26 0.006 271.191);
-  --inset: oklch(0.243 0.004 264.492);
-  --hover: oklch(0.289 0.006 271.22);
-  --hover-2: oklch(0.318 0.007 274.747);
-
-  --ink: oklch(0.964 0.002 247.839);
-  --ink-2: oklch(0.731 0.008 260.731);
-  --ink-3: oklch(0.541 0.01 264.484);
-  --line: oklch(0.308 0.006 258.354);
-  --line-strong: oklch(0.356 0.007 264.474);
-  --line-soft: oklch(0.278 0.006 258.354);
-  --field: oklch(0.293 0.006 271.223);
-  --stripe: oklch(1 0 0 / 0.055);
-  --stripe-bg: oklch(0.226 0.004 264.485);
-
-  --green: oklch(0.705 0.154 153.814);
-  --green-tint: oklch(0.705 0.154 153.814 / 0.14);
-  --orange: oklch(0.746 0.156 55.642);
-  --orange-tint: oklch(0.746 0.156 55.642 / 0.14);
-  --red: oklch(0.666 0.18 21.433);
-  --red-tint: oklch(0.666 0.18 21.433 / 0.14);
-
-  --tooltip-bg: oklch(0.182 0.004 264.459);
-  --tooltip-fg: oklch(0.964 0.002 247.839);
-  --tooltip-muted: oklch(0.731 0.008 260.731);
-  --tooltip-border: oklch(0.308 0.006 258.354);
-  --shadow-hairline: 0 0 0 1px var(--line);
-  /* Elevation rings go to a subtle *light* hairline in dark mode: the ring
-   * paints over the surface behind the element, so a low-alpha white edge
-   * dissolves into the shadow as one continuous stroke (per smooth-shadow-ring),
-   * graduated by how far the surface floats. */
-  --shadow-btn: 0 0 0 1px oklch(1 0 0 / 0.1), 0 1px 2px oklch(0 0 0 / 0.3);
-  --shadow-card:
-    0 0 0 1px oklch(1 0 0 / 0.11), 0 1px 2px oklch(0 0 0 / 0.2),
-    0 2px 6px oklch(0 0 0 / 0.2);
-  --shadow-raised:
-    0 0 0 1px oklch(1 0 0 / 0.13), 0 2px 10px oklch(0 0 0 / 0.22);
-  --shadow-overlay:
-    0 0 0 1px oklch(1 0 0 / 0.15), 0 8px 28px oklch(0 0 0 / 0.34);
-  --shadow-inset-field: inset 0 1px 2px oklch(0 0 0 / 0.4);
+  --shadow-btn: 0 0 0 1px var(--line);
+  --shadow-card: 0 0 0 1px var(--line), 0 2px 8px rgba(37,37,59,0.06);
+  --shadow-raised: 0 0 0 1px var(--line), 0 8px 24px rgba(37,37,59,0.09);
+  --shadow-overlay: 0 0 0 1px var(--line), 0 18px 50px rgba(37,37,59,0.13);
+  --shadow-floating: 0 8px 28px rgba(37,37,59,0.16);
+  --shadow-inset-field: none;
 }
 @theme inline {
   /* colors */
@@ -145,11 +103,11 @@
   /* type */
   --font-sans: var(--font-ui);
   --font-mono: var(--font-mono-face), ui-monospace, "SF Mono", monospace;
-  /* radii — chips 6, controls 8, cards 10, windows 14, pills 999 */
-  --radius-chip: calc(var(--radius) - 4px);
-  --radius-control: calc(var(--radius) - 2px);
-  --radius-card: var(--radius);
-  --radius-window: calc(var(--radius) + 4px);
+  /* Classroomscreen-inspired radii: chips 6, inputs 10, cards 20, widgets 14. */
+  --radius-chip: 6px;
+  --radius-control: 10px;
+  --radius-card: 20px;
+  --radius-window: 14px;
 
   /* easing — strong curves; built-ins are too weak */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
@@ -167,9 +125,6 @@
   box-shadow: 0 0 0 1px oklch(0.21 0.034 263.436 / 0.1);
 }
 
-:root[data-theme="dark"] .source-avatar {
-  box-shadow: 0 0 0 1px oklch(1 0 0 / 0.08);
-}
 /* ── primitive spacing system ─────────────────────────────
  * Shared optical offsets for small demo cards. Use these
  * instead of hand-tuning 10/12/14px per component.
@@ -732,25 +687,8 @@
   background: var(--primary-foreground);
 }
 
-:root[data-theme="dark"] .records-checkbox-box {
-  border-color: oklch(0.45 0.017 254.711);
-  color: oklch(0.917 0.007 247.901);
-  background: oklch(0.346 0.015 252.294);
-}
 
-:root[data-theme="dark"] .records-checkbox:hover .records-checkbox-box {
-  border-color: oklch(0.521 0.019 254);
-  background: oklch(0.391 0.016 251.761);
-}
-:root[data-theme="dark"] .records-checkbox-box.is-active {
-  border-color: var(--accent);
-  color: var(--primary-foreground);
-  background: var(--accent);
-}
 
-:root[data-theme="dark"] .records-checkbox-dash {
-  background: var(--primary-foreground);
-}
 
 .records-cell {
   height: 35px;
@@ -1215,14 +1153,6 @@ th.is-colsel .records-header-icon {
 /* Dark mode — a richer, saturated same-hue fill
  * with bright same-hue text and no visible border (light mode keeps the soft
  * tinted pastels above). Applies to both the records grid and status pills. */
-:root[data-theme="dark"] .records-tag,
-:root[data-theme="dark"] .filter-status-todo,
-:root[data-theme="dark"] .filter-status-progress,
-:root[data-theme="dark"] .filter-status-done {
-  color: color-mix(in srgb, var(--tag-base) 86%, white);
-  background: color-mix(in srgb, var(--tag-base) 34%, var(--surface));
-  border-color: color-mix(in srgb, var(--tag-base) 34%, var(--surface));
-}
 @keyframes fade-in {
   from {
     opacity: 0;

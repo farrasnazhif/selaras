@@ -90,11 +90,11 @@ Read PRD.md, AGENTS.md, DESIGN.md, and the existing UI components and token file
 
 Use my supplied design references to fill in DESIGN.md for this product.
 Map product screens to existing components and specify concrete layout, spacing,
-density, typography hierarchy, surfaces, and light/dark behavior.
+density, typography hierarchy, surfaces, and light-only behavior.
 
 Reuse the current UI library, Base UI behavior, shared Button, and Lucide icons.
 Identify justified component gaps instead of replacing the library.
-Preserve accessibility, theme persistence, and semantic destructive states.
+Preserve accessibility, read-only palette presentation, and semantic destructive states.
 
 Do not guess missing design decisions or copy a reference's branding.
 Record unresolved questions. Update documentation only; do not change the UI yet.
@@ -176,7 +176,7 @@ pnpm test
 pnpm run build
 ```
 
-Check affected UI in both themes, with keyboard navigation and at 360 px.
+Check affected UI in light mode and palette labels, with keyboard navigation and at 360 px.
 Ownership/schema changes also need the live isolation check against a confirmed disposable
 environment. Report blocked checks accurately.
 

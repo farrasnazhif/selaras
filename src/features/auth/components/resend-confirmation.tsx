@@ -14,7 +14,7 @@ export function ResendConfirmation({ configured }: { configured: boolean }) {
   const [error, setError] = useState("");
   return (
     <form
-      className="space-y-5 max-w-md"
+      className="space-y-4"
       noValidate
       onSubmit={async (event) => {
         event.preventDefault();
@@ -69,6 +69,7 @@ export function ResendConfirmation({ configured }: { configured: boolean }) {
         type="submit"
         loading={busy}
         disabled={!configured}
+        className="w-full sm:w-auto"
       >
         {busy ? "Sending…" : "Send a new link"}
       </Button>

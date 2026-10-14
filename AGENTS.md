@@ -28,8 +28,8 @@ Attachment storage, application search/filtering, and realtime are outside the s
 - `.github/`: GitHub Actions validation and issue/pull-request templates.
 - `docs/`: Team workflow/prompts and design references under `docs/design/`.
 - `PRD.md`: Product requirements, MVP scope, ownership, and open decisions.
-- `DESIGN.md`: Currently a Classroomscreen-inspired reference; only explicitly accepted Selaras
-  presentation decisions may guide implementation using the existing shared UI.
+- `DESIGN.md`: Selaras design specification using the shared UI. The user's UI alignment request
+  applies the supplied Classroomscreen-inspired visual foundation to existing starter screens; product screen decisions stay open.
 - `BACKLOG.md`: Canonical tickets, dependencies, acceptance criteria, and implementation prompts.
 - `scripts/`: The live two-user Supabase isolation check, `check-rls.mjs`.
 - `src/`: Application routes, feature modules, reusable UI, providers, utilities, and types.
@@ -41,12 +41,12 @@ Attachment storage, application search/filtering, and realtime are outside the s
   subfolders. Selaras feature folders are not present; their boundaries belong in future tickets.
 - `src/components/ui/`: One flat reusable component library, CSS tokens, catalog, and MIT notice.
 - `src/components/layout/`: The authenticated application shell.
-- `src/providers/`: Query cache, authenticated-user lifecycle, and persistent theme providers.
-- `src/lib/`: Shared Supabase/Axios clients and theme, upload, calendar, table, and chart helpers.
+- `src/providers/`: Query cache, authenticated-user lifecycle, and light-only rendering (theme provider removed).
+- `src/lib/`: Shared Supabase/Axios clients and color, upload, calendar, table, and chart helpers.
 - `src/types/`: Bootstrapped Supabase database types.
 - `src/proxy.ts`: Cookie-based Supabase session refresh for matched application routes.
 - `supabase/`: Local service configuration, timestamped SQL migrations, and seed file.
-- `tests/`: Node contract, utility, theme, catalog, and component-rendering tests.
+- `tests/`: Node contract, utility, color, catalog, and component-rendering tests.
 - Root configuration: `package.json`, `pnpm-lock.yaml`, `.nvmrc`, TypeScript, ESLint, and Next.js.
 - `.env.example`: Public Supabase configuration and optional disposable test-account variables.
 
@@ -147,25 +147,28 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 UI conventions:
 
 - Keep reusable controls together in `src/components/ui/`; do not create a separate library folder.
-- Follow Beautiful UI's visual language with Base UI behavior and Lucide icons; do not add shadcn.
+- Keep Beautiful UI components, Base UI behavior, and Lucide icons; apply the user-supplied Classroomscreen styling without adding shadcn.
 - Apply accepted product layouts and styling from DESIGN.md through the existing UI and token files.
   An intentional change to a documented visual convention must be explicit and aligned here first.
-- DESIGN.md reference values and template TODOs are not accepted overrides. Its Nunito Sans,
-  indigo actions, and 48 px pill buttons conflict with the Inter, neutral, and shared Button
-  conventions below (`Q-15`); preserve these conventions until an explicit decision changes them.
-- Use normal Inter. Tokens and catalog CSS live in `src/components/ui/globals.css`;
+- The user explicitly accepted Nunito Sans, indigo actions, pastel surfaces, and larger pill
+  buttons for existing UI. The latest user update makes the app light-only, primary #7173FF,
+  controls with 10 px corners, and a white sandbox preview with a read-only five-color palette. These replace the earlier Inter/neutral/compact-button rules.
+  Apply DES-02–DES-05 while leaving unresolved product screens and contracts untouched.
+- Use Nunito Sans with system font fallbacks. Tokens and catalog CSS live in `src/components/ui/globals.css`;
   app aliases and matching styles live in `src/app/globals.css`.
-- Use the shared Button: `rounded-control`, neutral default background, 6 px gap,
-  32 px medium height, 12.5 px medium text, and 0.98 press scale.
-- Button sizes are `xs/sm/md/lg` at 24/28/32/40 px; preserve disabled and loading behavior.
+- Use the shared Button: 10 px corners, #7173FF default primary, 8 px gap,
+  only size sm (40 px) for every variant, and 0.98 press scale.
+  Primary #7173FF and destructive #FF3C7F fills use white, bold 19 px text; legacy size props fall back to sm.
+- Button and IconButton have one size: `sm`, 40 px high (icon buttons 40 px square). Preserve disabled and loading behavior.
 - Keep `primary/secondary/ghost/danger/quiet` variants and the semantic destructive Button.
-- Use neutral primary colors for normal actions and highlights; do not restore accent palettes,
-  per-button colors, accent/success Button variants, or pill-shaped shared buttons.
+- Use #7173FF for normal actions and highlights; do not add
+  arbitrary per-button colors or accent/success Button variants. Icon buttons use 10 px corners and accessible labels.
 - For button-like navigation, use Button with `nativeButton={false}`, `role="link"`, and
   `render={<Link href="…" />}`; do not nest buttons and anchors.
 - Keep inline text links, navigation rows, and linked cards in their own link presentation.
 - Toasts use neutral surfaces, status icons, and subtle type tints without colored borders.
 - Preserve accessible labels, errors, focus, keyboard navigation, and reduced-motion behavior.
+  Filled action labels must retain large-bold-text/hover contrast; destructive states stay semantic.
 
 > TODO: Define a commit-message template and whether Conventional Commits are required.
 > No commit-message enforcement is configured.
@@ -189,7 +192,8 @@ flowchart TD
   Demos --> UI["Shared UI controls"]
   Features --> UI
 
-  Root["Root layout reads theme cookie"] --> Theme["ThemeProvider and HTML theme"]
+  Root["Light-only root layout"] --> Query["QueryProvider"]
+  SandboxRoute --> Palette["Read-only colors and hex labels"]
 ```
 
 Ordinary application data follows component → TanStack Query hook → feature API module →
@@ -215,15 +219,16 @@ Its SidebarNav shows one alphabetical, searchable catalog. Only the selected dem
 Invalid or repeated component query parameters default to Buttons. The dialog reuses ProjectForm
 with a sample submit callback.
 
-Theme changes persist a year-long, site-wide `theme` cookie. The root layout validates that cookie
-and applies the theme during server rendering. Preserve this to avoid light-mode flashes.
-Navigation and sandbox reset must keep the saved theme; portaled overlays inherit it.
+The UI is light-only by explicit user request. RootLayout ignores old theme cookies; theme
+provider, toggle, demo, and dark CSS were removed. Only the Colors demo shows #7173FF,
+#FF3C7F, #95F447, #00E5E3, and #FEFE47 with hex labels below. There is no picker, preview state,
+root style override, or new persistence. Reset only resets demo state and component selection.
 
 External-service extensions use the shared Axios client → authenticated Route Handler →
 server-only implementation. The client has a 15-second timeout; no external-service endpoint
 is currently implemented.
 
-For planned Selaras work, preserve that data path and cookie-based SSR auth/theme. Deterministic
+For planned Selaras work, preserve that data path and cookie-based SSR auth; the UI is light-only. Deterministic
 phase detection, grouping, scheduling, and level comparison must be explainable and testable
 without AI. Groups stay within their class, each student belongs to one group per session, and
 teacher guidance cannot overlap (`FR-03`–`FR-04`). Activity templates must work without an AI API
@@ -243,11 +248,12 @@ New protected routes must account for both the server layout and the proxy match
 1. Run `pnpm run typecheck`, `pnpm run lint`, `pnpm test`, and `pnpm run build`.
 2. Add a small meaningful test for new nontrivial logic; trivial and documentation edits need none.
 3. For ownership/schema changes, run `pnpm run test:rls` against a confirmed disposable environment.
-4. For UI changes, check both themes, keyboard behavior, focus return, reduced motion, and 360 px.
+4. For UI changes, check light-only rendering, palette labels and filled-button contrast, keyboard behavior,
+   focus return, reduced motion, and 360 px.
 5. Report actual results and skipped checks; do not treat historical verification as current proof.
 
 `pnpm test` uses Node's built-in test runner, assertions, and experimental TypeScript stripping.
-The suite covers schema validation, safe return URLs, user-scoped cache keys, theme cookies,
+The suite covers schema validation, safe return URLs, user-scoped cache keys, palette display and color contrast,
 chart/calendar/table/upload helpers, catalog completeness, and control semantics.
 Rendering tests transpile real JSX in memory with TypeScript and use React server rendering;
 they do not prove browser interactions.
@@ -295,7 +301,7 @@ It does not run live RLS or browser tests.
   private records. Printed group names are neutral and must not expose ability labels (`FR-03`).
 - Downloaded PDFs may be opened offline; this does not authorize public export URLs or promise
   offline app operation. Real-student data, retention, deletion, and export storage await `Q-09`.
-- Google Fonts is requested by the Inter CSS import.
+- Google Fonts is requested by the Nunito Sans CSS import.
 
 Review dependency advisories with:
 
@@ -344,8 +350,9 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
   records or dashboard statistics into student sessions or progress.
 - Preserve the centered `/sandbox` landing button and pages without shared branded headers
   (`ST-04`). The planned session CTA does not authorize changing `/`; resolve its location first.
-- Keep all sandbox demos public and available; do not add customization pages, accent/radius
-  controls, workspace previews, instructional design panels, or private data connections.
+- Keep all remaining sandbox demos public and available. The read-only palette belongs only in
+  the Colors demo; the sidebar palette, Theme Toggle, and accent picker were removed by request. Do not add radius controls,
+  customization pages, workspace previews, instructional design panels, or private connections.
 - Preserve upload queue capacity checks and object-URL cleanup; DataTable processes supplied
   rows locally while application filters belong in the feature data layer.
 - Keep Selaras scope teacher-only: no attendance, parent messaging, school integrations,
@@ -368,7 +375,7 @@ Product decisions still required (PRD.md section 17 owns the full questions and 
 | `Q-03`, `Q-08`, `Q-09`, `Q-11` | Login/demo identity, product entry/routes, example adaptation, persistence/retention/deletion, and draft/regeneration semantics remain open (`FR-07`–`FR-08`, `ST-01`–`ST-04`). |
 | `Q-05`, `Q-06`, `Q-14` | PDF/board layout, fictional-demo permission, and device/network/performance acceptance need decisions (`FR-05`, `NFR-01`–`NFR-03`, `NFR-08`). |
 | `Q-07` | P0/P1 planning is proposed; the six MVP modules remain in scope until a cut is explicitly accepted. |
-| `Q-15` | DESIGN.md's font, palette, button dimensions/shape, and classroom canvas conflict with current UI conventions or exceed PRD scope. Its “implementation-ready” reference label is not Selaras approval. |
+| `Q-15` | The latest Nunito/#7173FF/pastel/10 px corners/light-only/read-only palette foundation is accepted for existing UI. Product-screen compositions still need acceptance; no classroom canvas or new product scope is authorized. |
 
 TODO: Resolve these choices in their source documents, realign this file, then update affected
 BACKLOG prompts. Block only affected work; do not invent values to unblock it. The PRD records
@@ -407,7 +414,7 @@ the earlier shadcn recommendation as an unaccepted conflict; the shared UI remai
 ## Further Reading
 
 - [Product requirements](PRD.md)
-- [Design reference; accepted product mapping pending](DESIGN.md)
+- [Product design and starter UI alignment](DESIGN.md)
 - [Canonical backlog and ticket format](BACKLOG.md)
 - [Team workflow and planning/review prompts](docs/team-workflow.md)
 - [Step-by-step product and team workflow](README.md)

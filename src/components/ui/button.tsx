@@ -20,13 +20,15 @@ type Props = Omit<ComponentProps<typeof BaseButton>, "className" | "color"> & {
 
 export function Button({
   variant = "ghost",
-  size = "md",
+  size = "sm",
   loading = false,
   disabled,
   children,
   className = "",
   ...props
 }: Props) {
+  // Preserve legacy size props while rendering the single supported size.
+  size = "sm";
   return (
     <BaseButton
       {...props}

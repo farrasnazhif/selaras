@@ -16,7 +16,7 @@ export function Combobox<Multiple extends boolean | undefined = false>({ options
   return <BaseCombobox.Root items={options} {...props}>
     {props.multiple ? <BaseCombobox.Chips className="input ui-chips">
       <BaseCombobox.Value>{(values: string[]) => values.map((value) => <BaseCombobox.Chip key={value} className="ui-chip">
-        {value}<BaseCombobox.ChipRemove aria-label={`Remove ${value}`} render={<Button size="xs" variant="quiet" className="!h-5 !px-0.5" />}><X size={12} /></BaseCombobox.ChipRemove>
+        {value}<BaseCombobox.ChipRemove aria-label={`Remove ${value}`} render={<Button variant="quiet" />}><X size={12} /></BaseCombobox.ChipRemove>
       </BaseCombobox.Chip>)}</BaseCombobox.Value>
       {input}
     </BaseCombobox.Chips> : <div className="relative">

@@ -181,7 +181,6 @@ export default function RecommendationCard({
             variant="primary"
             size="sm"
             onClick={() => setAccepted(true)}
-            className="text-[12.5px]"
           >
             {accepted ? t.accepted : active.cta}
           </Button>

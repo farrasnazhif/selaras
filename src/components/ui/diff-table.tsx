@@ -333,7 +333,6 @@ export default function DiffTable({
                     onClick={() => {
                       setAccepted(true);
                     }}
-                    className="text-[12px]"
                   >
                     Apply {removals + additions}{" "}
                     {removals + additions === 1 ? "change" : "changes"}
