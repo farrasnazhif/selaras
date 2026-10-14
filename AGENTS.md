@@ -1,18 +1,35 @@
 # Project Overview
 
-This is a reusable Fullstack Starter built with Next.js App Router, strict TypeScript, React,
-Supabase SSR authentication, TanStack Query, React Hook Form, Zod, Tailwind CSS, Lucide, and
-Beautiful UI with unstyled Base UI controls. It includes email/password authentication,
-confirmation retry, a protected dashboard, private per-user project CRUD, and a public sandbox
-with 81 component demos. The landing page contains one centered button linking to `/sandbox`.
-AI, attachment storage, application search/filtering, and realtime remain optional.
+Selaras is a planned web application for primary-school teachers teaching two classes in one
+room. PRD.md defines the MVP: configure the class pair and students, assign observed levels,
+form and manually adjust groups within each class, produce a schedule without overlapping
+teacher guidance, export independent tasks as PDF/board instructions, and track level history
+and progress (`FR-01`–`FR-06`). Students benefit from the outputs but do not use accounts.
+Literacy and numeracy are in scope; AI task variations are optional and never allocate teachers.
+The six modules remain MVP scope; proposed P0/P1 ordering does not authorize postponing progress
+or removing the optional assessment tool (`Q-07`).
+
+**Implemented foundation:** The repository still runs the Fullstack Starter, using Next.js App
+Router, strict TypeScript, React, Supabase SSR authentication, TanStack Query, React Hook Form,
+Zod, Tailwind CSS, Lucide, and Beautiful UI with unstyled Base UI controls. It has email/password
+authentication, confirmation retry, a protected example dashboard, private per-user project
+CRUD, and a public sandbox with 81 demos. The landing page is one centered `/sandbox` button.
+These examples remain available under `ST-01`–`ST-06`; projects are not Selaras sessions.
+
+**Planned, not implemented:** Selaras screens, domain logic, student records, level history,
+grouping, scheduling, worksheet content, PDF export, and progress. No Selaras schema or feature
+tickets exist yet. Proposed routes, tables, level names, API contracts, and owners in PRD.md are
+not accepted implementation contracts. Resolve affected `Q-*` questions before Ready tickets.
+Login/demo access and persistence are still open; preserve the existing private-access boundary.
+Attachment storage, application search/filtering, and realtime are outside the supplied MVP.
 
 ## Repository Structure
 
 - `.github/`: GitHub Actions validation and issue/pull-request templates.
 - `docs/`: Team workflow/prompts and design references under `docs/design/`.
 - `PRD.md`: Product requirements, MVP scope, ownership, and open decisions.
-- `DESIGN.md`: Product visual decisions using the existing shared UI.
+- `DESIGN.md`: Currently a Classroomscreen-inspired reference; only explicitly accepted Selaras
+  presentation decisions may guide implementation using the existing shared UI.
 - `BACKLOG.md`: Canonical tickets, dependencies, acceptance criteria, and implementation prompts.
 - `scripts/`: The live two-user Supabase isolation check, `check-rls.mjs`.
 - `src/`: Application routes, feature modules, reusable UI, providers, utilities, and types.
@@ -20,7 +37,8 @@ AI, attachment storage, application search/filtering, and realtime remain option
 - `src/app/(auth)/`: Public login and registration routes.
 - `src/app/(dashboard)/`: Protected dashboard, project list, and project-detail routes.
 - `src/app/sandbox/`: Only `page.tsx`; sandbox behavior belongs in its feature.
-- `src/features/`: Auth, projects, and sandbox, organized into purpose-specific subfolders.
+- `src/features/`: Implemented auth, projects, and sandbox, organized into purpose-specific
+  subfolders. Selaras feature folders are not present; their boundaries belong in future tickets.
 - `src/components/ui/`: One flat reusable component library, CSS tokens, catalog, and MIT notice.
 - `src/components/layout/`: The authenticated application shell.
 - `src/providers/`: Query cache, authenticated-user lifecycle, and persistent theme providers.
@@ -132,6 +150,9 @@ UI conventions:
 - Follow Beautiful UI's visual language with Base UI behavior and Lucide icons; do not add shadcn.
 - Apply accepted product layouts and styling from DESIGN.md through the existing UI and token files.
   An intentional change to a documented visual convention must be explicit and aligned here first.
+- DESIGN.md reference values and template TODOs are not accepted overrides. Its Nunito Sans,
+  indigo actions, and 48 px pill buttons conflict with the Inter, neutral, and shared Button
+  conventions below (`Q-15`); preserve these conventions until an explicit decision changes them.
 - Use normal Inter. Tokens and catalog CSS live in `src/components/ui/globals.css`;
   app aliases and matching styles live in `src/app/globals.css`.
 - Use the shared Button: `rounded-control`, neutral default background, 6 px gap,
@@ -202,6 +223,21 @@ External-service extensions use the shared Axios client → authenticated Route 
 server-only implementation. The client has a 15-second timeout; no external-service endpoint
 is currently implemented.
 
+For planned Selaras work, preserve that data path and cookie-based SSR auth/theme. Deterministic
+phase detection, grouping, scheduling, and level comparison must be explainable and testable
+without AI. Groups stay within their class, each student belongs to one group per session, and
+teacher guidance cannot overlap (`FR-03`–`FR-04`). Activity templates must work without an AI API
+(`FR-05`). The domain signatures and generation/export endpoints in PRD.md are proposals, not
+existing modules or a requirement to introduce Route Handlers for ordinary CRUD.
+
+If account-backed Selaras storage is selected, all private descendants must follow the verified
+teacher owner (`FR-07`), including cross-entity references. Use user-scoped cache keys and preserve
+account-change/logout clearing. Project RLS does not protect new tables. Do not rename projects
+into sessions or reuse their statuses as a product contract; schema, cache invalidation, session
+snapshots, and route protection must be specified in the relevant ticket after `Q-03`/`Q-09`/`Q-11`.
+New protected routes must account for both the server layout and the proxy matcher; proposed
+`/sessions` and `/progress` routes are not currently matched by `src/proxy.ts`.
+
 ## Testing Strategy
 
 1. Run `pnpm run typecheck`, `pnpm run lint`, `pnpm test`, and `pnpm run build`.
@@ -218,6 +254,17 @@ they do not prove browser interactions.
 
 The live RLS script uses two Supabase users, checks isolation and constraints, and attempts
 cleanup. Configure the six variables listed in `.env.example`. Never run it against production.
+It currently checks `projects` only. New Selaras ownership/schema work must add meaningful
+coverage for its entities and cross-owner references; an unchanged project isolation check
+cannot prove `FR-07` for student/session data.
+
+Future product tests must trace to PRD acceptance IDs: phase pairs 2 + 3 and 3 + 4, same-class
+membership/manual moves, nonoverlapping guidance and lowest-level priority, template fallback,
+downloaded PDF opening offline, and preserved assessment history with up/same/down comparison.
+Decide level, duration, and content contracts before fixing expected values. Test invalid input,
+failed/duplicate submissions, unavailable records, and account cache isolation (`FR-07`–`FR-08`).
+The 15 fictional students and sub-90-second flow are demo criteria, not a product capacity limit
+or evidence of learning impact. Starter tests do not prove these planned features.
 
 GitHub Actions runs on pushes to `main` and pull requests. It uses Node from `.nvmrc`,
 pnpm setup, lockfile-aware installation, typecheck, lint, tests, and the default production build.
@@ -241,6 +288,13 @@ It does not run live RLS or browser tests.
 - Preserve PKCE/token-hash confirmation, cookie refresh, and safe unavailable/error states.
 - Upload controls provide selection and presentation only; trusted storage boundaries must
   independently validate files before accepting them.
+- Keep student identities, assessments, sessions, and derived outputs in the owning teacher's
+  private area if account storage is selected (`FR-07`). Do not create public student links,
+  cross-teacher sharing, or student/parent/admin roles from an unresolved permission model.
+- Use clearly labeled fictional students for demos; keep sandbox sample state separate from
+  private records. Printed group names are neutral and must not expose ability labels (`FR-03`).
+- Downloaded PDFs may be opened offline; this does not authorize public export URLs or promise
+  offline app operation. Real-student data, retention, deletion, and export storage await `Q-09`.
 - Google Fonts is requested by the Inter CSS import.
 
 Review dependency advisories with:
@@ -263,10 +317,14 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
 
 - Follow the current user request and higher-priority instructions.
 - For product work, read PRD.md, DESIGN.md, BACKLOG.md, and the assigned ticket before editing.
-  PRD owns behavior, DESIGN owns presentation, this file owns implementation conventions, and
-  BACKLOG owns task scope/prompts. Identify conflicts instead of silently selecting a rule.
+  PRD owns behavior, accepted DESIGN decisions own presentation, this file owns implementation
+  conventions, and BACKLOG owns task scope/prompts. Identify conflicts instead of silently
+  selecting a rule. Preserve stable PRD requirement/acceptance IDs in tickets and validation.
 - Templates/TODOs are not product decisions. Do not implement an unresolved requirement or
   invent missing behavior to mark a ticket Ready; continue independent authorized work.
+- PRD labels `[USULAN]`/`[ASUMSI]` and its `Q-*` table identify unresolved choices. Proposed
+  schemas, three level names, routes, endpoints, and Dev 1–4 assignments are not approved.
+  BACKLOG.md has no product tickets; the PRD's `B*` planning table is not a Ready backlog.
 - Keep complete, specific implementation prompts inside each Ready BACKLOG.md ticket.
   Use one owner, branch, and PR per ticket; do not merge or expand scope without authorization.
 - Coordinate shared-file changes and use separate checkouts/worktrees for concurrent agents.
@@ -281,17 +339,40 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
 - Do not edit SQL migrations already applied to shared environments; add timestamped migrations.
 - Never overwrite real environment files, expose secrets, or remove license attribution.
 - Confirm database targets before writes; use disposable data and clean up test records.
-- Keep auth/dashboard/projects unless their removal is explicitly requested.
-- Preserve the centered landing button and pages without shared branded headers.
+- Keep auth/dashboard/projects unless their removal is explicitly requested (`ST-01`–`ST-03`).
+  Product adaptation and the entry screen are unresolved (`Q-03`, `Q-08`); do not convert example
+  records or dashboard statistics into student sessions or progress.
+- Preserve the centered `/sandbox` landing button and pages without shared branded headers
+  (`ST-04`). The planned session CTA does not authorize changing `/`; resolve its location first.
 - Keep all sandbox demos public and available; do not add customization pages, accent/radius
   controls, workspace previews, instructional design panels, or private data connections.
 - Preserve upload queue capacity checks and object-URL cleanup; DataTable processes supplied
   rows locally while application filters belong in the feature data layer.
+- Keep Selaras scope teacher-only: no attendance, parent messaging, school integrations,
+  automatic cross-class grouping, other subjects, full offline PWA, or extra analytics. A
+  Classroomscreen reference does not authorize a draggable widget canvas or customization UI.
+- Preserve level history on reassessment and never present progress as causal learning impact.
+  Do not infer unapproved draft recovery, regeneration, deletion, or baseline rules.
 - Complete the required checks for runtime/dependency changes and state any restrictions.
 - Do not deploy, publish, or modify production infrastructure without task authorization.
 
 The PR template requests validation evidence, ownership checks where relevant, configuration
 changes, and known limitations.
+
+Product decisions still required (PRD.md section 17 owns the full questions and affected criteria):
+
+| TODO / PRD question IDs | Boundary to preserve until decided |
+| --- | --- |
+| `Q-01`, `Q-04`, `Q-12` | Session/block duration, tie-breaking, class/group edge cases, capacity, and final grade-input limits are not fixed contracts (`FR-01`–`FR-04`). |
+| `Q-02`, `Q-10`, `Q-13` | Level indicators/names/order, assessment scoring, baseline/correction rules, subject selection, and curriculum/template review remain open (`FR-02`–`FR-06`). |
+| `Q-03`, `Q-08`, `Q-09`, `Q-11` | Login/demo identity, product entry/routes, example adaptation, persistence/retention/deletion, and draft/regeneration semantics remain open (`FR-07`–`FR-08`, `ST-01`–`ST-04`). |
+| `Q-05`, `Q-06`, `Q-14` | PDF/board layout, fictional-demo permission, and device/network/performance acceptance need decisions (`FR-05`, `NFR-01`–`NFR-03`, `NFR-08`). |
+| `Q-07` | P0/P1 planning is proposed; the six MVP modules remain in scope until a cut is explicitly accepted. |
+| `Q-15` | DESIGN.md's font, palette, button dimensions/shape, and classroom canvas conflict with current UI conventions or exceed PRD scope. Its “implementation-ready” reference label is not Selaras approval. |
+
+TODO: Resolve these choices in their source documents, realign this file, then update affected
+BACKLOG prompts. Block only affected work; do not invent values to unblock it. The PRD records
+the earlier shadcn recommendation as an unaccepted conflict; the shared UI remains mandatory.
 
 > TODO: Define reviewer ownership and approval requirements for auth, schema, and deployment changes.
 > No CODEOWNERS file or branch-protection policy is available in the repository.
@@ -302,6 +383,8 @@ changes, and known limitations.
 ## Extensibility Hooks
 
 - Add features under `src/features/<feature>/` using the category folders and existing data path.
+  Future Selaras tickets must identify new folders/files explicitly; do not scaffold proposed
+  session/student modules or contracts merely because they appear in the PRD.
 - Add reusable controls under `src/components/ui/` and provide a working sandbox demo.
 - Sandbox catalog data lives under `src/features/sandbox/constants/`; selection validation
   lives under `validations/` and demos under `components/`.
@@ -309,8 +392,10 @@ changes, and known limitations.
 - Adapt shared colors, radii, and typography through the existing CSS token files.
 - Use `src/lib/axios.ts` for future external Route Handler integrations.
 - Add database schema changes through migrations and regenerate database row types.
-- AI, attachment storage, search/filtering, and realtime require explicit feature scope;
-  local Supabase storage is currently disabled.
+- AI is optional task variation with template fallback, never a scheduler (`ST-07`). A concrete
+  integration ticket must settle provider, data sent, and quota/rate-limit rules before use.
+  Attachment storage, application search/filtering, and realtime require separate explicit scope;
+  local Supabase storage is currently disabled. PDF export does not implicitly add file upload.
 - Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` before building
   authenticated deployments.
 - Live isolation tests additionally use `RLS_TEST_USER_A_EMAIL`, `RLS_TEST_USER_A_PASSWORD`,
@@ -322,7 +407,7 @@ changes, and known limitations.
 ## Further Reading
 
 - [Product requirements](PRD.md)
-- [Product design](DESIGN.md)
+- [Design reference; accepted product mapping pending](DESIGN.md)
 - [Canonical backlog and ticket format](BACKLOG.md)
 - [Team workflow and planning/review prompts](docs/team-workflow.md)
 - [Step-by-step product and team workflow](README.md)
@@ -337,8 +422,6 @@ changes, and known limitations.
 - [Sandbox selection validation](src/features/sandbox/validations/component.ts)
 - [Beautiful UI license](src/components/ui/LICENSE)
 - [Design reference index](docs/design/design-list.md)
-- [Attio design reference](docs/design/attio.com-DESIGN.md)
-- [Lemon Squeezy design reference](docs/design/lemonsqueezy-DESIGN.md)
 
 > TODO: Add ADRs when durable architecture decisions need a separate record.
 
