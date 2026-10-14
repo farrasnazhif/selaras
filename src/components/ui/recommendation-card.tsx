@@ -170,18 +170,14 @@ export default function RecommendationCard({
         <span className="-mr-0.5 flex items-center gap-2">
           <Button
             variant="secondary"
-            size="sm"
+            size="xs"
             aria-expanded={open}
             onClick={() => setOpen((current) => !current)}
             className="px-2.5 text-[12.5px]"
           >
             {t.alternatives}
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => setAccepted(true)}
-          >
+          <Button variant="primary" size="xs" onClick={() => setAccepted(true)}>
             {accepted ? t.accepted : active.cta}
           </Button>
         </span>

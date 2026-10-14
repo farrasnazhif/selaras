@@ -823,7 +823,11 @@ function FeedbackDemo({ kind }: { kind: string }) {
             title="No items yet"
             description="Create your first item to get started."
             action={
-              <Button variant="primary" onClick={() => setCreated(true)}>
+              <Button
+                size="xs"
+                variant="primary"
+                onClick={() => setCreated(true)}
+              >
                 <Plus size={14} />
                 Create item
               </Button>
@@ -870,6 +874,7 @@ function ContentDemo({ kind }: { kind: string }) {
           </p>
           <Button
             className="mt-5"
+            size="xs"
             variant="primary"
             onClick={() => setSaved(!saved)}
           >

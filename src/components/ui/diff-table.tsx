@@ -328,7 +328,7 @@ export default function DiffTable({
                 <span className="flex items-center gap-1.5">
                   <Button
                     variant="primary"
-                    size="sm"
+                    size="xs"
                     disabled={removals + additions === 0}
                     onClick={() => {
                       setAccepted(true);

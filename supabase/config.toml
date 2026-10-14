@@ -1,4 +1,4 @@
-project_id = "hackathon-starter"
+project_id = "selaras"
 
 [api]
 enabled = true
