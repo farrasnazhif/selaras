@@ -210,9 +210,9 @@ function FauxWindow() {
     <div className="flex h-full w-full flex-col bg-surface">
       <div className="flex shrink-0 items-center gap-1.5 border-b border-line bg-inset px-2.5 py-1.5">
         <span className="flex items-center gap-1">
-          <span className="size-2 rounded-full bg-red" />
-          <span className="size-2 rounded-full bg-orange" />
-          <span className="size-2 rounded-full bg-green" />
+          <span className="size-2 rounded-full bg-pink" />
+          <span className="size-2 rounded-full bg-yellow" />
+          <span className="size-2 rounded-full bg-lime" />
         </span>
         <span className="ml-1 flex min-w-0 items-center gap-1.5 rounded-t-[6px] bg-surface px-2 py-1 shadow-[0_-1px_0_var(--line)]">
           <span className="size-2 shrink-0 rounded-[3px] bg-accent-tint" />
@@ -387,7 +387,7 @@ export default function AgentScreen({
                   {recording && (
                     <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-red-tint py-0.5 pl-1.5 pr-2 text-[11.5px] font-medium tabular-nums text-red">
                       <span
-                        className="size-2 rounded-full bg-red"
+                        className="size-2 rounded-full bg-pink"
                         style={{
                           animation: "records-pulse 1.1s ease-in-out infinite",
                         }}

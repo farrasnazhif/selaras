@@ -32,6 +32,7 @@ test("small text and action labels retain readable contrast in light mode", () =
   for (const [foreground, background] of [
     ["ink-2", "lavender"], ["ink-2", "hover-2"], ["red", "red-tint"],
     ["green", "green-tint"], ["orange", "orange-tint"], ["accent-ink", "primary-tint"],
+    ["info-ink", "info-tint"], ["ink", "lime"], ["ink", "cyan"], ["ink", "yellow"],
   ]) {
     assert.ok(contrast(token(light, foreground), token(light, background)) >= 4.5, `${foreground}/${background}`);
   }

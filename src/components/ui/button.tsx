@@ -27,8 +27,8 @@ export function Button({
   className = "",
   ...props
 }: Props) {
-  // Preserve legacy size props while rendering the single supported size.
-  size = "sm";
+  // Preserve legacy md/lg props with the default small presentation.
+  size = size === "xs" ? "xs" : "sm";
   return (
     <BaseButton
       {...props}

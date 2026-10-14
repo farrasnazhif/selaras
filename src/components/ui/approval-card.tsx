@@ -294,7 +294,7 @@ export default function ApprovalCard({
         style={{ animation: "pop-in 260ms cubic-bezier(0.23,1,0.32,1) both" }}
       >
         <span className="inline-flex items-center gap-1.5 rounded-full bg-green-tint py-1 pr-2.5 pl-1 text-[12.5px] font-medium text-green">
-          <span className="flex size-4.5 items-center justify-center rounded-full bg-green text-white">
+          <span className="flex size-4.5 items-center justify-center rounded-full bg-lime text-ink">
             <svg
               width="11"
               height="11"

@@ -55,7 +55,7 @@ const ROWS: DiffRow[] = [
 const DOT: Record<string, string> = {
   Classic: "bg-accent",
   Retro: "bg-ink-3",
-  Seasonal: "bg-orange",
+  Seasonal: "bg-yellow",
 };
 function IncludedMark({
   included,
@@ -70,8 +70,8 @@ function IncludedMark({
       className={`flex size-4.5 shrink-0 items-center justify-center rounded-[5px] transition-[background-color,color,transform] duration-150 ${
         included
           ? tone === "red"
-            ? "bg-red text-white"
-            : "bg-green text-white"
+            ? "bg-pink text-white"
+            : "bg-lime text-ink"
           : "bg-inset text-ink-3 shadow-hairline"
       }`}
       style={{ transform: included ? "scale(1)" : "scale(0.92)" }}
@@ -260,7 +260,7 @@ export default function DiffTable({
                       </span>
                       <span className="primitive-table-cell">
                         <span className="inline-flex h-5.5 items-center gap-1.5 rounded-full bg-surface px-2 text-[11.5px] font-medium shadow-hairline">
-                          <span className="size-1.5 rounded-full bg-green" />
+                          <span className="size-1.5 rounded-full bg-lime" />
                           <span className="text-ink-2">Seasonal</span>
                         </span>
                       </span>
@@ -302,7 +302,7 @@ export default function DiffTable({
                   animation: "pop-in 180ms cubic-bezier(0.23,1,0.32,1) both",
                 }}
               >
-                <span className="flex size-4.5 items-center justify-center rounded-full bg-green text-white">
+                <span className="flex size-4.5 items-center justify-center rounded-full bg-lime text-ink">
                   <svg
                     width="11"
                     height="11"

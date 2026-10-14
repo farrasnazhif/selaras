@@ -106,7 +106,7 @@ const VARIANTS: Record<
 function Dot({ tone }: { tone: string }) {
   return (
     <span
-      className={`flex size-3.5 shrink-0 items-center justify-center rounded-full text-white ${tone}`}
+      className={`flex size-3.5 shrink-0 items-center justify-center rounded-full ${tone}`}
     >
       <svg
         width="9"
@@ -123,7 +123,7 @@ function Dot({ tone }: { tone: string }) {
   );
 }
 
-const TONES = ["bg-accent", "bg-orange", "bg-green"];
+const TONES = ["bg-accent text-white", "bg-yellow text-ink", "bg-lime text-ink"];
 export default function ThinkingState({
   variant = "Steps",
   onSettled,

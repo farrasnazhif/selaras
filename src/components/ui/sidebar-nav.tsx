@@ -17,6 +17,7 @@ import { Search as IconMagnifyingGlass } from "lucide-react";
 import { Plus as IconPlusMedium } from "lucide-react";
 import { IceCreamBowl as IconPopsicle2 } from "lucide-react";
 import { Settings as IconSettingsGear1 } from "lucide-react";
+import { Button } from "./button";
 import { PanelLeftClose as IconSidebarLeftArrow } from "lucide-react";
 import { UserPlus as IconUserAdd } from "lucide-react";
 import GlideMenu from "@/components/ui/glide-menu";
@@ -105,7 +106,7 @@ function GlideGroup({ children }: { children: ReactNode }) {
   return (
     <GlideMenu
       rowSelector="[data-row]"
-      highlightClassName="sidebar-glide-highlight rounded-[7px] bg-hover-2"
+      highlightClassName="sidebar-glide-highlight rounded-[7px] bg-primary/10"
       className="group/glide flex flex-col gap-px"
     >
       {children}
@@ -424,7 +425,11 @@ export default function SidebarNav({
             />
           ))}
         </GlideGroup>
-        {children && <div className="mx-4 mt-3 shrink-0" hidden={collapsed}>{children}</div>}
+        {children && (
+          <div className="mx-4 mt-3 shrink-0" hidden={collapsed}>
+            {children}
+          </div>
+        )}
         <div className="mt-3 flex min-h-0 flex-1 flex-col">
           <div
             className="sidebar-copy relative mx-2 mb-1 h-8 shrink-0"
@@ -508,7 +513,9 @@ export default function SidebarNav({
                       onPick?.(item.id, item.label, item.prompt);
                     }}
                     className={`sidebar-row relative z-10 mx-2 flex h-8 items-center rounded-[8px] px-2 text-left transition-[width,background-color,color,transform] duration-150 active:scale-[0.98] ${
-                      active ? "bg-hover-2 group-hover/glide:bg-transparent" : ""
+                      active
+                        ? "bg-primary/10 group-hover/glide:bg-transparent"
+                        : ""
                     }`}
                   >
                     {item.icon && (
@@ -538,14 +545,16 @@ export default function SidebarNav({
           className="sidebar-copy mx-2 mt-3 w-[208px] border-t border-line pt-3"
           inert={collapsed}
         >
-          <button
+          <Button
             type="button"
+            variant="primary"
             onClick={onFooterClick ?? onNewChat}
-            className="flex h-8 w-full items-center justify-center gap-1.5 rounded-control bg-hover-2 text-[12.5px] font-medium text-ink transition-[background-color,transform] duration-150 hover:bg-line-strong active:scale-[0.98]"
+            className="w-full"
+            // className="flex h-8 w-full items-center justify-center gap-1.5 rounded-control bg-hover-2 text-[12.5px] font-medium text-ink transition-[background-color,transform] duration-150 hover:bg-line-strong active:scale-[0.98]"
           >
             {footerIcon}
             {footerLabel}
-          </button>
+          </Button>
         </div>
       </div>
     </aside>

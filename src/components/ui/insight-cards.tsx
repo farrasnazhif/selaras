@@ -127,7 +127,7 @@ const COMPARE_SERIES: CompareSeries[] = [
     values: [-2.9, -3.4, -3.05, -3.86, -3.52, -4.1, -3.82, -4.41],
     sub: "-$2,377.66",
     tone: "red",
-    dot: "bg-orange",
+    dot: "bg-yellow",
     color: "var(--orange)",
     tooltipColor: "var(--orange)",
   },
@@ -369,7 +369,7 @@ const ALLOCATION_SEGMENTS: AllocationSegment[] = [
     label: "Vanilla",
     pct: 72.5,
     amount: "$51,785",
-    cls: "bg-orange",
+    cls: "bg-yellow",
     tone: "text-orange",
   },
   {
@@ -377,16 +377,16 @@ const ALLOCATION_SEGMENTS: AllocationSegment[] = [
     label: "Chocolate",
     pct: 22.8,
     amount: "$16,278",
-    cls: "bg-line-strong",
-    tone: "text-ink-2",
+    cls: "bg-cyan",
+    tone: "text-info-ink",
   },
   {
     name: "MINT",
     label: "Mint",
     pct: 4.7,
     amount: "$3,357",
-    cls: "bg-line",
-    tone: "text-ink-3",
+    cls: "bg-lime",
+    tone: "text-green",
   },
 ];
 /* 3 — allocation: hero number + segmented bar + legend */
@@ -401,7 +401,7 @@ function AllocationCard({
   return (
     <div className="min-h-[278px] rounded-card bg-surface p-3 shadow-hairline">
       <span className="flex items-center gap-1.5 text-[12px] font-medium text-ink">
-        <span className="flex size-3.5 items-center justify-center rounded-full bg-orange text-[8px] font-bold text-white">
+        <span className="flex size-3.5 items-center justify-center rounded-full bg-yellow text-[8px] font-bold text-ink">
           V
         </span>
         Vanilla allocation
@@ -485,7 +485,7 @@ const PAGES: InsightPage[] = [
     key: "compare",
     prose: (
       <>
-        The worst performer in your <Entity name="Creamery" tone="bg-orange" />{" "}
+        The worst performer in your <Entity name="Creamery" tone="bg-yellow" />{" "}
         is Rocky Road — down <Mono tone="red">-6%</Mono> or{" "}
         <Mono tone="red">-$2,453.44</Mono>.
       </>
@@ -509,7 +509,7 @@ const PAGES: InsightPage[] = [
     key: "allocation",
     prose: (
       <>
-        You’re heavily invested in <Entity name="Vanilla" tone="bg-orange" /> —
+        You’re heavily invested in <Entity name="Vanilla" tone="bg-yellow" /> —
         it’s <span className="font-medium text-ink">72.5%</span> of your case.
       </>
     ),

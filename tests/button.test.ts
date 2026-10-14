@@ -44,7 +44,7 @@ test("buttons default to small and normalize legacy size requests", () => {
   assert.match(primary, /button-primary button-sm/);
   for (const size of ["xs", "sm", "md", "lg"] as const) {
     const markup = renderToStaticMarkup(createElement(Button, { variant: "primary", size }, "Continue"));
-    assert.ok(markup.includes("button-sm"));
+    assert.ok(markup.includes(size === "xs" ? "button-xs" : "button-sm"));
   }
 });
 
@@ -67,7 +67,7 @@ test("loading disables every size/variant, marks it busy, and preserves its labe
       assert.match(markup, /data-loading="true"/);
       assert.ok(!markup.includes("data-accent="));
       assert.ok(markup.includes(`button-${variant}`));
-      assert.ok(markup.includes("button-sm"));
+      assert.ok(markup.includes(size === "xs" ? "button-xs" : "button-sm"));
       assert.match(markup, /aria-label="Save project"/);
       assert.match(markup, /type="submit"/);
       assert.match(markup, /<svg[^>]*aria-hidden="true"/);

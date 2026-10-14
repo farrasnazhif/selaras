@@ -152,7 +152,7 @@ function Pieces({ pieces }: { pieces: Piece[] }) {
               key={i}
               className="rounded-[3px]"
               style={{
-                background: `color-mix(in srgb, var(--${add ? "green" : "red"}) 18%, transparent)`,
+                background: `color-mix(in srgb, var(--${add ? "lime" : "pink"}) 18%, transparent)`,
                 padding: "0 2px",
                 margin: "0 -1px",
                 boxDecorationBreak: "clone",
@@ -302,7 +302,7 @@ export default function CodeBlock({
                   {(add || del) && (
                     <span
                       className="absolute inset-y-0 left-0 w-[3px]"
-                      style={{ background: add ? "var(--green)" : HATCH }}
+                      style={{ background: add ? "var(--lime)" : HATCH }}
                     />
                   )}
                   <span

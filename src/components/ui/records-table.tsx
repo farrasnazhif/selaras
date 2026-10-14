@@ -38,19 +38,19 @@ const STRENGTH: Record<
 };
 // A single mid-lightness base hue per tag. Background, text, and border are
 // derived from this via color-mix() against the theme tokens in .records-tag,
-// so the chips adapt to light and dark automatically (same pattern as FilterTable).
+// so chips use readable ink and palette-derived fills (same pattern as FilterTable).
 type TagColor = { base: string };
 const TAG_PALETTE: Record<string, TagColor> = {
-  amber: { base: "oklch(0.76 0.13 70)" },
-  lime: { base: "oklch(0.77 0.16 122)" },
-  yellow: { base: "oklch(0.80 0.15 101)" },
-  purple: { base: "oklch(0.62 0.18 293)" },
-  orange: { base: "oklch(0.71 0.16 48)" },
-  cyan: { base: "oklch(0.72 0.10 221)" },
-  red: { base: "oklch(0.64 0.19 27)" },
-  magenta: { base: "oklch(0.66 0.21 323)" },
-  green: { base: "oklch(0.70 0.13 162)" },
-  pink: { base: "oklch(0.67 0.19 3)" },
+  amber: { base: "var(--yellow)" },
+  lime: { base: "var(--lime)" },
+  yellow: { base: "var(--yellow)" },
+  purple: { base: "var(--primary)" },
+  orange: { base: "var(--yellow)" },
+  cyan: { base: "var(--cyan)" },
+  red: { base: "var(--pink)" },
+  magenta: { base: "var(--primary)" },
+  green: { base: "var(--lime)" },
+  pink: { base: "var(--pink)" },
 };
 const TAG_COLORS: Record<string, TagColor> = {
   B2B: TAG_PALETTE.amber,

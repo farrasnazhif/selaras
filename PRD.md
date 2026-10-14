@@ -240,15 +240,19 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 
 ### FR-09 — Color sandbox [instruksi pengguna]
 
+- Semua aksen UI memakai palet: #7173FF primary/selection, #FF3C7F destructive/error,
+  #95F447 success, #00E5E3 info, #FEFE47 warning/pending. Tints dan teks kecil diturunkan
+  dari palet untuk keterbacaan; permukaan netral dan warna asli aset tetap.
 - Primary #7173FF, destructive Button background #FF3C7F; keduanya memakai teks putih yang tebal dan terbaca.
-- Semua Button/IconButton hanya memakai ukuran sm (40 px); ukuran lama xs/md/lg fallback ke sm. Button/IconButton memakai radius 10 px.
+- Semua Button/IconButton mendukung xs (32 px) dan sm (40 px, default); ukuran lama md/lg fallback ke sm. Button/IconButton memakai radius 10 px.
 - Colors demo saja menampilkan #7173FF, #FF3C7F, #95F447, #00E5E3, #FEFE47, dengan hex di bawah swatch.
 - Tidak ada color picker, preset selectable, accent preview state, atau persistensi warna. Preview card tetap putih tanpa gradient.
 - Aplikasi hanya mode terang; cookie theme lama diabaikan. Error form/notice tetap memakai tone semantik yang terbaca.
 
 **FR-09-AC-01:** lima warna dan hex ditampilkan hanya di Colors demo; tidak ada palet sidebar atau kontrol memilih/mengedit warna.
-**FR-09-AC-02:** semua varian Button/IconButton memakai sm, termasuk permintaan ukuran lama; filled primary/destructive memakai teks putih yang memenuhi kontras teks besar tebal.
+**FR-09-AC-02:** semua varian Button/IconButton mendukung xs/sm, default sm, dan ukuran lama md/lg fallback ke sm; filled primary/destructive memakai teks putih yang memenuhi kontras teks besar tebal.
 **FR-09-AC-03:** cookie theme=dark tidak dapat mengaktifkan dark mode; icon Buttons tetap terakses dan input/error/loading behavior dipertahankan.
+**FR-09-AC-04:** kontrol, highlight navigasi, status, tabel/tag, grafik, progress, dan dekorasi demo memakai lima warna atau turunannya; lime/cyan/yellow memakai teks gelap. Preview tetap putih dan tidak ada palet sidebar.
 
 ## 6. Persyaratan nonfungsional
 

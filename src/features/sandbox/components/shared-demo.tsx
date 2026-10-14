@@ -48,23 +48,31 @@ export function SharedDemo({
             ))}
           </div>
         </section>
-        <section aria-label="Button states" className="space-y-3">
-          <h3 className="text-xs font-medium text-muted">States</h3>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button onClick={() => setMessage("Button clicked.")}>
-              Continue <ArrowUpRight size={14} />
-            </Button>
-            <Button disabled>
-              Disabled
-            </Button>
-            <Button loading>
-              Saving…
-            </Button>
-          </div>
+        <section aria-label="Button sizes and states" className="space-y-3">
+          <h3 className="text-xs font-medium text-muted">Sizes & states</h3>
+          {(["xs", "sm"] as const).map((size) => (
+            <div key={size} className="flex flex-wrap items-center gap-3">
+              <span className="w-20 text-xs text-muted">
+                {size === "xs" ? "Extra small" : "Small"}
+              </span>
+              <Button size={size} onClick={() => setMessage(`${size} button clicked.`)}>
+                Continue <ArrowUpRight size={14} />
+              </Button>
+              <Button size={size} disabled>
+                Disabled
+              </Button>
+              <Button size={size} loading>
+                Saving…
+              </Button>
+            </div>
+          ))}
         </section>
         <section aria-label="Icon buttons" className="space-y-3">
           <h3 className="text-xs font-medium text-muted">Icon buttons</h3>
           <div className="flex flex-wrap gap-3">
+            <IconButton label="Extra small add item" size="xs" variant="primary" onClick={() => setMessage("Extra small add item clicked.")}>
+              <Plus size={16} />
+            </IconButton>
             <IconButton
               label="Add item"
               variant="primary"

@@ -13,7 +13,7 @@ export const SANDBOX_COMPONENTS = [
   {
     id: "buttons",
     title: "Buttons",
-    caption: "Variants, one small size, and disabled/loading states.",
+    caption: "Variants, extra-small/small sizes, and disabled/loading states.",
   },
   {
     id: "inputs",

@@ -16,7 +16,7 @@
   --canvas: #F8F8FC;
   --surface: #FFFFFF;
   --inset: #F8F8FC;
-  --hover: #F1F1FF;
+  --hover: #F4F4FF;
   --hover-2: #E5E6FF;
   --ink: #25253B;
   --body: #44465A;
@@ -27,33 +27,40 @@
   --line-soft: #F0F0F6;
   --grid-line: var(--line);
   --field: #F8F8FC;
-  --stripe: rgb(101 84 192 / 0.05);
-  --stripe-bg: #F4F0FF;
+  --stripe: color-mix(in srgb, var(--primary) 5%, transparent);
+  --stripe-bg: var(--primary-tint);
   --primary: #7173FF;
   --primary-hover: #6668E6;
   --primary-foreground: #FFFFFF;
-  --primary-tint: #F1F1FF;
+  --primary-tint: #EEEEFF;
   --destructive: #FF3C7F;
   --destructive-hover: #E53672;
   --destructive-foreground: #FFFFFF;
-  --focus: #5152B7;
+  --focus: #5A5CC4;
   --accent: var(--primary);
-  --accent-ink: #5152B7;
+  --accent-ink: #4F50A7;
   --accent-tint: var(--primary-tint);
-  --secondary: #4F9C91;
-  --secondary-tint: #E4F4EF;
-  --warm: #FFF8EB;
-  --lavender: #F4F0FF;
-  --pastel-pink: #FBE3E9;
-  --pastel-yellow: #FFF0BE;
-  --pastel-blue: #DDEEFF;
-  --pastel-mint: #DDF3E6;
-  --green: #23765A;
-  --green-tint: #E4F4EF;
-  --orange: #946000;
-  --orange-tint: #FFF0BE;
-  --red: #AD3B50;
-  --red-tint: #FBE3E9;
+  --pink: var(--destructive);
+  --lime: #95F447;
+  --cyan: #00E5E3;
+  --yellow: #FEFE47;
+  --secondary: var(--cyan);
+  --secondary-tint: #CCFAF9;
+  --warm: #FFFFDA;
+  --lavender: #EEEEFF;
+  --pastel-pink: #FFE8F0;
+  --pastel-yellow: #FFFFDA;
+  --pastel-blue: #CCFAF9;
+  --pastel-mint: #EAFDDA;
+  /* Small semantic text shades mix the palette with ink; soft fills mix with white. */
+  --green: #47633F;
+  --green-tint: #EAFDDA;
+  --orange: #5B5B3E;
+  --orange-tint: #FFFFDA;
+  --red: #872F5A;
+  --red-tint: #FFE8F0;
+  --info-ink: #186876;
+  --info-tint: #CCFAF9;
   --tooltip-bg: #25253B;
   --tooltip-fg: #FFFFFF;
   --tooltip-muted: #E7E7F0;
@@ -86,6 +93,11 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-tint: var(--primary-tint);
+  --color-pink: var(--pink);
+  --color-lime: var(--lime);
+  --color-cyan: var(--cyan);
+  --color-yellow: var(--yellow);
+  --color-info-ink: var(--info-ink);
   --color-green: var(--green);
   --color-green-tint: var(--green-tint);
   --color-orange: var(--orange);
@@ -876,7 +888,7 @@ th.is-colsel .records-header-icon {
   border: 1px solid color-mix(in srgb, var(--tag-base) 32%, var(--surface));
   border-radius: 8px;
   padding: 0 7px;
-  color: color-mix(in srgb, var(--tag-base) 92%, var(--ink));
+  color: var(--ink);
   background: color-mix(in srgb, var(--tag-base) 18%, var(--surface));
   font-size: 13px;
   font-weight: 500;
@@ -1132,27 +1144,23 @@ th.is-colsel .records-header-icon {
   flex: 0 0 8px;
   border-radius: 50%;
 }
-/* Status pills share the same base-hue → color-mix derivation as .records-tag,
- * so both components stay consistent across light and dark. */
+/* Status pills and records tags share the five-color palette. */
 .filter-status-todo {
-  --tag-base: oklch(0.757 0.153 66.401);
+  --tag-base: var(--yellow);
 }
 .filter-status-progress {
   --tag-base: var(--accent);
 }
 .filter-status-done {
-  --tag-base: oklch(0.652 0.131 162.865);
+  --tag-base: var(--lime);
 }
 .filter-status-todo,
 .filter-status-progress,
 .filter-status-done {
-  color: color-mix(in srgb, var(--tag-base) 92%, var(--ink));
+  color: var(--ink);
   background: color-mix(in srgb, var(--tag-base) 20%, var(--surface));
   border-color: color-mix(in srgb, var(--tag-base) 34%, var(--surface));
 }
-/* Dark mode — a richer, saturated same-hue fill
- * with bright same-hue text and no visible border (light mode keeps the soft
- * tinted pastels above). Applies to both the records grid and status pills. */
 @keyframes fade-in {
   from {
     opacity: 0;

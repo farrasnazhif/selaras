@@ -157,11 +157,14 @@ UI conventions:
 - Use Nunito Sans with system font fallbacks. Tokens and catalog CSS live in `src/components/ui/globals.css`;
   app aliases and matching styles live in `src/app/globals.css`.
 - Use the shared Button: 10 px corners, #7173FF default primary, 8 px gap,
-  only size sm (40 px) for every variant, and 0.98 press scale.
-  Primary #7173FF and destructive #FF3C7F fills use white, bold 19 px text; legacy size props fall back to sm.
-- Button and IconButton have one size: `sm`, 40 px high (icon buttons 40 px square). Preserve disabled and loading behavior.
+  default size sm (40 px), optional xs (32 px) for every variant, and 0.98 press scale.
+  Primary #7173FF and destructive #FF3C7F fills use white, bold 19 px text; legacy md/lg size props fall back to sm.
+- Button and IconButton support `xs/sm` at 32/40 px high (icon buttons 32/40 px square). Preserve disabled and loading behavior.
 - Keep `primary/secondary/ghost/danger/quiet` variants and the semantic destructive Button.
-- Use #7173FF for normal actions and highlights; do not add
+- Apply the five-color palette across all existing UI: #7173FF primary/selection, #FF3C7F
+  destructive/error, #95F447 success, #00E5E3 information, and #FEFE47 warning/pending. Use
+  palette-derived tints and dark text shades; preserve white/neutral surfaces and intrinsic asset colors.
+  Use white on purple/pink fills and dark ink on lime/cyan/yellow. Do not add
   arbitrary per-button colors or accent/success Button variants. Icon buttons use 10 px corners and accessible labels.
 - For button-like navigation, use Button with `nativeButton={false}`, `role="link"`, and
   `render={<Link href="…" />}`; do not nest buttons and anchors.

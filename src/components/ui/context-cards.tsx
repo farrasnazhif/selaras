@@ -31,7 +31,7 @@ const CHUNKS: ContextChunk[] = [
     body: "Cold-chain certification must be verified before a new dairy can be added to the reorder workflow.",
     source: "Dairy Onboarding SOP.pdf",
     badge: "PDF",
-    tone: "bg-red",
+    tone: "bg-pink text-white",
   },
   {
     title: "Seasonal demand row",
@@ -39,7 +39,7 @@ const CHUNKS: ContextChunk[] = [
     body: "Q4 velocity table: pistachio +18%, vanilla +6%, rocky road -11%; retire flavors below 40 scoops weekly.",
     source: "Sales Velocity Export.csv",
     badge: "CSV",
-    tone: "bg-green",
+    tone: "bg-lime text-ink",
   },
 ];
 export default function ContextCards({
@@ -117,7 +117,7 @@ export default function ContextCards({
               }}
             >
               <span
-                className={`flex size-3.5 items-center justify-center rounded-[4px] ${chunk.tone} text-[7px] font-bold text-white`}
+                className={`flex size-3.5 items-center justify-center rounded-[4px] ${chunk.tone} text-[7px] font-bold`}
               >
                 {chunk.badge}
               </span>

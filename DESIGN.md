@@ -1,6 +1,6 @@
 # DESIGN — Selaras, inspired by Classroomscreen
 
-**Versi:** 2.3 — single button size and Colors-only palette\
+**Versi:** 2.5 — extra-small and small buttons\
 **Tanggal:** 14 Oktober 2026\
 **Status:** Apply to existing starter UI; future Selaras features remain unimplemented
 
@@ -38,7 +38,7 @@ centered form up to 448 px; project detail stays a readable form up to 640 px.
 | Label/input/error gap | 8 px; metadata micro-gap 4 px |
 | Action gap | 8 px; actions wrap naturally on narrow screens |
 | Modal | 24/28 px existing padding, 20 px radius, constrained viewport and internal scroll |
-| Touch actions | Button 40 px; IconButton 40 px square; input 48 px |
+| Touch actions | Button xs/sm 32/40 px; IconButton 32/40 px square; input 48 px |
 
 Retain the landing's single centered button; its backdrop and auth may use a subtle lavender
 radial wash. Dashboard summary cards use lavender; project icons use pastel blue. Sandbox
@@ -83,19 +83,29 @@ provider; CSS has one light palette, and the theme toggle/demo is removed. Auth 
 | Main / body / muted text | #25253B / #44465A / #606377 |
 | Border | #E7E7F0 |
 | Default primary | #7173FF |
-| Default hover / tint | #6668E6 / #F1F1FF |
+| Default hover / tint | #6668E6 / #EEEEFF |
 | Text on primary/destructive fills | #FFFFFF, bold 19 px labels |
-| Accent ink / focus | #5152B7 |
+| Accent ink / focus | #4F50A7 / #5A5CC4 |
 | Display palette | #7173FF, #FF3C7F, #95F447, #00E5E3, #FEFE47 |
 | Destructive Button fill / hover | #FF3C7F / #E53672 |
-| Success / warning / danger | #23765A / #946000 / #AD3B50 |
+| Success / warning / danger text | #47633F / #5B5B3E / #872F5A |
+| Success / information / warning fills | #95F447 / #00E5E3 / #FEFE47 |
+| Information text | #186876 |
 
 The Colors demo displays the five supplied swatches, each with its hex label below. The sidebar has no palette.
 There is no color picker, selectable preset, palette editing, preview override, or persistence.
 Primary stays #7173FF; destructive Buttons use a solid #FF3C7F background. Both use white text.
 Filled primary/destructive labels use bold 19 px typography so their contrast qualifies for
 large-text readability while primary defaults remain compact at 40 px height. Error field,
-notice, and badge tones keep their existing readable semantic text colors.
+notice, and badge tones use darker palette-derived text colors for readability.
+
+The five supplied colors own all UI accents: purple for primary/selection, pink for destructive/error,
+lime for success/additions, cyan for information/secondary content, and yellow for warnings/pending.
+Apply them to shared controls, navigation highlights, status icons/badges, tables/tags, charts,
+progress, and demo decorations. Soft backgrounds mix these colors with white; small text uses
+darker shades mixed with ink. White labels stay on purple/pink fills; lime/cyan/yellow use dark ink.
+Keep neutral page/card surfaces, borders, and body text. Original service logos and external
+images retain their intrinsic colors; they are content assets rather than theme tokens.
 
 Tokens stay in `src/components/ui/globals.css`; aliases, font, and component styles stay in
 `src/app/globals.css`. Existing shadows and card radii remain; Buttons and IconButtons use 10 px
@@ -104,10 +114,11 @@ corners. The sandbox preview itself never uses a gradient or pastel background.
 ## 5. DES-05 — Shared controls, states, and accessibility
 
 Keep the shared Button API and Base UI behavior. Primary/secondary actions use 10 px corners.
-Every variant uses only small: 40 px height and 16 px horizontal padding. Legacy xs/md/lg
+Every variant defaults to small: 40 px height and 16 px horizontal padding. Extra-small (`xs`)
+uses 32 px height, 12 px horizontal padding, 12 px text, and 6 px gap. Legacy md/lg
 size requests fall back to sm. Primary/destructive labels are white, bold 19 px with 24 px
 line-height; other labels use 14 px with 20 px line-height. Internal gap stays 8 px.
-IconButton is always 40 px square with 10 px radius. No new variants:
+IconButton is 32 px square for xs and 40 px square for sm, with 10 px radius. No new variants:
 primary, secondary, ghost, danger, and quiet remain. Press scale stays 0.98.
 
 Primary hover uses #6668E6; destructive hover uses #E53672; secondary uses raised surface and hairline.

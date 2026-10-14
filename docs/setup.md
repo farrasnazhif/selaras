@@ -69,7 +69,7 @@ The RLS check needs two different, disposable, confirmed users and the `RLS_TEST
 
 ## UI components and styles
 
-All reusable components live in `src/components/ui/`. The button demo shows standard variants in one small size, and disabled/loading states. Use `loading` for async actions, `variant="primary"` for affirmative actions, and `variant="danger"` for destructive actions.
+All reusable components live in `src/components/ui/`. The button demo shows standard variants in extra-small and small sizes, and disabled/loading states. Use `loading` for async actions, `variant="primary"` for affirmative actions, and `variant="danger"` for destructive actions.
 
 - `src/components/ui/globals.css`: Beautiful UI light-mode design tokens, keyframes, and catalog component CSS.
 - `src/app/globals.css`: app token aliases and matching styles for the rest of the app.
@@ -78,7 +78,7 @@ All reusable components live in `src/components/ui/`. The button demo shows stan
 - `src/features/sandbox/`: gallery demos in `components/`, catalog data in `constants/`, and component-selection checks in `validations/`.
 - `src/features/projects/components/`: feature forms and cards; the sandbox reuses the project form.
 
-Change shared colors and radii in the design token files. The sandbox contains component previews, a read-only Colors demo without a sidebar palette. It has no customization page or radius controls. The UI defaults to #7173FF with 10 px button corners and white preview cards. Dark mode and its cookie-based provider/toggle are removed; old theme cookies are ignored. All Button/IconButton variants use only small (40 px), with legacy size props falling back to small, and primary #7173FF/destructive #FF3C7F Buttons use white labels. Keep focus styles, labels, error associations, and Base UI’s keyboard behavior intact. There is no Storybook or separate app to maintain.
+Change shared colors and radii in the design token files. The sandbox contains component previews, a read-only Colors demo without a sidebar palette. It has no customization page or radius controls. The UI defaults to #7173FF with 10 px button corners and white preview cards. Dark mode and its cookie-based provider/toggle are removed; old theme cookies are ignored. All Button/IconButton variants support extra-small (32 px) and small (40 px, default), with legacy md/lg size props falling back to small, and primary #7173FF/destructive #FF3C7F Buttons use white labels. Keep focus styles, labels, error associations, and Base UI’s keyboard behavior intact. There is no Storybook or separate app to maintain.
 
 ## Architecture and reuse
 

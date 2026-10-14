@@ -617,7 +617,7 @@ export default function PromptBar({
             style={{
               borderRadius: "inherit",
               background:
-                "linear-gradient(90deg, #fb7185, #fbbf24, #34d399, #60a5fa, #c084fc)",
+                "linear-gradient(90deg, var(--pink), var(--yellow), var(--lime), var(--cyan), var(--primary))",
             }}
           />
           <span
@@ -811,8 +811,8 @@ export default function PromptBar({
                 pill ? "rounded-full" : "rounded-[8px]"
               } ${wide ? "col-start-5 row-start-2" : "col-start-5 row-start-1"}`}
               style={{
-                background: canSend ? "var(--ink)" : "var(--line-strong)",
-                color: canSend ? "var(--surface)" : "var(--ink-2)",
+                background: canSend ? "var(--primary)" : "var(--line-strong)",
+                color: canSend ? "var(--primary-foreground)" : "var(--ink-2)",
               }}
             >
               <Icon size={16} strokeWidth={2.4}>

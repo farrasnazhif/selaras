@@ -14,8 +14,8 @@
   --danger-soft: var(--red-tint);
   --success: var(--green);
   --success-soft: var(--green-tint);
-  --info: var(--accent-ink);
-  --info-soft: var(--accent-tint);
+  --info: var(--info-ink);
+  --info-soft: var(--info-tint);
   --radius: 20px;
   --font-mono-face: "SFMono-Regular";
   --font-ui:
@@ -71,7 +71,7 @@
   }
   ::selection {
     background: var(--accent-soft);
-    color: var(--accent);
+    color: var(--accent-ink);
   }
 }
 
@@ -113,6 +113,12 @@
   }
   .button:active:not(:disabled):not([data-disabled]) {
     transform: scale(0.98);
+  }
+  .button-xs {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12px;
+    gap: 6px;
   }
   .button-quiet {
     color: var(--ink);
@@ -279,7 +285,7 @@
     @apply border-t border-line pt-5 hidden lg:block;
   }
   .avatar {
-    @apply shrink-0 size-8 flex items-center justify-center rounded-full bg-accent-soft text-accent text-xs font-semibold;
+    @apply shrink-0 size-8 flex items-center justify-center rounded-full bg-accent-soft text-accent-ink text-xs font-semibold;
   }
   .app-main {
     @apply min-w-0 lg:col-start-2;
@@ -566,6 +572,10 @@
     padding: 0;
     border-radius: var(--radius-control);
   }
+  .ui-icon-button.button-xs {
+    width: 32px;
+    height: 32px;
+  }
   .ui-button-group {
     @apply inline-flex gap-px;
   }
@@ -619,6 +629,10 @@
   .ui-toast[data-type="warning"] .ui-toast-icon {
     color: var(--orange);
     background: var(--orange-tint);
+  }
+  .ui-toast[data-type="info"] .ui-toast-icon {
+    color: var(--info-ink);
+    background: var(--info-tint);
   }
   .ui-skeleton {
     @apply rounded-control bg-hover-2;
@@ -745,14 +759,20 @@
   .ui-step-number {
     @apply flex size-6 items-center justify-center rounded-control border border-line-strong bg-surface text-[11px];
   }
-  .ui-stepper > li[aria-current],
-  .ui-stepper > li[data-complete] {
+  .ui-stepper > li[aria-current] {
     color: var(--accent-ink);
   }
-  .ui-stepper > li[aria-current] .ui-step-number,
-  .ui-stepper > li[data-complete] .ui-step-number {
+  .ui-stepper > li[aria-current] .ui-step-number {
     background: var(--accent-tint);
     border-color: var(--accent);
+  }
+  .ui-stepper > li[data-complete] {
+    color: var(--green);
+  }
+  .ui-stepper > li[data-complete] .ui-step-number {
+    color: var(--ink);
+    background: var(--lime);
+    border-color: var(--green);
   }
   .ui-description-list {
     @apply divide-y divide-line rounded-card border border-line bg-surface;
