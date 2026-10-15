@@ -6,6 +6,6 @@ export const observationSchema = z.object({
 export type ObservationInput = z.infer<typeof observationSchema>;
 
 export const previewStudentSchema = z.object({
-  name: z.string().trim().min(1, "Tuliskan nama siswa contoh terlebih dahulu."),
+  name: z.string().trim().min(1, "Tuliskan nama siswa terlebih dahulu."),
 });
 export type PreviewStudentInput = z.infer<typeof previewStudentSchema>;

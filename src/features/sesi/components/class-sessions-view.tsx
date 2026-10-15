@@ -30,7 +30,7 @@ export function ClassSessionsView() {
           render={<Link href={`${classPath(classroom.id)}/sesi/baru`} />}
         >
           <Plus size={16} aria-hidden="true" />
-          Susun sesi baru
+          Susun jadwal
         </Button>
       </div>
       {items.length ? (
@@ -56,7 +56,7 @@ export function ClassSessionsView() {
                   </span>
                   <span className="flex items-center gap-1.5">
                     <CalendarDays size={14} aria-hidden="true" />
-                    Blok {session.blockMinutes} menit
+                    Bergantian setiap {session.blockMinutes} menit
                   </span>
                 </div>
               </Card>
@@ -66,7 +66,7 @@ export function ClassSessionsView() {
       ) : (
         <EmptyState
           title="Belum ada sesi"
-          description="Buat sesi contoh untuk menjelajahi jadwal dan tampilan tugas."
+          description="Susun sesi belajar untuk melihat jadwal dan tugas kelompok."
         />
       )}
     </div>

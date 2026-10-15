@@ -33,14 +33,14 @@ export function DropdownMenu({
                 {header}
               </div>
             )}
-            <GlideMenu>
-              {items.map((item) => (
+            <GlideMenu className="space-y-1">
+              {items.map((item, index) => (
                 <Menu.Item
                   key={item.id}
                   data-menu-row
                   disabled={item.disabled}
                   onClick={item.onSelect}
-                  className={`ui-option relative z-1 ${item.danger ? "text-red" : ""}`}
+                  className={`ui-option ui-coded-option relative z-1 ui-tone-${item.danger ? "pink" : ["purple", "cyan", "green", "yellow"][index % 4]}`}
                 >
                   <span className="flex items-center gap-2">
                     {item.icon}

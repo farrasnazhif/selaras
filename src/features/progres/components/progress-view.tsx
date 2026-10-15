@@ -50,7 +50,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
     { id: "name", label: "Nama siswa", value: (student) => student.name },
     {
       id: "baseline",
-      label: "Level pembanding",
+      label: "Level awal",
       value: (student) => levelLabel(comparison(student).baseline?.level),
     },
     {
@@ -61,9 +61,9 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
     { id: "change", label: "Perubahan", value: () => "", render: change },
     {
       id: "actions",
-      label: "Riwayat",
+      label: "Riwayat observasi",
       value: () => "",
-      render: (student) => <ObservationDialog student={student} history />,
+      render: (student) => <ObservationDialog student={student} />,
     },
   ];
   return (
@@ -73,7 +73,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
         <div>
           <h2 className="text-xl font-bold">Perubahan level siswa</h2>
           <p className="mt-2 max-w-xl text-sm text-muted">
-            Bandingkan penilaian pertama dan terbaru dalam pratinjau ini.
+            Lihat perubahan kemampuan siswa dari penilaian pertama hingga terbaru.
             Perbarui level pada tab Level.
           </p>
         </div>
@@ -105,7 +105,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
               <Badge tone="neutral">{roster.length} siswa</Badge>
             </h3>
             <div className="hidden md:block [&_.ui-table]:text-sm">
-              <Table
+              <Table emptyMessage="Tidak ada data yang ditampilkan."
                 rows={roster}
                 columns={columns}
                 getRowId={(student) => student.id}
@@ -119,7 +119,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
                     <h4 className="font-bold">{student.name}</h4>
                     <dl className="mt-4 grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <dt className="text-xs text-muted">Pembanding</dt>
+                        <dt className="text-xs text-muted">Awal</dt>
                         <dd className="mt-1">
                           {levelLabel(comparison(student).baseline?.level)}
                         </dd>
@@ -133,7 +133,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
                     </dl>
                     <div className="mt-4">{change(student)}</div>
                     <div className="mt-4">
-                      <ObservationDialog student={student} history />
+                      <ObservationDialog student={student} />
                     </div>
                   </Card>
                 </li>

@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeftRight, Sparkles, Users } from "lucide-react";
+import { ArrowLeftRight, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -23,28 +22,18 @@ export function GroupsStep() {
   const [message, setMessage] = useState("");
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-window border border-line bg-surface p-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-window border-2 border-line bg-surface p-4">
         <div className="max-w-xl">
-          <p className="text-sm font-semibold">Susunan kelompok contoh</p>
+          <p className="text-sm font-semibold">Susunan kelompok</p>
           <p className="mt-1 text-sm leading-relaxed text-muted">
-            Pembagian ini untuk menjelajahi antarmuka, bukan hasil pengelompokan
-            berdasarkan level. Coba pindahkan siswa dalam kelas yang sama.
+            Atur anggota tiap kelompok. Gunakan tombol panah di samping nama siswa untuk memindahkannya ke kelompok lain dalam kelas yang sama.
           </p>
-        </div>
-        <div>
-          <Button variant="secondary" disabled aria-describedby="grouping-hint">
-            <Sparkles size={16} aria-hidden="true" />
-            Kelompokkan otomatis
-          </Button>
-          {/* <p id="grouping-hint" className="mt-2 max-w-52 text-xs text-muted">
-            Aturan pengelompokan otomatis belum ditetapkan.
-          </p> */}
         </div>
       </div>
       {CLASS_KEYS.map((classKey) => (
         <section key={classKey} aria-labelledby={`groups-${classKey}`}>
           <div className="mb-4 flex items-center gap-3">
-            <h2 id={`groups-${classKey}`} className="text-2xl font-bold">
+            <h2 id={`groups-${classKey}`} className="text-xl font-extrabold">
               Kelas {grades[classKey]}
             </h2>
             <Badge tone="neutral">
@@ -55,7 +44,7 @@ export function GroupsStep() {
               siswa
             </Badge>
           </div>
-          <div className="grid items-start gap-4 sm:grid-cols-3">
+          <div className="grid items-start gap-4 md:grid-cols-3">
             {GROUP_KEYS.map((group) => {
               const members = students.filter(
                 (student) =>
@@ -64,13 +53,13 @@ export function GroupsStep() {
               return (
                 <Card key={group} className="min-w-0 p-4">
                   <div
-                    className={`mb-4 rounded-control p-3 ${groupSurfaces[group]}`}
+                    className={`mb-2 rounded-control border-2 border-line p-3 ${groupSurfaces[group]}`}
                   >
                     <h3 className="text-lg font-bold">
                       Kelompok {GROUP_LABELS[group]}
                     </h3>
                     <p className="mt-1 text-xs text-muted">
-                      {members.length} siswa · level bervariasi
+                      {members.length} siswa
                     </p>
                   </div>
                   {members.length ? (

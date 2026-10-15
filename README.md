@@ -232,7 +232,7 @@ Installation, Supabase, commands, UI files, and deployment: [setup guide](docs/s
 
 ## Selaras UI preview
 
-Open `/kelas` (or **Open app** in the sandbox). A class has Siswa, Level, Progres,
+Open `/kelas` (or **Open app** in the sandbox). The header links to Kelas and `/jadwal`, which lists sessions from every class. A class has Siswa, Level, Progres,
 and Sesi tabs. The example class is `/kelas/kelas-rangkap-2-3`; create its session at
 `/kelas/kelas-rangkap-2-3/sesi/baru` and view the supplied example at
 `/kelas/kelas-rangkap-2-3/sesi/literasi-2026-10-14`.

@@ -402,6 +402,32 @@ Status; tombol membuka form observasi untuk siswa pada baris terkait.
 **UI-09-AC-02:** tab Progres tidak memiliki tombol tambah Observasi pada desktop maupun mobile.
 Tindakan Riwayat tetap tersedia untuk membaca penilaian dan catatan yang sudah ada.
 
+### UI-10 — Tampilan sederhana untuk guru [instruksi pengguna]
+
+**UI-10-AC-01:** navigasi aplikasi berupa header dengan logo kiri, Kelas dan Jadwal di tengah,
+serta profil kanan. Teks navigasi hitam dan garis ungu bergerak mengikuti halaman aktif,
+dengan dukungan reduced motion. `/jadwal` menampilkan sesi dari seluruh kelas berdasarkan
+tanggal yang tersedia; jangan mengarang jam pelajaran yang belum disimpan.
+**UI-10-AC-02:** gunakan Nunito, alternatif rounded bebas lisensi SF Pro Rounded, dengan
+fallback sistem untuk Android. Ukuran teks minimum 12 px, border utama 2 px, kartu putih
+tanpa shadow. Setiap Select/menu memakai pastel dan teks gelap yang sesuai; status destruktif
+tetap semantik dan fokus/keyboard tetap tersedia.
+**UI-10-AC-03:** kartu kelas menampilkan maksimum tiga avatar inisial siswa yang tumpang tindih
+dan jumlah anggota berupa angka. Detail kelas tidak menampilkan fase atau pemilih kelas.
+**UI-10-AC-04:** Level tetap dikelompokkan per kelas, tanpa kolom Kelas, maksimum sepuluh siswa
+per halaman per kelas. Riwayat observasi berada di antara Numerasi dan Status; riwayat dapat
+dibaca lalu catatan baru ditambahkan. Tabel lain mempertahankan susunannya dengan gaya bersama.
+**UI-10-AC-05:** hilangkan label “contoh” dan jargon teknis pada aplikasi. Gunakan bahasa
+Indonesia langsung, serta satu pemberitahuan jelas bahwa perubahan hilang saat halaman dimuat
+ulang. Tidak mengklaim penyimpanan backend atau identitas autentikasi.
+**UI-10-AC-06:** sederhanakan sesi menjadi pilih mata pelajaran/tanggal → lihat jadwal →
+simpan/cetak. Waktu yang hanya punya satu nilai ditampilkan sebagai ringkasan. Hilangkan
+panel aturan teknis; tugas kelompok tetap dapat dibuka saat diperlukan. Jadwal dan kegiatan
+yang belum disediakan tetap menyatakan belum tersedia. Tidak menetapkan level baru atau
+mengubah alur penilaian/pengelompokan yang belum disepakati.
+
+Ini menggantikan sidebar, pemilih kelas `UI-05`, dan copy teknis terdahulu untuk tampilan produk.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |

@@ -8,29 +8,29 @@ import { DropdownMenu } from "@/components/ui/dropdown-menu";
 // shortcut: demo identity only, use a verified profile when backend integration is requested.
 const profile = { name: "Guru Demo", email: "guru@selaras.example" };
 
-export function AccountFooter() {
+export function AccountMenu() {
   return (
     <DropdownMenu
       trigger={
         <Button
           variant="quiet"
-          className="w-full justify-start px-0.5"
-          aria-label={`Opsi akun demo ${profile.email}`}
+          className="h-11 gap-2 px-1.5 sm:px-3"
+          aria-label={`Opsi akun ${profile.email}`}
         >
           <span aria-hidden="true">
             <Avatar name={profile.name} />
           </span>
-          <span className="sidebar-account-copy min-w-0 flex-1 text-left">
+          <span className="hidden min-w-0 text-left lg:block">
             <span className="block truncate text-sm font-semibold leading-[18px]">
               {profile.name}
             </span>
-            <span className="block truncate text-[11px] font-normal leading-[14px] text-muted">
+            <span className="block truncate text-xs font-normal leading-[14px] text-muted">
               {profile.email}
             </span>
           </span>
           <ChevronsUpDown
             size={14}
-            className="sidebar-account-copy shrink-0 text-muted"
+            className="hidden shrink-0 text-muted sm:block"
             aria-hidden="true"
           />
         </Button>
@@ -44,14 +44,14 @@ export function AccountFooter() {
       items={[
         {
           id: "settings",
-          label: "Settings",
+          label: "Pengaturan",
           icon: <Settings size={16} aria-hidden="true" />,
           disabled: true,
           onSelect: () => {},
         },
         {
           id: "sign-out",
-          label: "Sign out",
+          label: "Keluar",
           icon: <LogOut size={16} aria-hidden="true" />,
           disabled: true,
           danger: true,

@@ -21,7 +21,7 @@ export type RotationBlock = {
 };
 // Supplied screenshot content; this is a preview template, not a scheduling engine.
 export const LITERACY_ROTATION: RotationBlock[] = [
-  { start: 0, end: 5, shared: { title: "Pembukaan & pengondisian kelas", description: "Doa, presensi gabungan, dan pembagian tugas stasiun belajar." } },
+  { start: 0, end: 5, shared: { title: "Pembukaan & pengondisian kelas", description: "Doa, presensi gabungan, dan pembagian tugas belajar." } },
   { start: 5, end: 20, teacher: "first", activities: {
     first: { title: "Eksplorasi bunyi konsonan rangkap", description: "Panduan langsung pengenalan fonik 'ny' dan 'ng' di papan tulis mini.", note: "Interaksi intensif guru kelas" },
     second: { title: "Menyusun kosakata kalimat baru", description: "Siswa bekerja pada kartu kerja mandiri LKS.", note: "Kelompok Biru & Hijau", independentLabel: "Kerja mandiri" },

@@ -1,17 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { CircleCheck, LayoutPanelTop, Printer } from "lucide-react";
+import { LayoutPanelTop, Printer } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Collapsible } from "@/components/ui/collapsible";
 import { Dialog } from "@/components/ui/dialog";
 import {
   classPath,
   classroomTitle,
   displayDate,
 } from "@/features/shared/constants/presentation";
-import { phaseForGrade } from "@/features/kelas/constants/preview";
 import { usePreview } from "@/features/shared/components/preview-provider";
 import { ClassUnavailable } from "@/features/shared/components/class-unavailable";
 import { RotationGrid } from "@/features/sesi/components/rotation-grid";
@@ -42,15 +41,9 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-[28px] font-bold">{title}</h1>
-            <Badge tone="primary">
-              {phaseForGrade(session.grades.first) ===
-              phaseForGrade(session.grades.second)
-                ? "Satu fase"
-                : "Lintas fase"}
-            </Badge>
           </div>
           <p className="mt-2 text-sm text-muted">
-            Durasi {session.duration} menit · panjang blok{" "}
+            Durasi {session.duration} menit · bergantian setiap{" "}
             {session.blockMinutes} menit · {session.roster.length} siswa
           </p>
         </div>
@@ -59,7 +52,7 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
             open={boardOpen}
             onOpenChange={setBoardOpen}
             title="Versi papan tulis"
-            description={`${title} · instruksi kelompok dari contoh referensi.`}
+            description={`${title} · tugas belajar tiap kelompok.`}
             trigger={
               <Button variant="secondary">
                 <LayoutPanelTop size={16} aria-hidden="true" />
@@ -79,15 +72,9 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
           </Button>
         </div>
       </header>
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-control bg-accent-tint px-4 py-3 text-xs text-accent-ink">
-        <span className="flex items-center gap-2">
-          <CircleCheck size={16} aria-hidden="true" />
-          Sesi contoh dalam mode baca. Snapshot hanya tersedia di pratinjau ini.
-        </span>
-        <span className="font-semibold uppercase tracking-wide">Mode baca</span>
-      </div>
       <RotationGrid roster={session.roster} gradePair={session.grades} />
-      <SessionTaskSummary roster={session.roster} gradePair={session.grades} />
+      <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary roster={session.roster} gradePair={session.grades} /></Collapsible></div>
+      <div className="hidden print:block"><SessionTaskSummary roster={session.roster} gradePair={session.grades} /></div>
     </div>
   );
 }

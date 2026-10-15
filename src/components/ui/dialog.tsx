@@ -40,7 +40,7 @@ export function Dialog({
           </BaseDialog.Description>
           <BaseDialog.Close
             className="dialog-close"
-            aria-label="Close dialog"
+            aria-label="Tutup"
             disabled={busy}
           >
             <X size={18} />

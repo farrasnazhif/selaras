@@ -45,12 +45,12 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
     { id: "name", label: "Nama siswa", value: (student) => student.name },
     {
       id: "group",
-      label: "Kelompok contoh",
+      label: "Kelompok",
       value: (student) => GROUP_LABELS[student.group],
     },
     {
       id: "action",
-      label: "Observasi",
+      label: "Riwayat observasi",
       value: () => "",
       render: (student) => <ObservationDialog student={student} />,
     },
@@ -103,11 +103,11 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
       <p role="status" className="mb-3 text-xs text-muted">
         {total} siswa{query || group !== "all" ? " ditemukan" : ""}
       </p>
-      <Table
+      <Table emptyMessage="Tidak ada data yang ditampilkan."
         rows={rows}
         columns={columns}
         getRowId={(student) => student.id}
-        caption={`Daftar siswa fiktif kelas ${grade}`}
+        caption={`Daftar siswa kelas ${grade}`}
       />
       {pageCount > 1 && (
         <div
@@ -115,7 +115,7 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
           role="group"
           aria-label={`Halaman siswa kelas ${grade}`}
         >
-          <Pagination
+          <Pagination locale="id"
             page={currentPage}
             pageCount={pageCount}
             onPageChange={setPage}

@@ -16,7 +16,7 @@ authentication, confirmation retry, a protected example dashboard, private per-u
 CRUD, and a public sandbox with 81 demos. The landing page is one centered `/sandbox` button.
 These examples remain available under `ST-01`–`ST-06`; projects are not Selaras sessions.
 
-**UI-only preview:** `/kelas`, `/sesi`, and `/progres` use existing UI controls, class-oriented
+**UI-only preview:** `/kelas`, `/jadwal`, `/sesi`, and `/progres` use existing UI controls, class-oriented
 navigation, fictional students, and local React state (`UI-01`/`UI-02`). The latest screenshots
 supply example levels/rubrics and literacy session content; production contracts remain open.
 There are no backend calls or product schemas.
@@ -50,6 +50,7 @@ the preview's Siswa class cards (`UI-04`); other application filtering remains o
   purpose-specific category subfolders. The Selaras preview has no feature API/backend modules.
 - `src/features/kelas/`: Class list/details, students, levels, grouping, and class fixtures.
 - `src/features/progres/`: Student progress page.
+- `src/features/jadwal/`: Overall schedule across classes, served directly at `/jadwal`.
 - `src/features/sesi/`: Session list, builder, saved session, schedule, and task fixtures.
 - `src/features/shared/`: Preview state, shell, and types shared between page features.
 - `src/components/ui/`: One flat reusable component library, CSS tokens, catalog, and MIT notice.
@@ -166,11 +167,12 @@ UI conventions:
 - Keep Beautiful UI components, Base UI behavior, and Lucide icons; apply the user-supplied Classroomscreen styling without adding shadcn.
 - Apply accepted product layouts and styling from DESIGN.md through the existing UI and token files.
   An intentional change to a documented visual convention must be explicit and aligned here first.
-- The user explicitly accepted Nunito Sans, indigo actions, pastel surfaces, and larger pill
+- The user explicitly accepted Nunito, indigo actions, pastel surfaces, and larger pill
   buttons for existing UI. The latest user update makes the app light-only, primary #7173FF,
   controls with 10 px corners, and a white sandbox preview with a read-only five-color palette. These replace the earlier Inter/neutral/compact-button rules.
   Apply DES-02–DES-05 while leaving unresolved product screens and contracts untouched.
-- Use Nunito Sans with system font fallbacks. Tokens and catalog CSS live in `src/components/ui/globals.css`;
+- Use Nunito with system font fallbacks (`UI-10`, `DES-24`); minimum visible text is 12 px.
+  Tokens and catalog CSS live in `src/components/ui/globals.css`;
   app aliases and matching styles live in `src/app/globals.css`.
 - Use the shared Button: 10 px corners, #7173FF default primary, 8 px gap,
   default size sm (40 px), optional xs (32 px) for every variant, and 0.98 press scale.
@@ -187,10 +189,17 @@ UI conventions:
 - For button-like navigation, use Button with `nativeButton={false}`, `role="link"`, and
   `render={<Link href="…" />}`; do not nest buttons and anchors.
 - Keep inline text links, navigation rows, and linked cards in their own link presentation.
-- The Selaras preview uses the shared SidebarNav for desktop and mobile navigation. Use
-  `listLabel={null}` when there is no secondary list; retain its native collapse behavior.
+- The product uses a header with logo, centered Kelas/Jadwal links, moving purple active
+  underline, and profile menu. SidebarNav remains available to the sandbox and starter.
+- RootLayout keeps the public preview provider and shell mounted across product navigation;
+  the shell renders its header only on `/kelas` and `/jadwal`, preserving other starter pages.
+- Product cards, fields, and table surfaces use consistent 2 px outlines. Selects and menus
+  use pastel fills with dark matching text; retain semantic danger and keyboard/focus behavior.
+- Level tables omit the redundant Kelas column and paginate ten rows per class. Observation
+  history opens before adding a note. Product copy avoids “contoh”, phase labels, and jargon;
+  keep a concise, truthful notice that local changes disappear on reload.
 - Selaras app cards and table surfaces use borders with no resting or hover shadows. Its
-  sidebar footer uses shared Avatar/DropdownMenu with a labeled demo profile and only the
+  header profile uses shared Avatar/DropdownMenu with a labeled demo profile and only the
   disabled Settings/Sign out options; do not connect its demo identity to starter auth (`Q-03`).
 - Toasts use neutral surfaces, status icons, and subtle type tints without colored borders.
 - Preserve accessible labels, errors, focus, keyboard navigation, and reduced-motion behavior.
@@ -327,7 +336,7 @@ It does not run live RLS or browser tests.
   private records. Printed group names are neutral and must not expose ability labels (`FR-03`).
 - Downloaded PDFs may be opened offline; this does not authorize public export URLs or promise
   offline app operation. Real-student data, retention, deletion, and export storage await `Q-09`.
-- Google Fonts is requested by the Nunito Sans CSS import.
+- Nunito uses the SIL Open Font License; preserve its license with the bundled font.
 
 Review dependency advisories with:
 
@@ -354,7 +363,7 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
   selecting a rule. Preserve stable PRD requirement/acceptance IDs in tickets and validation.
 - The user authorized the UI-only Selaras preview (`UI-01`). The latest four screenshots (`UI-02`, `DES-18`) supersede the guided-flow placeholders with
   class tabs and nested session routes. Use their supplied fixture content and breadcrumb hierarchy;
-  derive counts from the level screenshot's 7+8 roster and preserve shared SidebarNav.
+  derive counts from the level screenshot's 7+8 roster; `UI-10` supersedes the earlier sidebar with the product header.
   Memory-only saves and browser print must be identified accurately. This does not settle
   production auth/routes, pedagogical content, scheduling, persistence, or PDF contracts.
 - Templates/TODOs are not product decisions. Do not implement an unresolved requirement or

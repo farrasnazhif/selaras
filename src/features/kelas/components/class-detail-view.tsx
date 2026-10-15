@@ -2,10 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Badge } from "@/components/ui/badge";
-import { Select } from "@/components/ui/select";
 import { Tabs } from "@/components/ui/tabs";
-import { phaseForGrade } from "@/features/kelas/constants/preview";
 import { classPath, classroomTitle } from "@/features/shared/constants/presentation";
 import { usePreview } from "@/features/shared/components/preview-provider";
 import { ClassUnavailable } from "@/features/shared/components/class-unavailable";
@@ -17,11 +14,9 @@ import { ProgressView } from "@/features/progres/components/progress-view";
 export type ClassTab = "siswa" | "level" | "progres" | "sesi";
 
 export function ClassDetailView({ tab = "level" }: { tab?: ClassTab }) {
-  const { classroom, classrooms, grades } = usePreview();
+  const { classroom } = usePreview();
   const router = useRouter();
   if (!classroom) return <ClassUnavailable />;
-  const firstPhase = phaseForGrade(grades.first);
-  const secondPhase = phaseForGrade(grades.second);
   return (
     <div className="space-y-5">
       <Breadcrumbs
@@ -31,36 +26,8 @@ export function ClassDetailView({ tab = "level" }: { tab?: ClassTab }) {
         ]}
       />
       <header>
-        <div className="flex items-end justify-between">
-          <div>
-            <Badge tone="primary">
-              {firstPhase === secondPhase
-                ? `Satu fase (${firstPhase})`
-                : `Lintas fase (${firstPhase} + ${secondPhase})`}
-            </Badge>
-            <h1 className="mt-1 text-[28px] font-bold">
-              {classroomTitle(classroom)}
-            </h1>
-            <p className="text-sm text-muted">
-              Penyesuaian capaian level dasar literasi dan numerasi TaRL
-              (Teaching at the Right Level).
-            </p>
-          </div>
-          <div className="w-64 max-w-full">
-            <Select
-              value={classroom.id}
-              options={classrooms.map((item) => ({
-                value: item.id,
-                label: classroomTitle(item),
-              }))}
-              onValueChange={(value) => {
-                if (value && value !== classroom.id)
-                  router.push(`${classPath(value)}/${tab}`);
-              }}
-              triggerProps={{ "aria-label": "Pilih kelas rangkap" }}
-            />
-          </div>
-        </div>
+        <h1 className="text-[28px] font-extrabold">{classroomTitle(classroom)}</h1>
+        <p className="mt-1 text-sm text-muted">Kelola siswa, tingkat kemampuan, dan rencana belajar.</p>
       </header>
       <Tabs
         key={classroom.id}

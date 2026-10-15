@@ -22,6 +22,9 @@ The account dropdown contains only disabled Settings and Sign out actions in thi
 (`UI-07`, `DES-19`); enabling them awaits resolution of `Q-03`.
 Product URLs now use Bahasa Indonesia without an application prefix (`UI-06`, `DES-22`);
 all preview navigation and setup links follow the renamed routes.
+`UI-10`/`DES-24` authorizes the simpler teacher interface: header navigation for Kelas and overall
+Jadwal, rounded typography, 2 px outlines, coded dropdowns, 12 px minimum type, class member
+avatars, ten-row Level pagination, observation history, and simpler session copy/controls.
 The observation action moves from Progres to the Level table between Tingkat Numerasi and
 Status (`UI-09`, `DES-18`); read-only history stays available on Progres.
 Implementation modules are split across `src/features/kelas`, `progres`, and `sesi`, with

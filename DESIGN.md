@@ -395,3 +395,34 @@ Use `/kelas` without an application prefix (`UI-06`). Class tabs use `siswa`, `l
 `progres`, and `sesi`; new sessions use `sesi/baru`, and saved sessions use `sesi/[sessionId]`
 under the current class. Breadcrumb labels and all shared navigation/selector links follow
 these paths. The route-group name is implementation-only and does not appear in URLs.
+
+## DES-24 — Clear, rounded teacher interface
+
+The latest user direction (`UI-10`) supersedes the sidebar, phase badges, class switcher,
+and technical preview copy. Use a white 76 px header: Selaras logo left, Kelas/Jadwal centered,
+profile right. Navigation text is black with one 4 px purple underline moving between links;
+remove its transition for reduced motion. Keep both links visible on narrow screens.
+
+Use Nunito (SIL Open Font License), a free rounded alternative to SF Pro Rounded, at 400–800
+weights with system fallbacks. Minimum visible type is 12 px; body 14–16 px, section titles
+20 px, page titles 28–32 px. Keep existing button sizes/radius. Main outlines are 2 px with
+soft neutral borders, white Cards, no card shadows. Tables share 14 px text, 48 px rows,
+pastel headers, and consistent dividers while retaining their current columns/layouts.
+
+All Selects and dropdown menu actions use pastel fills with matching dark text. Level colors
+follow a consistent five-color sequence; selection also uses a checkmark. Destructive actions
+remain pink. Keep Base UI portals, focus rings, errors, and keyboard behavior.
+
+Class cards show up to three overlapping initial avatars and a numeric member count. Detail
+headers use a plain title and short explanation, with no phase badge or class selector. Level
+tables paginate ten students independently per class and use a Riwayat observasi action between
+Numerasi and Status. History opens first and offers Tambah catatan, preserving observation entry.
+
+Simplify sessions with two editable fields (subject/date), a plain timing summary, one schedule
+preview, and save/print actions. Put group task detail behind the shared Collapsible. Remove
+V1/V2 panels, snapshot terminology, and redundant legends/banners. `/jadwal` lists sessions
+across classes using only stored dates and durations. Use everyday Indonesian and one concise
+notice about memory-only data; no visible “Contoh” labels. Existing level/group values remain.
+
+References: [Classroomscreen](https://classroomscreen.com/),
+[Nunito font and license](https://github.com/google/fonts/tree/main/ofl/nunito).
