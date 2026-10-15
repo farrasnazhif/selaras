@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Atom, CalendarDays, Users } from "lucide-react";
+import { CalendarDays, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import {
   classPath,
@@ -9,20 +9,21 @@ import {
   displayDate,
 } from "@/features/shared/constants/presentation";
 import { usePreview } from "@/features/shared/components/preview-provider";
-import { CreateClassroomDialog } from "@/features/kelas/components/create-classroom-dialog";
+import { getClassroomCardVariant } from "../constants/card-variants";
+import Image from "next/image";
+import { SearchInput } from "@/components/ui/search-input";
 
 export function ClassroomsView() {
   const { classrooms, sessions, allStudents } = usePreview();
   return (
     <div>
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-line pb-5">
-        <div>
-          <h1 className="text-[28px] font-bold">Kelas</h1>
-          <p className="text-sm text-muted">
-            Kelola rombongan belajar dan jadwal pembelajaran kelas rangkap.
-          </p>
+      <header className="mb-6 flex items-center justify-between gap-4 border-b border-line pb-5">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold md:text-[28px]">Ruang Kelas</h1>
+          <p className="text-sm text-muted">Kelola Ruangan Kelas Anda</p>
         </div>
-        <CreateClassroomDialog />
+
+        <SearchInput label="Cari Kelas" className="w-36 shrink-0 sm:w-56" />
       </header>
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         {classrooms.map((classroom) => {
@@ -32,6 +33,8 @@ export function ClassroomsView() {
           const count = allStudents.filter(
             (student) => student.classroomId === classroom.id,
           ).length;
+          const variant = getClassroomCardVariant(classroom.id);
+          const Icon = variant.icon;
           return (
             <Link
               key={classroom.id}
@@ -40,19 +43,23 @@ export function ClassroomsView() {
             >
               <Card className="relative flex flex-col h-full min-h-48 p-0">
                 {/* banner */}
-                <div className="h-24 w-full shrink-0 overflow-hidden bg-purple-500 rounded-t-xl">
-                  <div
-                    className="h-full w-full scale-110"
-                    style={{
-                      background:
-                        "radial-gradient(ellipse at 15% 30%, #43135f 0%, transparent 35%), radial-gradient(ellipse at 55% 80%, #db69ed 0%, transparent 45%), radial-gradient(ellipse at 90% 10%, #9639c9 0%, transparent 45%), #b94be1",
-                      filter: "blur(18px)",
-                    }}
+                <div className="relative h-18 w-full shrink-0 overflow-hidden rounded-t-xl">
+                  <Image
+                    src={variant.banner}
+                    alt="Banner Image"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-2">
-                    <Atom />
+                    <Icon
+                      size={24}
+                      strokeWidth={2.5}
+                      className={`shrink-0 ${variant.iconColor}`}
+                      aria-hidden="true"
+                    />
                     <h2 className="text-xl font-bold">
                       {classroomTitle(classroom)}
                     </h2>
