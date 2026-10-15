@@ -44,9 +44,14 @@ the preview's Siswa class cards (`UI-04`); other application filtering remains o
 - `src/app/(auth)/`: Public login and registration routes.
 - `src/app/(dashboard)/`: Protected dashboard, project list, and project-detail routes.
 - `src/app/sandbox/`: Only `page.tsx`; sandbox behavior belongs in its feature.
-- `src/app/(selaras)/`: Public UI-only preview with Indonesian product paths and no `/app` prefix.
+- `src/app/kelas/`: Public UI-only preview routes and layout; product URLs contain no `/app` prefix.
+- `src/app/sesi/` and `src/app/progres/`: Short redirects to the example session builder and progress tab.
 - `src/features/`: Auth, projects, sandbox, and the local Selaras UI preview, organized into
   purpose-specific category subfolders. The Selaras preview has no feature API/backend modules.
+- `src/features/kelas/`: Class list/details, students, levels, grouping, and class fixtures.
+- `src/features/progres/`: Student progress page.
+- `src/features/sesi/`: Session list, builder, saved session, schedule, and task fixtures.
+- `src/features/shared/`: Preview state, shell, and types shared between page features.
 - `src/components/ui/`: One flat reusable component library, CSS tokens, catalog, and MIT notice.
 - `src/components/layout/`: The authenticated application shell.
 - `src/providers/`: Query cache, authenticated-user lifecycle, and light-only rendering (theme provider removed).
@@ -148,6 +153,9 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
   `constants/`, or `types/`, creating only the folders needed.
 - Keep feature roots free of loose files; import modules directly without compatibility re-exports.
 - Keep route pages thin. Sandbox catalogs and validation stay under `src/features/sandbox/`.
+- Keep Selaras routes directly under `src/app/<path>` without a route-group folder. Keep page
+  components and owned fixtures/validations under `src/features/kelas`, `progres`, or `sesi`;
+  put only cross-page preview infrastructure in `src/features/shared`.
 - Reuse helpers and controls before adding implementations or dependencies.
 - Use React Hook Form for forms and Zod at both form and feature API boundaries.
 - Document deliberate limitations as `shortcut: <limit>, <when to upgrade>`.

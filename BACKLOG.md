@@ -22,6 +22,9 @@ The account dropdown contains only disabled Settings and Sign out actions in thi
 (`UI-07`, `DES-19`); enabling them awaits resolution of `Q-03`.
 Product URLs now use Bahasa Indonesia without an application prefix (`UI-06`, `DES-22`);
 all preview navigation and setup links follow the renamed routes.
+Implementation modules are split across `src/features/kelas`, `progres`, and `sesi`, with
+cross-page preview state/shell in `src/features/shared`; App Router pages live directly under
+`src/app/kelas`, `src/app/progres`, and `src/app/sesi` with no Selaras route-group directory.
 
 ## Working agreement
 

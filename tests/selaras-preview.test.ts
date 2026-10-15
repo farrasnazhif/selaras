@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { PREVIEW_STUDENTS, phaseForGrade } from "../src/features/selaras/constants/preview.ts";
-import { observationSchema, previewStudentSchema } from "../src/features/selaras/validations/observation.ts";
-import { LITERACY_ROTATION, LITERACY_LEVELS, NUMERACY_LEVELS } from "../src/features/selaras/constants/reference-content.ts";
-import { classroomPreviewSchema } from "../src/features/selaras/validations/classroom.ts";
-import { sessionPreviewSchema } from "../src/features/selaras/validations/session.ts";
-import { getStudentPage } from "../src/features/selaras/constants/student-list.ts";
+import { PREVIEW_STUDENTS, phaseForGrade } from "../src/features/kelas/constants/preview.ts";
+import { observationSchema, previewStudentSchema } from "../src/features/kelas/validations/observation.ts";
+import { LITERACY_ROTATION } from "../src/features/sesi/constants/reference-content.ts";
+import { LITERACY_LEVELS, NUMERACY_LEVELS } from "../src/features/kelas/constants/reference-content.ts";
+import { classroomPreviewSchema } from "../src/features/kelas/validations/classroom.ts";
+import { sessionPreviewSchema } from "../src/features/sesi/validations/session.ts";
+import { getStudentPage } from "../src/features/kelas/constants/student-list.ts";
 
 test("student cards paginate five rows, combine name/group filters, and stay within their class", () => {
   const first = getStudentPage(PREVIEW_STUDENTS, "first", "", "all", 1);
