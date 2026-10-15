@@ -395,6 +395,13 @@ halaman dan profil demo tidak terautentikasi. Jangan mengarahkan ke halaman reka
 memanggil logout terhadap sesi starter yang tidak terkait. Aktifkan setelah keputusan identitas
 dan tujuan pengaturan diselesaikan pada `Q-03`.
 
+### UI-09 — Penempatan tindakan Observasi [instruksi pengguna]
+
+**UI-09-AC-01:** tabel tab Level memiliki kolom Observasi di antara Tingkat Numerasi dan
+Status; tombol membuka form observasi untuk siswa pada baris terkait.
+**UI-09-AC-02:** tab Progres tidak memiliki tombol tambah Observasi pada desktop maupun mobile.
+Tindakan Riwayat tetap tersedia untuk membaca penilaian dan catatan yang sudah ada.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |

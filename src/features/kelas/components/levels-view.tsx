@@ -14,6 +14,7 @@ import {
 import type { PreviewStudent } from "@/features/shared/types/preview";
 import { usePreview } from "@/features/shared/components/preview-provider";
 import { DiagnosticGuide, LevelRubrics } from "@/features/kelas/components/level-rubrics";
+import { ObservationDialog } from "@/features/kelas/components/observation-dialog";
 
 export function LevelsView() {
   const { students, grades, setLevel } = usePreview();
@@ -71,6 +72,12 @@ export function LevelsView() {
           triggerProps={{ "aria-label": `Tingkat numerasi ${student.name}` }}
         />
       ),
+    },
+    {
+      id: "observation",
+      label: "Observasi",
+      value: () => "",
+      render: (student) => <ObservationDialog student={student} />,
     },
     {
       id: "status",

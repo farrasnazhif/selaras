@@ -343,8 +343,10 @@ provide content and organization, rather than a change to the typeface or black 
 - Class list: compact page header + create action, one linked class card, phase and fictional-data
   badges, student count, last-session date, and a quiet demo-data note.
 - Class detail: Breadcrumbs, class title/phase/data badges, Siswa/Level/Progres/Sesi Tabs.
-  Level tab contains class-separated Tables with both Select level controls, local-state status,
+  Level tab contains class-separated Tables with both Select level controls, an Observasi action
+  column between Tingkat Numerasi and Status (`UI-09`), local-state status,
   diagnostic rubric dialog, and two rubric Cards. Use the reference's seven/eight roster split.
+  Progres retains Riwayat on desktop/mobile and places observation entry on the Level tab.
 - Session builder: four labeled controls (subject/duration/block/date), a template-preview action,
   a two-lane rotation table, three principle Cards, and preview/save actions.
 - Session detail: four-level Breadcrumbs, subject/date title, summary, board and print actions,

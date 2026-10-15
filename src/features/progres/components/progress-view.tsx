@@ -61,14 +61,9 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
     { id: "change", label: "Perubahan", value: () => "", render: change },
     {
       id: "actions",
-      label: "Catatan & riwayat",
+      label: "Riwayat",
       value: () => "",
-      render: (student) => (
-        <div className="flex flex-wrap gap-2">
-          <ObservationDialog student={student} />
-          <ObservationDialog student={student} history />
-        </div>
-      ),
+      render: (student) => <ObservationDialog student={student} history />,
     },
   ];
   return (
@@ -137,8 +132,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
                       </div>
                     </dl>
                     <div className="mt-4">{change(student)}</div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <ObservationDialog student={student} />
+                    <div className="mt-4">
                       <ObservationDialog student={student} history />
                     </div>
                   </Card>
