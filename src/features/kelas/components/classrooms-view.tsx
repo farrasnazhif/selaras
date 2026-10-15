@@ -21,15 +21,15 @@ export function ClassroomsView() {
   const visible = classrooms.filter((classroom) => classroomTitle(classroom).toLocaleLowerCase("id").includes(query.trim().toLocaleLowerCase("id")));
   return (
     <div>
-      <header className="mb-6 flex items-center justify-between gap-4 border-b border-line pb-5">
+      <header className="mb-ui-md flex flex-wrap items-center justify-between gap-ui-sm border-b border-line pb-ui-md">
         <div className="min-w-0">
           <h1 className="text-2xl font-bold md:text-[28px]">Ruang Kelas</h1>
           <p className="text-sm text-muted">Kelola Ruangan Kelas Anda</p>
         </div>
 
-        <SearchInput label="Cari kelas" placeholder="Cari kelas" value={query} onChange={(event) => setQuery(event.target.value)} className="w-36 shrink-0 sm:w-56" />
+        <SearchInput label="Cari kelas" placeholder="Cari kelas" value={query} onChange={(event) => setQuery(event.target.value)} onClear={() => setQuery("")} clearLabel="Hapus pencarian kelas" className="w-full sm:w-64" />
       </header>
-      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-ui-md sm:grid-cols-2 xl:grid-cols-3">
         {visible.map((classroom) => {
           const lastSession = sessions
             .filter((session) => session.classroomId === classroom.id)
@@ -55,7 +55,7 @@ export function ClassroomsView() {
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <div className="p-4">
+                <div className="p-ui-sm">
                   <div className="flex items-center gap-2">
                     <Icon
                       size={24}
@@ -67,7 +67,7 @@ export function ClassroomsView() {
                       {classroomTitle(classroom)}
                     </h2>
                   </div>
-                  <div className="mt-4 flex flex-wrap justify-between gap-3 border-t border-line pt-4 text-xs text-muted">
+                  <div className="mt-ui-sm flex flex-wrap justify-between gap-ui-sm border-t border-line pt-ui-sm text-xs text-muted">
                     <span role="img" aria-label={`${count} siswa`} className="flex items-center gap-2">
                       <span aria-hidden="true"><AvatarGroup people={members.slice(0, 3).map((student) => ({ name: student.name }))} max={3} /></span>
                       <span aria-hidden="true" className="text-sm font-bold">{count}</span>

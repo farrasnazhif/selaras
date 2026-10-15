@@ -67,9 +67,9 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
     },
   ];
   return (
-    <div className="space-y-6 text-ink">
+    <div className="space-y-ui-group text-ink">
       {!embedded && <h1 className="text-[28px] font-bold">Progres siswa</h1>}
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-ui-sm">
         <div>
           <h2 className="text-xl font-bold">Perubahan level siswa</h2>
           <p className="mt-2 max-w-xl text-sm text-muted">
@@ -99,7 +99,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
         );
         return (
           <section key={classKey}>
-            <h3 className="mb-4 flex items-center gap-2 text-lg font-bold">
+            <h3 className="mb-ui-sm flex items-center gap-2 text-lg font-bold">
               <Users size={19} aria-hidden="true" />
               Kelas {grades[classKey]}
               <Badge tone="neutral">{roster.length} siswa</Badge>
@@ -112,12 +112,12 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
                 caption={`Progres ${subject} kelas ${grades[classKey]}`}
               />
             </div>
-            <ul className="space-y-4 md:hidden">
+            <ul className="space-y-ui-sm md:hidden">
               {roster.map((student) => (
                 <li key={student.id}>
                   <Card>
                     <h4 className="font-bold">{student.name}</h4>
-                    <dl className="mt-4 grid grid-cols-2 gap-4 text-sm">
+                    <dl className="mt-ui-sm grid grid-cols-2 gap-ui-sm text-sm">
                       <div>
                         <dt className="text-xs text-muted">Awal</dt>
                         <dd className="mt-1">
@@ -131,8 +131,8 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
                         </dd>
                       </div>
                     </dl>
-                    <div className="mt-4">{change(student)}</div>
-                    <div className="mt-4">
+                    <div className="mt-ui-sm">{change(student)}</div>
+                    <div className="mt-ui-sm">
                       <ObservationDialog student={student} />
                     </div>
                   </Card>

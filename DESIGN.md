@@ -426,3 +426,23 @@ notice about memory-only data; no visible “Contoh” labels. Existing level/gr
 
 References: [Classroomscreen](https://classroomscreen.com/),
 [Nunito font and license](https://github.com/google/fonts/tree/main/ofl/nunito).
+
+## DES-25 — Spacing and complete schedule overview
+
+`UI-11` refines the product UI with 15 px small spacing (compact padding, related controls),
+30 px medium spacing (card interiors, panel gaps and page gutters), and 60 px between major
+content groups. Use 15 px mobile gutters and 30 px desktop gutters. Keep icon/label micro-gaps
+and control heights unchanged. This overrides the earlier product spacing values.
+
+SearchInput uses one neutral surface and 2 px outline, a centered search icon, flexible text
+area, and compact clear/filter controls. Remove the inner Input border/padding conflict;
+show a focus-within ring. Wrap title/search rows on small screens and keep search usable.
+
+Only the Level action returns to Observasi, opening the existing note form directly and
+closing after save; preserve its position and every other column, option, and pagination rule.
+Riwayat observasi elsewhere still opens the history first.
+
+The overall Jadwal page shows full saved rotation grids grouped by date, with each session's
+class, subject, duration, member count, and link to its detail page. Reuse RotationGrid with the
+saved roster/grade pair. Do not infer wall-clock times from elapsed-minute blocks, combine
+unrelated sessions into a new rotation, or substitute literacy material for unavailable subjects.

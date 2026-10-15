@@ -21,8 +21,8 @@ export function GroupsStep() {
   const { grades, students, moveStudent } = usePreview();
   const [message, setMessage] = useState("");
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-window border-2 border-line bg-surface p-4">
+    <div className="space-y-ui-group">
+      <div className="flex flex-wrap items-center justify-between gap-ui-sm rounded-window border-2 border-line bg-surface p-ui-sm">
         <div className="max-w-xl">
           <p className="text-sm font-semibold">Susunan kelompok</p>
           <p className="mt-1 text-sm leading-relaxed text-muted">
@@ -32,7 +32,7 @@ export function GroupsStep() {
       </div>
       {CLASS_KEYS.map((classKey) => (
         <section key={classKey} aria-labelledby={`groups-${classKey}`}>
-          <div className="mb-4 flex items-center gap-3">
+          <div className="mb-ui-sm flex items-center gap-ui-sm">
             <h2 id={`groups-${classKey}`} className="text-xl font-extrabold">
               Kelas {grades[classKey]}
             </h2>
@@ -44,16 +44,16 @@ export function GroupsStep() {
               siswa
             </Badge>
           </div>
-          <div className="grid items-start gap-4 md:grid-cols-3">
+          <div className="grid items-start gap-ui-sm md:grid-cols-3">
             {GROUP_KEYS.map((group) => {
               const members = students.filter(
                 (student) =>
                   student.classKey === classKey && student.group === group,
               );
               return (
-                <Card key={group} className="min-w-0 p-4">
+                <Card key={group} className="min-w-0 p-ui-sm">
                   <div
-                    className={`mb-2 rounded-control border-2 border-line p-3 ${groupSurfaces[group]}`}
+                    className={`mb-2 rounded-control border-2 border-line p-ui-sm ${groupSurfaces[group]}`}
                   >
                     <h3 className="text-lg font-bold">
                       Kelompok {GROUP_LABELS[group]}
@@ -67,7 +67,7 @@ export function GroupsStep() {
                       {members.map((student) => (
                         <li
                           key={student.id}
-                          className="flex items-center gap-2 py-3"
+                          className="flex items-center gap-2 py-ui-sm"
                         >
                           <span className="min-w-0 flex-1 break-words text-sm font-semibold">
                             {student.name}

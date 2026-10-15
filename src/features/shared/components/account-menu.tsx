@@ -14,7 +14,7 @@ export function AccountMenu() {
       trigger={
         <Button
           variant="quiet"
-          className="h-11 gap-2 px-1.5 sm:px-3"
+          className="h-11 gap-2 px-1.5 sm:px-ui-sm"
           aria-label={`Opsi akun ${profile.email}`}
         >
           <span aria-hidden="true">

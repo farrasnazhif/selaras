@@ -428,6 +428,23 @@ mengubah alur penilaian/pengelompokan yang belum disepakati.
 
 Ini menggantikan sidebar, pemilih kelas `UI-05`, dan copy teknis terdahulu untuk tampilan produk.
 
+### UI-11 — Spasi, pencarian, Observasi, dan gabungan jadwal [instruksi pengguna]
+
+**UI-11-AC-01:** gunakan spasi kecil 15 px, sedang 30 px, dan 60 px antar kelompok
+konten pada tampilan produk. Jarak mikro ikon/label dan ukuran kontrol tetap.
+**UI-11-AC-02:** SearchInput memiliki satu permukaan/border, ikon dan teks sejajar,
+serta fokus terlihat. Pencarian kelas/siswa tetap berfungsi, dapat dikosongkan, dan tidak
+terpotong pada layar sempit; perubahan pencarian siswa kembali ke halaman pertama.
+**UI-11-AC-03:** di tab Level, pulihkan tombol Observasi yang langsung membuka formulir
+catatan. Tetap di antara Numerasi dan Status; kolom, pilihan level, dan pagination tidak berubah.
+Riwayat observasi di tempat lain tetap tersedia. Ini menggantikan aksi history-first Level pada
+`UI-10-AC-04`.
+**UI-11-AC-04:** `/jadwal` menggabungkan jadwal lengkap yang disimpan dari seluruh kelas,
+dikelompokkan per tanggal, dengan kegiatan/rotasi tiap sesi, bukan hanya tabel tautan.
+Gunakan daftar siswa dan kelas yang disimpan bersama sesi. Pertahankan tautan detail,
+keadaan kosong, dan pemberitahuan materi yang belum tersedia. Jangan mengarang jam mulai,
+urutan pelajaran dalam satu hari, atau aturan bentrok antar sesi yang belum ditetapkan.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |

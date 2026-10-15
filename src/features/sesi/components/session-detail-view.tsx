@@ -26,7 +26,7 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
   const path = classPath(classroom.id);
   const title = `${session.subject === "literasi" ? "Literasi" : "Numerasi"}, ${displayDate(session.date)}`;
   return (
-    <div className="space-y-6">
+    <div className="space-y-ui-md">
       <div className="print-hidden">
         <Breadcrumbs
           items={[
@@ -37,9 +37,9 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
           ]}
         />
       </div>
-      <header className="flex flex-wrap items-start justify-between gap-4 border-b border-line pb-5">
+      <header className="flex flex-wrap items-start justify-between gap-ui-sm border-b border-line pb-ui-md">
         <div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-ui-sm">
             <h1 className="text-[28px] font-bold">{title}</h1>
           </div>
           <p className="mt-2 text-sm text-muted">
@@ -47,7 +47,7 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
             {session.blockMinutes} menit · {session.roster.length} siswa
           </p>
         </div>
-        <div className="print-hidden flex flex-wrap gap-2">
+        <div className="print-hidden flex flex-wrap gap-ui-sm">
           <Dialog
             open={boardOpen}
             onOpenChange={setBoardOpen}

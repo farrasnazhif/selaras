@@ -17,8 +17,8 @@ import { GroupsStep } from "@/features/kelas/components/groups-step";
 
 export function ClassStudentsView() {
   return (
-    <div className="space-y-8 text-ink">
-      <div className="grid items-start gap-5 xl:grid-cols-2">
+    <div className="space-y-ui-group text-ink">
+      <div className="grid items-start gap-ui-md xl:grid-cols-2">
         {CLASS_KEYS.map((key) => (
           <StudentClassCard key={key} classKey={key} />
         ))}
@@ -57,22 +57,23 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
   ];
   return (
     <Card>
-      <div className="mb-4 flex flex-wrap items-center gap-3">
+      <div className="mb-ui-sm flex flex-wrap items-center gap-ui-sm">
         <h2 className="mr-auto text-xl font-bold">Siswa kelas {grade}</h2>
-        <div className="flex min-w-0 flex-1 basis-56 items-center gap-2">
-          <div className="min-w-0 flex-1">
+        <div className="flex min-w-0 flex-1 basis-full flex-wrap items-center gap-ui-sm sm:basis-56">
+          <div className="min-w-40 flex-1">
             <SearchInput
               label={`Cari nama siswa kelas ${grade}`}
               placeholder="Cari siswa…"
               value={query}
-              className="min-h-10 py-2 text-sm leading-5"
+              clearLabel="Hapus pencarian siswa"
+              onClear={() => { setQuery(""); setPage(1); }}
               onChange={(event) => {
                 setQuery(event.target.value);
                 setPage(1);
               }}
             />
           </div>
-          <div className="w-36 shrink-0">
+          <div className="w-28 shrink-0">
             <Select
               value={group}
               options={[
@@ -100,7 +101,7 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
           </div>
         </div>
       </div>
-      <p role="status" className="mb-3 text-xs text-muted">
+      <p role="status" className="mb-ui-sm text-xs text-muted">
         {total} siswa{query || group !== "all" ? " ditemukan" : ""}
       </p>
       <Table emptyMessage="Tidak ada data yang ditampilkan."
@@ -111,7 +112,7 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
       />
       {pageCount > 1 && (
         <div
-          className="mt-4"
+          className="mt-ui-sm"
           role="group"
           aria-label={`Halaman siswa kelas ${grade}`}
         >

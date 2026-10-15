@@ -30,6 +30,9 @@
     sans-serif;
 }
 @theme inline {
+  --spacing-ui-sm: 15px;
+  --spacing-ui-md: 30px;
+  --spacing-ui-group: 60px;
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-foreground: var(--foreground);
@@ -445,6 +448,15 @@
     @apply bg-surface p-6;
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
+  }
+  .selaras-shell .ui-card {
+    @apply p-ui-md;
+  }
+  .selaras-shell .field {
+    @apply gap-ui-sm;
+  }
+  .selaras-shell [role="tabpanel"] {
+    @apply pt-ui-md;
   }
   .ui-positioner {
     z-index: 60;
@@ -923,10 +935,26 @@
 .ui-coded-option[data-selected], .ui-select-trigger[data-placeholder] { color: var(--control-ink); }
 .input:focus { border-color: var(--focus); }
 .input[aria-invalid="true"] { border-color: var(--danger); }
+.ui-search-input:focus-within {
+  border-color: var(--focus);
+  outline: 3px solid var(--accent-tint);
+  outline-offset: 2px;
+}
+.ui-search-input[data-invalid] { border-color: var(--danger); }
+.ui-search-input .ui-search-field {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+  box-shadow: none;
+}
 .product-nav-line { transition: transform 180ms ease-out; }
 .selaras-shell .ui-table { font-size: 14px; }
-.selaras-shell .ui-table th { min-height: 48px; padding: 14px 16px; background: var(--primary-tint); color: var(--ink); border-bottom-width: 2px; font-weight: 800; }
-.selaras-shell .ui-table td { height: 52px; padding: 12px 16px; }
+.selaras-shell .ui-table th { min-height: 48px; padding: var(--spacing-ui-sm); background: var(--primary-tint); color: var(--ink); border-bottom-width: 2px; font-weight: 800; }
+.selaras-shell .ui-table td { height: 52px; padding: var(--spacing-ui-sm); }
 .selaras-shell .tabs-list { border-bottom-width: 2px; }
 .selaras-shell .tab { color: var(--ink); }
 .selaras-shell .tab[data-active] { background: var(--primary-tint); color: var(--accent-ink); box-shadow: none; font-weight: 800; }

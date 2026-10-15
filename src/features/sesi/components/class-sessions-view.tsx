@@ -15,8 +15,8 @@ export function ClassSessionsView() {
     (session) => session.classroomId === classroom.id,
   );
   return (
-    <div className="space-y-5 text-ink">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="space-y-ui-md text-ink">
+      <div className="flex flex-wrap items-center justify-between gap-ui-sm">
         <div>
           <h2 className="text-xl font-bold">Sesi pembelajaran</h2>
           <p className="mt-1 text-sm text-muted">
@@ -34,7 +34,7 @@ export function ClassSessionsView() {
         </Button>
       </div>
       {items.length ? (
-        <div className="grid gap-4 xl:grid-cols-2">
+        <div className="grid gap-ui-sm xl:grid-cols-2">
           {items.map((session) => (
             <Link
               key={session.id}
@@ -42,14 +42,14 @@ export function ClassSessionsView() {
               className="block rounded-card"
             >
               <Card>
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center justify-between gap-ui-sm">
                   <h3 className="text-lg font-bold">
                     {session.subject === "literasi" ? "Literasi" : "Numerasi"},{" "}
                     {displayDate(session.date)}
                   </h3>
                   <ArrowRight size={17} aria-hidden="true" />
                 </div>
-                <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted">
+                <div className="mt-ui-sm flex flex-wrap items-center gap-ui-sm text-xs text-muted">
                   <span className="flex items-center gap-1.5">
                     <Clock3 size={14} aria-hidden="true" />
                     {session.duration} menit

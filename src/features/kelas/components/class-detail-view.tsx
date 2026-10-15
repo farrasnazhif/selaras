@@ -18,7 +18,7 @@ export function ClassDetailView({ tab = "level" }: { tab?: ClassTab }) {
   const router = useRouter();
   if (!classroom) return <ClassUnavailable />;
   return (
-    <div className="space-y-5">
+    <div className="space-y-ui-md">
       <Breadcrumbs
         items={[
           { label: "Kelas", href: "/kelas" },
