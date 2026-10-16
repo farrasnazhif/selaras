@@ -61,6 +61,13 @@ teacher/student/print rendering. Reuse Dropzone/file validation; abort pending r
 old content on errors/cancel. Write affected contracts without running tests; typecheck/lint/build
 apply. No backend, permanent upload, AI/OCR or browser persistence.
 
+UI-22/DES-36 authorizes the public Selaras landing page at `/`, implemented under
+`src/features/landing/components` with a thin route and page-specific metadata. Reuse Button,
+Lucide and existing tokens. Include a teacher-oriented introduction, illustrative workflow,
+print/board outputs, `/kelas` CTA and `/sandbox` footer access. Keep white/pastel solid surfaces,
+no card shadows or gradients, and explicit fictional-data/reload notice. No backend or new
+dependencies. Tests stay unrun; typecheck/lint/build apply.
+
 ## Working agreement
 
 Current direct implementation scope (`UI-17`, `DES-31`): separate teacher-entered subject/topic

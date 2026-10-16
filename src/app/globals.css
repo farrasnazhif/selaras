@@ -86,7 +86,6 @@
 }
 
 @layer components {
-  .landing-page,
   .auth-layout {
     background: radial-gradient(
       circle at 75% 25%,
@@ -876,6 +875,16 @@
 .selaras-shell .ui-table-scroll {
   box-shadow: none;
   border: 2px solid var(--line);
+}
+
+.selaras-landing .ui-card {
+  padding: 30px;
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.selaras-landing section[id] {
+  scroll-margin-top: 30px;
 }
 
 @media print {

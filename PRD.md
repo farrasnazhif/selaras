@@ -69,7 +69,8 @@ AI pembuat variasi bukan syarat keberhasilan MVP. Penyimpanan lampiran, pencaria
 
 ### J-01 — Menyiapkan satu sesi (`FR-01`–`FR-05`)
 
-Alur produk yang direncanakan; titik masuknya belum diputuskan (`Q-08`), dan bukan perilaku beranda starter saat ini.
+Alur produk yang direncanakan; UI-22 menetapkan beranda `/` dengan CTA pratinjau `/kelas`.
+Identitas dan integrasi produksi masih menunggu `Q-08`.
 
 1. Guru membuka aplikasi dan memilih **Buat sesi**.
 2. Guru memilih dua tingkat kelas yang berbeda; sistem menampilkan fase masing-masing.
@@ -628,6 +629,17 @@ foto pengganti perlu konfirmasi ulang. V5 memeriksa pernyataan itu serta struktu
 bukan melakukan OCR atau mengklaim isi gambar diaudit otomatis. Tanpa foto alur tetap bekerja.
 Tidak menambah backend, penyimpanan lampiran permanen, AI/OCR atau persistensi browser.
 
+### UI-22 — Beranda publik Selaras [instruksi pengguna]
+
+**UI-22-AC-01:** `/` menjadi landing page berbahasa Indonesia untuk guru kelas rangkap,
+menjelaskan kelas, kelompok, penyusunan sesi dan keluaran cetak/papan tulis. CTA membuka
+pratinjau `/kelas`; `/sandbox` tetap tersedia melalui footer. Ini mengganti keputusan beranda
+tombol tunggal pada ST-04, tanpa mengubah autentikasi, dashboard atau proyek starter.
+**UI-22-AC-02:** gunakan desain bersama, navigasi bagian halaman dan ilustrasi sesi tanpa
+identitas siswa. Jelaskan data fiktif dan perubahan hilang saat reload sebelum mencoba.
+Tidak mengklaim penyimpanan permanen, AI aktif, dampak terukur atau dukungan offline aplikasi.
+Tidak menambah backend, pendaftaran, harga atau testimoni rekaan.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |
@@ -808,7 +820,7 @@ Jawaban berikut tidak boleh ditebak saat membuat tiket Ready. Bila suatu kebutuh
 | Q-05 | Bagaimana format tugas visual hitam-putih, ukuran/orientasi halaman, isi paket PDF (jadwal/tugas/nama siswa), dan versi papan tulis ditentukan?                                                                         | FR-05, SCR-06, T10, NFR-04                                    |
 | Q-06 | Apakah penyelenggara sudah mengonfirmasi tertulis penggunaan siswa fiktif? Siapa memeriksa label dan izin demo?                                                                                                         | NFR-08, T13, J-01, ST-05                                      |
 | Q-07 | Apakah urutan P0/P1 diterima? Bila tidak sempat, apakah tim mengizinkan penundaan progres atau penyediaan tes? Tanpa keputusan, enam modul tetap lingkup MVP brief.                                                     | FR-02, FR-06, bagian 3/13/16, T11–T12                         |
-| Q-08 | Apa titik masuk Selaras jika `/` tetap tombol sandbox? Apa fungsi `/dashboard` dan `/projects` untuk produk; tetap contoh, diadaptasi, atau diganti dengan izin eksplisit? Wizard satu layar atau beberapa route?       | ST-02–ST-04, J-01, SCR-01–SCR-07                              |
+| Q-08 | UI-22 menetapkan `/` sebagai landing page dengan CTA ke `/kelas`. Adaptasi `/dashboard` dan `/projects`, identitas produksi dan alur produk persisten masih terbuka. | ST-02–ST-04, J-01, SCR-01–SCR-07 |
 | Q-09 | Apakah kelas/roster digunakan lintas sesi dan disimpan di Supabase? Data identitas minimum, izin data nyata, retensi, edit/hapus, penghapusan berantai, dan penyimpanan PDF apa yang diperlukan?                        | FR-01, FR-05–FR-07, model data bagian 8, ST-03, NFR-04–NFR-05 |
 | Q-10 | Apa baseline progres, aturan tanpa pembanding, koreksi histori, dan kebijakan pembaruan sebelum dua minggu?                                                                                                             | FR-06, J-02, SCR-07, T11–T12                                  |
 | Q-11 | Apakah draft bertahan saat reload/keluar? Apakah edit siswa/level membatalkan hasil? Apakah generate ulang mempertahankan edit kelompok; roster snapshot atau data hidup?                                               | FR-03–FR-06, FR-08, J-04, SCR-03–SCR-06                       |
@@ -826,7 +838,7 @@ Status **pertahankan** di bawah mengikuti batas repositori saat ini; status **be
 | ST-01 | Email/password, konfirmasi/ulang kirim, callback, logout (`src/features/auth/`, route auth, proxy)                                                                 | **Pertahankan fondasi dan kontrol sesi.** Kebutuhan login/registrasi dalam perjalanan Selaras belum diputuskan (`Q-03`); tidak menambah peran siswa/admin.                                                                                                                                    |
 | ST-02 | Dashboard terlindungi menampilkan `ProjectsView`; `AppShell` bernavigasi Overview/Projects/sandbox                                                                 | **Pertahankan contoh; adaptasi produk belum diputuskan (`Q-08`).** Tidak menyebut statistik proyek sebagai progres belajar.                                                                                                                                                                   |
 | ST-03 | CRUD `projects` dengan `name`, `description`, `status`, `user_id`, RLS, constraints, dan query keys per pengguna                                                   | **Pertahankan contoh dan batas kepemilikan.** Bukan model sesi Selaras; tidak mengganti nama tabel atau mengonversi data menjadi siswa/sesi tanpa keputusan `Q-08`/`Q-09`.                                                                                                                    |
-| ST-04 | `/` berisi satu tombol terpusat menuju `/sandbox`                                                                                                                  | **Pertahankan**, termasuk halaman tanpa shared branded header. Usulan CTA buat sesi/sesi terakhir pada beranda sebelumnya bertentangan dengan guardrail; lokasi entry produk menunggu `Q-08`.                                                                                                 |
+| ST-04 | `/` semula berisi tombol terpusat menuju `/sandbox` | **Diganti atas instruksi pengguna (UI-22):** landing page Selaras, CTA `/kelas`, tautan `/sandbox` di footer. Starter auth/dashboard/projects tetap tersedia. |
 | ST-05 | Sandbox publik dengan 81 demo, katalog pencarian, dan state contoh (`src/features/sandbox/`)                                                                       | **Pertahankan seluruh demo publik selain Theme Toggle yang dihapus atas instruksi pengguna.** Colors demo dengan palet statis tersedia, tanpa palet sidebar; pencarian katalog bukan pencarian data aplikasi; tidak menghubungkan demo ke siswa privat atau mengubahnya menjadi layar produk. |
 | ST-06 | Beautiful UI/Base UI/Lucide, shared Button, Nunito/#7173FF/pastel, mode terang tunggal                                                                             | **Gunakan ulang dan pertahankan aksesibilitas.** Restyle Nunito/#7173FF/pastel/10 px/light-only disetujui pengguna untuk UI yang ada; tidak menambah shadcn atau library kedua. Komposisi layar produk tetap `Q-15`.                                                                          |
 | ST-07 | Shared Axios dan controls AI/upload tersedia sebagai fondasi/demonstrasi; integrasi AI, storage lampiran, search/filter aplikasi, realtime belum diimplementasikan | **Tidak masuk MVP wajib.** AI hanya variasi opsional dengan fallback template, tidak menentukan alokasi guru. Upload/storage, search aplikasi, dan realtime memerlukan lingkup eksplisit terpisah.                                                                                            |

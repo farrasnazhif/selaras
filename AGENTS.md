@@ -13,7 +13,8 @@ or removing the optional assessment tool (`Q-07`).
 Router, strict TypeScript, React, Supabase SSR authentication, TanStack Query, React Hook Form,
 Zod, Tailwind CSS, Lucide, and Beautiful UI with unstyled Base UI controls. It has email/password
 authentication, confirmation retry, a protected example dashboard, private per-user project
-CRUD, and a public sandbox with 81 demos. The landing page is one centered `/sandbox` button.
+CRUD, and a public sandbox with 81 demos. UI-22 authorizes a Selaras landing page at `/`,
+with a CTA to `/kelas` and a footer link to `/sandbox`.
 These examples remain available under `ST-01`–`ST-06`; projects are not Selaras sessions.
 
 **UI-only preview:** `/kelas`, `/jadwal`, `/sesi`, and `/progres` use existing UI controls, class-oriented
@@ -51,6 +52,7 @@ the preview's Siswa class cards (`UI-04`); other application filtering remains o
 - `src/features/`: Auth, projects, sandbox, and the local Selaras UI preview, organized into
   purpose-specific category subfolders. The Selaras preview has no feature API/backend modules.
 - `src/features/kelas/`: Class list/details, students, levels, grouping, and class fixtures.
+- `src/features/landing/`: Public Selaras introduction and preview entry; no backend or identity.
 - `src/features/progres/`: Student progress page.
 - `src/features/jadwal/`: Overall schedule across classes, served directly at `/jadwal`.
 - `src/features/sesi/`: Session list, builder, saved session, schedule, and task fixtures.
@@ -422,8 +424,10 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
 - Keep auth/dashboard/projects unless their removal is explicitly requested (`ST-01`–`ST-03`).
   Product adaptation and the entry screen are unresolved (`Q-03`, `Q-08`); do not convert example
   records or dashboard statistics into student sessions or progress.
-- Preserve the centered `/sandbox` landing button and pages without shared branded headers
-  (`ST-04`). The planned session CTA does not authorize changing `/`; resolve its location first.
+- UI-22/DES-36 replaces the centered landing buttons with the public Selaras introduction at
+  `/`, linking to `/kelas` and retaining `/sandbox` in its footer. Scope its marketing header
+  to that page; preserve other starter routes, auth and product navigation. Describe preview
+  features truthfully, including fictional data and memory-only changes; no invented impact claims.
 - Keep all remaining sandbox demos public and available. The read-only palette belongs only in
   the Colors demo; the sidebar palette, Theme Toggle, and accent picker were removed by request. Do not add radius controls,
   customization pages, workspace previews, instructional design panels, or private connections.

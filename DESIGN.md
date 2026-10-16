@@ -15,8 +15,9 @@ Supplied values are reproduction proposals accepted for this restyle, not measur
 The user supplied the Classroomscreen-inspired specification and explicitly selected **restyle
 existing UI**. Its palette, Nunito Sans typography, larger controls, rounded surfaces, and derived
 visual foundation replaces the former Inter/neutral/compact-button conventions. Keep Beautiful UI,
-Base UI behavior, Lucide, authentication, project CRUD, the centered sandbox landing link, and
-all public demos, except the removed Theme Toggle demo; Colors replaces it. Do not add a classroom canvas, widgets, marketing pages, or product features.
+Base UI behavior, Lucide, authentication, project CRUD, and all public demos, except the removed
+Theme Toggle demo; Colors replaces it. UI-22/DES-36 now authorizes the Selaras landing page at `/`.
+Do not add a classroom canvas, widgets, or unrelated product features.
 
 This is an inspired design using supplied reproduction values, not measured Classroomscreen
 production CSS. Do not copy its logo, photography, brand assets, or claim certified accessibility.
@@ -40,10 +41,10 @@ centered form up to 448 px; project detail stays a readable form up to 640 px.
 | Modal                        | 24/28 px existing padding, 20 px radius, constrained viewport and internal scroll |
 | Touch actions                | Button xs/sm 32/40 px; IconButton 32/40 px square; input 48 px; Select 32 px       |
 
-Retain the landing's single centered button; its backdrop and auth may use a subtle lavender
-radial wash. Dashboard summary cards use lavender; project icons use pastel blue. Sandbox
+DES-36 replaces the landing's centered button with a white/pastel marketing page without a
+gradient. Auth retains its existing backdrop. Dashboard summary cards use lavender; project icons use pastel blue. Sandbox
 previews are always white. Only the Colors catalog entry shows read-only color swatches with their hex values below. Assign these roles consistently, not random
-colors per control. Do not add a shared branded header or a marketing hero.
+colors per control. The landing's own header and hero are scoped to `/` by DES-36.
 
 ## 3. DES-03 — Typography and icons
 
@@ -266,7 +267,7 @@ Pertanyaan ini menambah konteks presentasi, tanpa mengubah pertanyaan/keputusan 
 
 | ID    | Keputusan yang belum tersedia                                                                                                                        | Desain / PRD terdampak                                                                                                                           |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| DQ-01 | Apa titik masuk produk, shell/navigasi, serta wizard satu layar/beberapa route? Adakah daftar sesi/sesi terakhir yang disetujui?                     | DES-02, DES-06–DES-07; SCR-01–SCR-07; Q-03/Q-08. `/` tetap sandbox.                                                                              |
+| DQ-01 | Apa identitas dan navigasi produksi serta daftar sesi/sesi terakhir? UI-22 sudah menetapkan landing `/` menuju pratinjau `/kelas`. | DES-06–DES-07/DES-36; SCR-01–SCR-07; Q-03/Q-08. Pratinjau tidak menetapkan kontrak produksi. |
 | DQ-02 | Nama/indikator/urutan enam level per mapel diterima (UI-14). Apa isi/skor tes, grade limits, dan parameter jadwal final?                                                               | DES-07–DES-10, DES-12; FR-01–FR-04/FR-06; Q-01/Q-02/Q-04/Q-12/Q-13.                                                                              |
 | DQ-03 | Apa data minimum/alur tambah-edit-hapus siswa; bagaimana pemindahan manual dikonfirmasi, dan kelompok kosong/timpang dijelaskan?                     | DES-08–DES-09; FR-01–FR-03/FR-07; Q-04/Q-09. Inline atau dialog pemindahan belum dipilih.                                                        |
 | DQ-04 | Apa aturan kembali, reload/keluar, generate ulang, dan edit setelah hasil dibuat?                                                                    | DES-02/DES-07–DES-11/DES-13; FR-03–FR-06/FR-08; Q-08/Q-11. Tidak menjanjikan autosave/draft recovery.                                            |
@@ -323,7 +324,7 @@ prototype compositions only; DQ/Q decisions for the functional product remain op
   Primary rows navigate between the three preview routes; its unused secondary list is hidden.
   The desktop grid follows the sidebar's current width. Keep a 1200 px content max,
   16/32/48 px responsive gutters, 24 px card padding, and 16/24 px panel gaps. Existing starter
-  layouts and landing remain intact. Main copy is Indonesian; the preview has its own lang attribute.
+  layouts remain intact; DES-36 separately replaces the landing. Main copy is Indonesian; the preview has its own lang attribute.
 - Each screen has one h1; 24 px section headings, 20 px card headings, 14/16 px body text.
   Keep white cards, the current five-color tokens, xs/sm Buttons, and semantic states.
 - Fictional student names and example group membership are labeled. Local fictional-student entry, class-preserving
@@ -553,3 +554,19 @@ no crop or stretch. Require an explicit non-reading declaration when a photo ser
 Photos are local memory only and contents require teacher review. Student output copies only the
 image/description/dimensions, no file name, roster metadata or ability declaration. Keep print
 images within the A4 content area and allow page continuation instead of clipping.
+
+## DES-36 — Public landing page
+
+UI-22 replaces the root entry with an Indonesian introduction for teachers. Use the existing
+Layers3/Selaras lockup, section links and a `/kelas` CTA in its own header; retain `/sandbox`
+in the footer. A split desktop hero pairs a 64 px/800 headline (42 px mobile) with a clearly
+labeled, identity-free session illustration. Follow with three workflow cards, print/board
+outputs and a final CTA. Describe only implemented preview capabilities; disclose fictional
+data and memory-only changes next to the first CTA. No invented testimonials or impact metrics.
+
+Use the bundled Nunito, existing shared Button/Card, Lucide and palette tokens. White foundation,
+solid lavender/mint/yellow accents, 1 px card borders, 20–28 px surfaces, no gradients or shadows.
+Keep 15/30/60 px spacing, a 1200 px container and minimum 12 px text. Stack hero and output columns
+on phones, keep the illustration readable at 360 px, and hide only supplementary header section
+links when space is tight. All navigation remains real links with visible focus; no fake controls,
+decorative animation or copied branding. Page-specific metadata must not rename starter routes.

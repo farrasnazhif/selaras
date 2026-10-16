@@ -25,6 +25,8 @@ Keep one shared `main` branch and use separate branches for ticket work.
 Follow [local setup](docs/setup.md) to install and run the starter. Open `/sandbox` to see the
 existing controls before planning replacements or new components. The landing page and sandbox
 work without Supabase; authentication and project data need the setup described there.
+The Selaras landing page at `/` introduces the local preview and links to `/kelas`; its footer
+keeps `/sandbox` available. Preview data is fictional and changes disappear on reload.
 
 **Result:** everyone can run the same starter from the shared repository.
 
