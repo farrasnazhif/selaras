@@ -1,4 +1,5 @@
-export const metadata = { title: "Masuk" };
+import { PAGE_METADATA } from "@/constants/metadata";
+export const metadata = PAGE_METADATA.login;
 
 export const dynamic = "force-dynamic";
 

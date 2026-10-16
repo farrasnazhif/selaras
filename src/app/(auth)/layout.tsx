@@ -1,4 +1,5 @@
-export const metadata = { title: { default: "Akun guru · Selaras", template: "%s · Selaras" } };
+import { PAGE_METADATA } from "@/constants/metadata";
+export const metadata = PAGE_METADATA.auth;
 
 export default function AuthLayout({
   children,

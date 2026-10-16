@@ -1,5 +1,9 @@
 # Use this starter with your team
 
+Edit site and page metadata in [`src/constants/metadata.ts`](src/constants/metadata.ts).
+`PAGE_METADATA.root` controls defaults; landing, product, auth, and individual page entries
+control their overrides. Route files reference these constants.
+
 ## Teacher accounts, Supabase, and optional AI (UI-24)
 
 The product area now requires a teacher account. `/` and `/sandbox` stay public. Configure

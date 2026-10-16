@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
+import { PAGE_METADATA } from "@/constants/metadata";
 import { TeacherLayout } from "@/features/shared/components/teacher-layout";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: { default: "Selaras", template: "%s · Selaras" },
-  description: "Satu guru, dua kelas, satu sesi yang tertata. Atur kegiatan belajar dengan mudah.",
-};
+export const metadata = PAGE_METADATA.product;
 
 export default function SelarasLayout({ children }: { children: React.ReactNode }) {
   return <TeacherLayout>{children}</TeacherLayout>;

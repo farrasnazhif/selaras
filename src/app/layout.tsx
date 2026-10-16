@@ -1,15 +1,8 @@
-import type { Metadata } from "next";
+import { PAGE_METADATA } from "@/constants/metadata";
 import { QueryProvider } from "@/providers/query-provider";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Fullstack Starter",
-    template: "%s · Fullstack Starter",
-  },
-  description:
-    "A small, complete foundation for your next hackathon. Next.js, Supabase, and a UI you own.",
-};
+export const metadata = PAGE_METADATA.root;
 
 export default function RootLayout({
   children,
