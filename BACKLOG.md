@@ -42,6 +42,14 @@ cross-page preview state/shell in `src/features/shared`; App Router pages live d
 
 ## Working agreement
 
+Current direct implementation scope (`UI-17`, `DES-31`): separate teacher-entered subject/topic
+from literacy/numeracy focus in the local session builder; use neutral existing 70-minute rotation
+blocks for all subjects and carry that context through validation, session snapshots, cards,
+Jadwal, detail, board and print. Reuse shared Input/Select and existing grouping/task guidance.
+Update affected fixtures/contracts; do not add curriculum content, other-subject assessments,
+backend, dependencies, or persistence. Keep Q-01/Q-13 production decisions open. Tests remain
+unrun at the user's request; typecheck/lint/build apply.
+
 - This file owns ticket scope, acceptance criteria, dependencies, and implementation prompts.
 - Use one branch and PR per ticket, based on current main after dependencies merge.
 - Keep stable ticket IDs; separate independently reviewable slices of a large feature.

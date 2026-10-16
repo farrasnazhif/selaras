@@ -481,3 +481,21 @@ Place a compact quiet xs BookOpen button labeled Panduan kelompok beside the sub
 (`UI-15-AC-06`), aligned with the trigger and wrapping on narrow screens. Reuse the existing
 Dialog pattern from Panduan level; explain Biru 1–2, Hijau 3–5, Oranye 6, their task rules,
 subject/class separation, manual moves, and missing assessments. No new grouping behavior.
+
+## DES-31 — Curriculum subject and skill focus in session planning
+
+UI-17 supersedes the two-field builder and literacy-only timetable preview. Use existing Input
+controls for Mata pelajaran and optional Tema/topik, a pastel Select for Fokus kemampuan
+(Literasi/Numerasi), and the existing date input. Stack fields on mobile and use two columns
+from tablet widths, with the preview action below. Keep 15/30/60 px spacing and current shared
+control sizes, white bordered surfaces, no shadows, and explicit labels/errors/help text.
+
+Show the applied mapel, topic when present, focus, and date above the preview, including print.
+Keep the current alternating two-class grid and elapsed-minute timing, using neutral teaching
+prompts appropriate to teacher-entered subject/topic rather than the fixed phonics lesson.
+Explain that teachers prepare the actual subject content. Task guidance and saved grouping
+follow the selected skill focus; do not present skill levels as assessment of another subject.
+
+Session cards, overall Jadwal, saved detail, board dialog, and printed task summaries carry the
+same context and saved roster. Keep task details collapsible and preserve dirty-form save/print
+guards. No curriculum selector, backend, new navigation, or automatic curriculum content.

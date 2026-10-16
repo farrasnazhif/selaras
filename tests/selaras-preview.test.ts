@@ -4,7 +4,7 @@ import { GROUP_KEYS, PREVIEW_STUDENTS, phaseForGrade } from "../src/features/kel
 import { observationSchema, previewStudentSchema } from "../src/features/kelas/validations/observation.ts";
 import { groupStudentsBySubject } from "../src/features/kelas/constants/groups.ts";
 import { getIndependentTasks } from "../src/features/sesi/constants/independent-tasks.ts";
-import { LITERACY_ROTATION } from "../src/features/sesi/constants/reference-content.ts";
+import { SESSION_ROTATION } from "../src/features/sesi/constants/reference-content.ts";
 import { LITERACY_LEVELS, NUMERACY_LEVELS } from "../src/features/kelas/constants/reference-content.ts";
 import { classroomPreviewSchema } from "../src/features/kelas/validations/classroom.ts";
 import { sessionPreviewSchema } from "../src/features/sesi/validations/session.ts";
@@ -40,21 +40,40 @@ test("the public preview has only unique fictional students and keeps class memb
   assert.equal(phaseForGrade("6"), "C");
 });
 
-test("the screenshot fixture uses the level-table roster, six level options, and a contiguous 70-minute rotation", () => {
+test("the preview uses the level-table roster, six level options, and a contiguous subject-neutral rotation", () => {
   assert.equal(PREVIEW_STUDENTS.filter((student) => student.classKey === "first").length, 7);
   assert.equal(PREVIEW_STUDENTS.filter((student) => student.classKey === "second").length, 8);
   assert.equal(LITERACY_LEVELS.length, 6);
   assert.equal(NUMERACY_LEVELS.length, 6);
   let end = 0;
-  for (const block of LITERACY_ROTATION) {
+  for (const block of SESSION_ROTATION) {
     assert.equal(block.start, end);
     assert.ok(block.end > block.start);
     assert.ok(block.shared ? !block.teacher : ["first", "second"].includes(block.teacher ?? ""));
     end = block.end;
   }
   assert.equal(end, 70);
+  assert.deepEqual(SESSION_ROTATION.filter((block) => !block.shared).map((block) => block.teacher), ["first", "second", "first", "second"]);
   assert.equal(classroomPreviewSchema.safeParse({ first: "2", second: "2" }).success, false);
-  assert.equal(sessionPreviewSchema.safeParse({ subject: "literasi", duration: "70", blockMinutes: "15", date: "2026-02-31" }).success, false);
+});
+
+test("session context accepts curriculum subject names while validating a separate skill focus (UI-17)", () => {
+  const input = { lessonSubject: "Bahasa Indonesia", topic: "", focus: "literasi", duration: "70", blockMinutes: "15", date: "2026-10-14" };
+  for (const lessonSubject of ["Bahasa Indonesia", "Matematika", "PPKn", "SBdP", "PJOK", "IPAS", "Muatan lokal"]) {
+    for (const focus of ["literasi", "numerasi"]) {
+      const parsed = sessionPreviewSchema.parse({ ...input, lessonSubject: `  ${lessonSubject}  `, topic: "  Lingkungan sekolah  ", focus });
+      assert.equal(parsed.lessonSubject, lessonSubject);
+      assert.equal(parsed.topic, "Lingkungan sekolah");
+      assert.equal(parsed.focus, focus);
+    }
+  }
+  assert.equal(sessionPreviewSchema.parse(input).topic, "");
+  assert.equal(sessionPreviewSchema.safeParse({ ...input, lessonSubject: "  " }).success, false);
+  assert.equal(sessionPreviewSchema.safeParse({ ...input, lessonSubject: "a".repeat(81) }).success, false);
+  assert.equal(sessionPreviewSchema.safeParse({ ...input, topic: "a".repeat(161) }).success, false);
+  assert.equal(sessionPreviewSchema.safeParse({ ...input, focus: "PJOK" }).success, false);
+  assert.equal(sessionPreviewSchema.safeParse({ ...input, date: "2026-02-31" }).success, false);
+  assert.equal(sessionPreviewSchema.safeParse({ ...input, duration: "90" }).success, false);
 });
 
 test("preview entry rejects blank names/observations and retains trimmed content", () => {

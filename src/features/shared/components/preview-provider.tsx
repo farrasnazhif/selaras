@@ -35,7 +35,7 @@ export function PreviewProvider({ children }: { children: ReactNode }) {
   const [allStudents, setStudents] = useState(PREVIEW_STUDENTS);
   const [groupSubject, setGroupSubject] = useState<Subject>("literasi");
   const [groupOverrides, setGroupOverrides] = useState<Record<Subject, Partial<Record<string, GroupKey>>>>({ literasi: {}, numerasi: {} });
-  const [sessions, setSessions] = useState<PreviewSession[]>([{ id: EXAMPLE_SESSION_ID, classroomId: EXAMPLE_CLASS_ID, subject: "literasi", date: "2026-10-14", duration: "70", blockMinutes: "15", roster: groupStudentsBySubject(PREVIEW_STUDENTS, "literasi"), grades: { first: "2", second: "3" } }]);
+  const [sessions, setSessions] = useState<PreviewSession[]>([{ id: EXAMPLE_SESSION_ID, classroomId: EXAMPLE_CLASS_ID, lessonSubject: "Bahasa Indonesia", topic: "", focus: "literasi", date: "2026-10-14", duration: "70", blockMinutes: "15", roster: groupStudentsBySubject(PREVIEW_STUDENTS, "literasi"), grades: { first: "2", second: "3" } }]);
   const [assessments, setAssessments] = useState<PreviewAssessment[]>(() => PREVIEW_STUDENTS.flatMap((student) => [
     { id: `${student.id}-literasi`, studentId: student.id, subject: "literasi", level: student.literacy!, recordedAt: "2026-10-14T12:00:00" },
     { id: `${student.id}-numerasi`, studentId: student.id, subject: "numerasi", level: student.numeracy!, recordedAt: "2026-10-14T12:00:00" },
@@ -63,7 +63,7 @@ export function PreviewProvider({ children }: { children: ReactNode }) {
       sessions,
       saveSession: (session) => {
         const id = crypto.randomUUID();
-        setSessions((current) => [...current, { ...session, id, classroomId: classId, roster: getStudentsForSubject(session.subject), grades: { ...grades } }]);
+        setSessions((current) => [...current, { ...session, id, classroomId: classId, roster: getStudentsForSubject(session.focus), grades: { ...grades } }]);
         return id;
       },
       assessments,

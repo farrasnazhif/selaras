@@ -20,7 +20,9 @@ export type PreviewClassroom = {
 export type PreviewSession = {
   id: string;
   classroomId: string;
-  subject: Subject;
+  lessonSubject: string;
+  topic: string;
+  focus: Subject;
   date: string;
   duration: string;
   blockMinutes: string;

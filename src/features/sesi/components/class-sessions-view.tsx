@@ -43,13 +43,15 @@ export function ClassSessionsView() {
             >
               <Card>
                 <div className="flex items-center justify-between gap-ui-sm">
-                  <h3 className="text-lg font-bold">
-                    {session.subject === "literasi" ? "Literasi" : "Numerasi"},{" "}
+                  <h3 className="min-w-0 flex-1 break-words text-lg font-bold">
+                    {session.lessonSubject},{" "}
                     {displayDate(session.date)}
                   </h3>
-                  <ArrowRight size={17} aria-hidden="true" />
+                  <ArrowRight size={17} className="shrink-0" aria-hidden="true" />
                 </div>
+                {session.topic && <p className="mt-2 break-words text-sm">{session.topic}</p>}
                 <div className="mt-ui-sm flex flex-wrap items-center gap-ui-sm text-xs text-muted">
+                  <span>Fokus {session.focus === "literasi" ? "Literasi" : "Numerasi"}</span>
                   <span className="flex items-center gap-1.5">
                     <Clock3 size={14} aria-hidden="true" />
                     {session.duration} menit

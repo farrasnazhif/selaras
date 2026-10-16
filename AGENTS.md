@@ -163,10 +163,16 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 
 UI conventions:
 
+- UI-17/DES-31 separates session lessonSubject/topic from literacy/numeracy focus. Accept
+  teacher-entered subject names; grouping and saved roster snapshots use focus. Use the existing
+  70-minute alternating preview structure for all subjects with neutral teaching prompts; do not
+  substitute literacy material or claim curriculum content/other-subject assessments are available.
+  Carry mapel/topic/focus through session lists, detail, Jadwal, board and print. No backend.
+
 - Siswa tables, group filters/cards, and member-level labels share the selected subject (`UI-15`, `DES-29`). Save session rosters with that session’s subject grouping; preserve saved snapshots. Missing levels keep their current group and show Belum dinilai in the preview. Keep the Panduan kelompok dialog beside the subject selector (`UI-15-AC-06`).
 
 - Use the six accepted literacy/numeracy levels and criteria in `UI-14`/`DES-28`, while keeping three groups A/B/C per class. Level changes append history; UI-15 maps unadjusted students to Biru 1–2 / Hijau 3–5 / Oranye 6 per subject, preserving manual moves for that subject.
-- Independent-task guidance uses each student’s subject level: 1–2 non-reading only, 3–5 matching practice, 6 class-phase content. Mixed groups need differentiated guidance; no invented phase objectives or numeracy rotation.
+- Independent-task guidance uses each student’s focus level: 1–2 non-reading only, 3–5 matching practice, 6 class-phase content. Mixed groups need differentiated guidance; no invented phase objectives. UI-17 permits a neutral timing structure for numeracy and other subjects, with teacher-prepared lesson content.
 
 - Product spacing uses 15 px small, 30 px medium, and 60 px between content groups (`UI-11`, `DES-25`); preserve icon micro-gaps and control heights.
 - Level uses direct Observasi entry; history-first dialogs elsewhere remain. Overall Jadwal combines complete saved schedules by date, using saved rosters/grades without inventing start times.
@@ -404,7 +410,7 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
 - Preserve upload queue capacity checks and object-URL cleanup; DataTable processes supplied
   rows locally while application filters belong in the feature data layer.
 - Keep Selaras scope teacher-only: no attendance, parent messaging, school integrations,
-  automatic cross-class grouping, other subjects, full offline PWA, or extra analytics. A
+  automatic cross-class grouping, new assessment scales/content banks for other subjects, full offline PWA, or extra analytics. UI-17 allows teacher-entered subject context in local session plans. A
   Classroomscreen reference does not authorize a draggable widget canvas or customization UI.
 - Preserve level history on reassessment and never present progress as causal learning impact.
   Do not infer unapproved draft recovery, regeneration, deletion, or baseline rules.

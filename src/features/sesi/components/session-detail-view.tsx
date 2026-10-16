@@ -24,7 +24,7 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
   );
   if (!classroom || !session) return <ClassUnavailable />;
   const path = classPath(classroom.id);
-  const title = `${session.subject === "literasi" ? "Literasi" : "Numerasi"}, ${displayDate(session.date)}`;
+  const title = `${session.lessonSubject}, ${displayDate(session.date)}`;
   return (
     <div className="space-y-ui-md">
       <div className="print-hidden">
@@ -38,21 +38,24 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
         />
       </div>
       <header className="flex flex-wrap items-start justify-between gap-ui-sm border-b border-line pb-ui-md">
-        <div>
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-ui-sm">
-            <h1 className="text-[28px] font-bold">{title}</h1>
+            <h1 className="break-words text-[28px] font-bold">{title}</h1>
           </div>
-          <p className="mt-2 text-sm text-muted">
-            Durasi {session.duration} menit · bergantian setiap{" "}
-            {session.blockMinutes} menit · {session.roster.length} siswa
-          </p>
+          {session.topic && <p className="mt-2 break-words text-sm font-semibold">{session.topic}</p>}
+          <div className="mt-2 flex flex-wrap gap-x-ui-sm gap-y-1 text-sm text-muted">
+            <span>Fokus {session.focus === "literasi" ? "Literasi" : "Numerasi"}</span>
+            <span>Durasi {session.duration} menit</span>
+            <span>Bergantian setiap {session.blockMinutes} menit</span>
+            <span>{session.roster.length} siswa</span>
+          </div>
         </div>
         <div className="print-hidden flex flex-wrap gap-ui-sm">
           <Dialog
             open={boardOpen}
             onOpenChange={setBoardOpen}
             title="Versi papan tulis"
-            description={`${title} · tugas belajar tiap kelompok.`}
+            description={`${title}. Panduan tugas belajar tiap kelompok.`}
             trigger={
               <Button variant="secondary">
                 <LayoutPanelTop size={16} aria-hidden="true" />
@@ -60,7 +63,7 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
               </Button>
             }
           >
-            <SessionTaskSummary subject={session.subject}
+            <SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic}
               board
               roster={session.roster}
               gradePair={session.grades}
@@ -72,9 +75,10 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
           </Button>
         </div>
       </header>
-      <RotationGrid roster={session.roster} gradePair={session.grades} />
-      <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></Collapsible></div>
-      <div className="hidden print:block"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></div>
+      <p className="text-sm text-muted">Siapkan materi dan tugas sesuai tujuan belajar tiap kelas. Jadwal ini menyediakan pembagian waktu dan panduan kemampuan.</p>
+      <RotationGrid focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} />
+      <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} /></Collapsible></div>
+      <div className="hidden print:block"><SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} /></div>
     </div>
   );
 }

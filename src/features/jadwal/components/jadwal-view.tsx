@@ -26,19 +26,17 @@ export function JadwalView() {
           <h2 className="flex items-center gap-ui-sm border-b-2 border-line pb-ui-sm text-xl font-extrabold"><CalendarDays size={22} aria-hidden="true" /><time dateTime={date}>{displayDate(date)}</time></h2>
           {rows.filter((session) => session.date === date).map((session) => {
             const title = classroomTitle({ id: session.classroomId, grades: session.grades });
-            const subject = session.subject === "literasi" ? "Literasi" : "Numerasi";
-            const available = session.subject === "literasi" && session.grades.first === "2" && session.grades.second === "3" && session.duration === "70" && session.blockMinutes === "15";
+            const subject = session.lessonSubject;
+            const focus = session.focus === "literasi" ? "Literasi" : "Numerasi";
             return (
-              <article key={session.id} aria-label={`${title} · ${subject}`} className="space-y-ui-sm rounded-window border-2 border-line bg-surface p-ui-sm md:p-ui-md">
+              <article key={session.id} aria-label={`${title}, ${subject}`} className="space-y-ui-sm rounded-window border-2 border-line bg-surface p-ui-sm md:p-ui-md">
                 <header className="flex flex-wrap items-center justify-between gap-ui-sm">
-                  <div><h3 className="text-lg font-extrabold">{title} · {subject}</h3><p className="mt-1 text-sm text-muted">{session.duration} menit · {session.roster.length} siswa</p></div>
+                  <div className="min-w-0"><h3 className="break-words text-lg font-extrabold">{subject}</h3>{session.topic && <p className="mt-1 break-words text-sm font-semibold">{session.topic}</p>}<div className="mt-1 flex flex-wrap gap-x-ui-sm gap-y-1 text-sm text-muted"><span>{title}</span><span>Fokus {focus}</span><span>{session.duration} menit</span><span>{session.roster.length} siswa</span></div></div>
                   <Button size="xs" variant="secondary" nativeButton={false} role="link" aria-label={`Buka ${title}, ${subject}, ${displayDate(date)}`} render={<Link href={`${classPath(session.classroomId)}/sesi/${session.id}`} />}>Buka sesi<ArrowRight size={14} aria-hidden="true" /></Button>
                 </header>
-                {available ? <>
-                  <RotationGrid roster={session.roster} gradePair={session.grades} />
-                  <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></Collapsible></div>
-                  <div className="hidden print:block"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></div>
-                </> : <EmptyState title="Materi belum tersedia" description="Kegiatan untuk jadwal ini belum tersedia." />}
+                <RotationGrid focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} />
+                <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} /></Collapsible></div>
+                <div className="hidden print:block"><SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} /></div>
               </article>
             );
           })}

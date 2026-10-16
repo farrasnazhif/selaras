@@ -34,7 +34,9 @@ Selaras adalah aplikasi web untuk guru SD yang mengajar dua kelas dalam satu rua
 
 ### 1.3 Non-goals MVP
 
-Tidak membangun aplikasi siswa/orang tua, absensi, pesan orang tua, pengelompokan lintas kelas otomatis, integrasi sistem sekolah, mata pelajaran selain literasi dan numerasi, maupun PWA offline penuh. Tes level tidak wajib bagi guru. [BRIEF]
+Tidak membangun aplikasi siswa/orang tua, absensi, pesan orang tua, pengelompokan lintas kelas otomatis, integrasi sistem sekolah, maupun PWA offline penuh. Tes level tidak wajib bagi guru. [BRIEF]
+Penilaian tetap terbatas pada literasi/numerasi. UI-17 memperluas konteks rencana sesi ke
+mata pelajaran lain yang diisi guru; bank materi dan penilaian mapel lain belum termasuk.
 
 AI pembuat variasi bukan syarat keberhasilan MVP. Penyimpanan lampiran, pencarian/filter data aplikasi, realtime, kolaborasi multi-guru, dan dashboard analitik tambahan tidak masuk lingkup yang diberikan. Keputusan penyimpanan PDF tidak otomatis berarti fitur upload. Penghapusan fitur contoh starter, penggantian UI library, serta deployment bukan bagian dari pekerjaan dokumentasi ini.
 
@@ -504,6 +506,33 @@ Keputusan ini menerima pemetaan yang sebelumnya terbuka pada Q-04 dan menggantik
 keanggotaan tetap untuk semua perubahan level pada UI-14. Tidak menambahkan backend, batas
 kapasitas, algoritme balancing, atau kebijakan generate ulang sesi produksi.
 
+### UI-17 — Mata pelajaran, topik, dan fokus kemampuan sesi [instruksi pengguna]
+
+**UI-17-AC-01:** Susun jadwal memisahkan Mata pelajaran, Tema/topik (opsional), Fokus
+kemampuan (Literasi/Numerasi), dan tanggal. Nama mapel diisi guru agar dapat memakai Bahasa
+Indonesia, Matematika, PPKn/Pendidikan Pancasila, SBdP/Seni, PJOK, atau nama dalam kurikulumnya.
+Nama wajib, dipangkas, maksimal 80 karakter; topik maksimal 160 karakter. Ini bukan daftar
+mapel nasional yang dibakukan dan tidak menambahkan pemilih kurikulum.
+**UI-17-AC-02:** fokus kemampuan menentukan pengelompokan, penyesuaian manual, level, dan
+panduan tugas yang sudah diterima pada UI-14/UI-15. Tidak membuat level PPKn, PJOK, atau
+mapel lain dari hasil literasi/numerasi. Riwayat penilaian tetap terpisah untuk dua kemampuan.
+**UI-17-AC-03:** semua mapel/fokus dapat ditinjau dan disimpan lokal memakai struktur waktu
+preview 70 menit yang sudah ada: pembuka 5 menit, empat blok bergantian 15 menit, penutup
+5 menit. Struktur ini bersifat netral-mapel dan tidak mengisi kegiatan fonik/paragraf untuk
+mapel lain. Guru menyiapkan materi sesuai tujuan mapel/topik; belum ada generator materi,
+bank kurikulum, atau algoritme penjadwalan produksi. Keadaan tanpa siswa tetap menghalangi simpan.
+**UI-17-AC-04:** daftar sesi, detail, Jadwal, papan tulis, dan cetak mempertahankan mapel,
+topik, fokus, serta roster/kelas/kelompok snapshot yang sama. Perubahan form perlu diterapkan
+melalui Lihat jadwal sebelum simpan/cetak; perubahan roster/level berikutnya tidak mengubah sesi lama.
+**UI-17-AC-05:** keluaran menjelaskan bahwa tugas merupakan panduan berdasarkan fokus
+kemampuan yang perlu disesuaikan guru ke mapel/topik. Aturan tanpa membaca pada level 1–2,
+latihan pada 3–5, dan capaian fase pada 6 tetap berlaku. Materi fase yang belum dipilih tidak
+diklaim tersedia. Tidak menambah backend, persistensi browser, atau PDF khusus.
+
+Ini menggantikan batas preview dua pilihan mapel dan rotasi literasi saja pada UI-14-AC-05;
+dua pilihan tersebut kini adalah fokus kemampuan. Kurikulum sekolah, tujuan/materi tiap mapel,
+dan validasi pedagogisnya tetap Q-13. Parameter produksi/tie-breaker tetap Q-01.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |
@@ -689,7 +718,7 @@ Jawaban berikut tidak boleh ditebak saat membuat tiket Ready. Bila suatu kebutuh
 | Q-10 | Apa baseline progres, aturan tanpa pembanding, koreksi histori, dan kebijakan pembaruan sebelum dua minggu?                                                                                                             | FR-06, J-02, SCR-07, T11–T12                                  |
 | Q-11 | Apakah draft bertahan saat reload/keluar? Apakah edit siswa/level membatalkan hasil? Apakah generate ulang mempertahankan edit kelompok; roster snapshot atau data hidup?                                               | FR-03–FR-06, FR-08, J-04, SCR-03–SCR-06                       |
 | Q-12 | Apakah tepat dua tingkat berbeda kelas 1–6 menjadi batas input final? Apa yang dilakukan untuk pasangan yang tidak didukung?                                                                                            | FR-01, SCR-02, FR-01-AC-03                                    |
-| Q-13 | Siapa menyusun/meninjau template dan capaian pembelajaran fase A/B/C untuk literasi/numerasi? Mapel dipilih per sesi atau dapat digabung?                                                                               | FR-02, FR-04–FR-05, SCR-02, SCR-05–SCR-06, bagian 11          |
+| Q-13 | Kurikulum apa yang digunakan sekolah dan siapa meninjau tujuan/materi tiap mapel serta tugas fase A/B/C? UI-17 menerima satu mapel bebas per sesi dengan fokus literasi/numerasi; penggabungan mapel dan bank konten belum diputuskan. | FR-02, FR-04–FR-05, UI-17, SCR-02, SCR-05–SCR-06, bagian 11 |
 | Q-14 | Apa perangkat, browser, jaringan, dan ambang performa untuk acceptance mobile?                                                                                                                                          | NFR-01, NFR-03, SCR-01–SCR-07                                 |
 | Q-15 | Fondasi Nunito/#7173FF/pastel/10 px/light-only diterima lewat instruksi pengguna untuk restyle UI yang sudah ada. Apakah komposisi layar produk yang direncanakan diterima? Restyle tidak menambahkan classroom canvas. | ST-06, NFR-09, semua layar                                    |
 
