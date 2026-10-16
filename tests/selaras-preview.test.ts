@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { GROUP_KEYS, PREVIEW_STUDENTS, phaseForGrade } from "../src/features/kelas/constants/preview.ts";
 import { observationSchema, previewStudentSchema } from "../src/features/kelas/validations/observation.ts";
+import { groupStudentsBySubject } from "../src/features/kelas/constants/groups.ts";
 import { getIndependentTasks } from "../src/features/sesi/constants/independent-tasks.ts";
 import { LITERACY_ROTATION } from "../src/features/sesi/constants/reference-content.ts";
 import { LITERACY_LEVELS, NUMERACY_LEVELS } from "../src/features/kelas/constants/reference-content.ts";
@@ -108,4 +109,45 @@ test("level six uses the class phase and never falls back to a basic exercise", 
     }
     assert.equal(getIndependentTasks([student], subject, "unknown")[0].title, "Tugas sesuai fase kelas");
   }
+});
+
+test("grouping uses the selected subject's level and preserves every student's class", () => {
+  const students = ["1", "2", "3", "4", "5", "6"].map((level, index) => ({
+    ...PREVIEW_STUDENTS[index === 5 ? 7 : index], literacy: level, numeracy: String(6 - index),
+  }));
+  const original = structuredClone(students);
+  const literacy = groupStudentsBySubject(students, "literasi");
+  const numeracy = groupStudentsBySubject(students, "numerasi");
+  assert.deepEqual(literacy.map((student) => student.group), ["A", "A", "B", "B", "B", "C"]);
+  assert.deepEqual(numeracy.map((student) => student.group), ["C", "B", "B", "B", "A", "A"]);
+  for (const result of [literacy, numeracy]) {
+    assert.equal(new Set(result.map((student) => student.id)).size, students.length);
+    assert.deepEqual(result.map((student) => [student.id, student.classKey, student.classroomId]), students.map((student) => [student.id, student.classKey, student.classroomId]));
+  }
+  assert.deepEqual(students, original);
+  assert.deepEqual(groupStudentsBySubject([], "literasi"), []);
+  const filtered = getStudentPage(numeracy, "first", "", "C", 1);
+  assert.deepEqual(filtered.rows.map((student) => student.id), [students[0].id]);
+});
+
+test("manual subject adjustments persist while automatic groups follow reassessments", () => {
+  const student = { ...PREVIEW_STUDENTS[0], literacy: "1", numeracy: "6" };
+  const overrides = { [student.id]: "B" as const };
+  const saved = groupStudentsBySubject([student], "literasi", overrides);
+  assert.equal(saved[0].group, "B");
+  assert.equal(groupStudentsBySubject([student], "numerasi")[0].group, "C");
+  student.literacy = "6";
+  assert.equal(groupStudentsBySubject([student], "literasi", overrides)[0].group, "B");
+  assert.equal(groupStudentsBySubject([student], "literasi")[0].group, "C");
+  assert.equal(saved[0].literacy, "1");
+  assert.equal(saved[0].group, "B");
+});
+
+test("missing levels keep current membership without inventing an assessment", () => {
+  const student = { ...PREVIEW_STUDENTS[0], literacy: null, numeracy: null, group: "C" as const };
+  const [grouped] = groupStudentsBySubject([student], "literasi");
+  assert.equal(grouped.group, "C");
+  assert.equal(grouped.literacy, null);
+  assert.equal(getIndependentTasks([grouped], "literasi", "2")[0].mode, "unassessed");
+  assert.equal(groupStudentsBySubject([{ ...student, id: "toString", literacy: "1" }], "literasi")[0].group, "A");
 });

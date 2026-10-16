@@ -137,7 +137,7 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 **Persyaratan:**
 
 - Pengelompokan hanya dalam kelas yang sama, maksimal tiga kelompok per kelas.
-- Kelompok awal dibentuk berdasarkan level siswa.
+- Kelompok awal dibentuk dari level mata pelajaran sesi: Biru untuk 1–2, Hijau untuk 3–5, Oranye untuk 6 (`UI-15`).
 - Guru dapat memindahkan siswa secara manual antar kelompok dalam kelas yang sama.
 - Nama kelompok netral (misalnya Kelompok A/B/C), terutama pada keluaran cetak.
 - Perubahan keanggotaan disimpan untuk sesi yang sedang direncanakan [USULAN].
@@ -459,7 +459,7 @@ urutan pelajaran dalam satu hari, atau aturan bentrok antar sesi yang belum dite
 | 6 | Sesuai fase | Sudah melampaui level dasar; tugas mengikuti capaian fase kelasnya | Sesuai fase | Sudah melampaui level dasar; tugas mengikuti capaian fase kelasnya |
 
 **UI-14-AC-02:** simpan level 1–6 dalam state preview dan tambah histori saat penilaian berubah;
-jangan menimpa histori atau mengganti kelompok saat mengubah level.
+jangan menimpa histori. UI-15 memperbarui pengelompokan otomatis menurut level; perpindahan manual tetap berlaku per mapel.
 **UI-14-AC-03:** pertahankan tepat tiga pilihan kelompok netral A/B/C per kelas serta pemindahan
 manual dalam kelas. Enam level bukan enam kelompok. Dalam kelompok campuran, bedakan panduan
 tugas menurut level tiap siswa pada mata pelajaran sesi; jangan menetapkan satu tugas tertulis
@@ -473,9 +473,36 @@ jangan mengarang capaian kurikulum. Template latihan di UI merupakan panduan, bu
 visual yang telah ditinjau. Jadwal numerasi belum tersedia tidak boleh memakai rotasi literasi.
 
 Keputusan ini menyelesaikan nama/urutan/indikator level dalam `Q-02`. Isi/skor tes, koreksi dan
-baseline (`Q-02`, `Q-10`), konten/capaian fase serta bank visual (`Q-13`), dan algoritme awal
-untuk membagi enam level menjadi tiga kelompok (`Q-04`) masih terbuka. Preview mempertahankan
-keanggotaan yang sudah ada dan tidak mengimplementasikan algoritme pengelompokan baru.
+baseline (`Q-02`, `Q-10`) serta konten/capaian fase dan bank visual (`Q-13`) masih terbuka. Pemetaan enam level ke tiga kelompok kemudian diterima pada UI-15; aturan penyimpanan produksi tetap belum diputuskan.
+
+### UI-15 — Pengelompokan menurut mapel dan level anggota [instruksi pengguna]
+
+**UI-15-AC-01:** setiap kelas tetap memiliki tiga kelompok: Biru (level 1–2), Hijau
+(level 3–5), dan Oranye (level 6). Gunakan level literasi pada sesi literasi dan numerasi
+pada sesi numerasi; jangan mencampur kelas atau memaksa jumlah anggota seimbang.
+**UI-15-AC-02:** pada tab Siswa tersedia Select mata pelajaran untuk melihat kelompok.
+Tabel siswa, filter kelompok, jumlah anggota, dan kartu kelompok memakai mapel yang sama.
+Setiap nama anggota di kartu menampilkan nomor serta nama level mapel terpilih.
+**UI-15-AC-03:** guru tetap dapat memindahkan anggota dalam kelas. Penyesuaian manual
+berlaku hanya untuk mapel yang dipilih dan dipertahankan saat mengganti tampilan/mapel atau
+memperbarui level. Anggota tanpa penyesuaian manual mengikuti pemetaan otomatis terbaru;
+riwayat penilaian tidak dihapus atau diganti.
+**UI-15-AC-04:** preview mempertahankan kelompok yang sudah dimiliki siswa tanpa level
+(default Biru pada alur tambah siswa yang ada), dengan label Belum dinilai. Jangan menyamakan
+belum dinilai dengan level 1 atau memberi tugas sebelum penilaian. Aturan produksi untuk
+siswa tanpa level tetap menunggu Q-04. Kelompok kosong tetap dapat ditampilkan.
+**UI-15-AC-05:** penyimpanan sesi lokal mengambil kelompok sesuai mapel sesi beserta salinan
+roster/levelnya. Sesi yang sudah tersimpan tidak berubah ketika kelompok, mapel tampilan,
+atau penilaian berikutnya berubah. Ringkasan tugas memakai kelompok mapel yang sama dan tetap
+membedakan kebutuhan anggota yang dipindah manual.
+
+**UI-15-AC-06:** tombol Panduan kelompok berada di samping Select Kelompok berdasarkan.
+Dialog mengikuti pola Panduan level dan menjelaskan tiga rentang level, jenis tugas,
+pemisahan per kelas/mapel, perpindahan manual, dan siswa yang belum dinilai.
+
+Keputusan ini menerima pemetaan yang sebelumnya terbuka pada Q-04 dan menggantikan aturan
+keanggotaan tetap untuk semua perubahan level pada UI-14. Tidak menambahkan backend, batas
+kapasitas, algoritme balancing, atau kebijakan generate ulang sesi produksi.
 
 ## 8. Model data konseptual [USULAN]
 
@@ -653,7 +680,7 @@ Jawaban berikut tidak boleh ditebak saat membuat tiket Ready. Bila suatu kebutuh
 | Q-01 | Berapa durasi sesi/blok dan minimum bimbingan? Bagaimana pembagian menit, prioritas jika level sama, kegiatan bersama satu fase, dan sesi terlalu singkat?                                                              | FR-04, SCR-02, SCR-05, T06–T08                                |
 | Q-02 | Nama/urutan/indikator enam level per mapel disetujui pada UI-14. Apa isi/skor tes, pemetaan hasil, status saran, dan koreksi guru?                                                                 | FR-02–FR-06, SCR-03–SCR-07, T03–T08, T11–T12                  |
 | Q-03 | Apakah Selaras memakai registrasi/login guru starter? Bagaimana demo diakses: akun fiktif individual atau alur fiktif publik terpisah? Apakah profil guru diperlukan?                                                   | FR-07, J-03, ST-01, SCR-01, NFR-04–NFR-05                     |
-| Q-04 | Bagaimana menangani kelas kosong, siswa tanpa level, siswa sangat sedikit, kelompok kosong/ukuran timpang, batas jumlah siswa, serta pemetaan awal enam level menjadi tiga kelompok?                                                                                    | FR-01–FR-04, SCR-03–SCR-05, T03–T06                           |
+| Q-04 | Bagaimana menangani kelas kosong, siswa sangat sedikit, kelompok kosong/ukuran timpang, batas jumlah siswa, serta kebijakan produksi untuk siswa tanpa level? Pemetaan level ke tiga kelompok diterima pada UI-15.                                                                                    | FR-01–FR-04, SCR-03–SCR-05, T03–T06                           |
 | Q-05 | Bagaimana format tugas visual hitam-putih, ukuran/orientasi halaman, isi paket PDF (jadwal/tugas/nama siswa), dan versi papan tulis ditentukan?                                                                         | FR-05, SCR-06, T10, NFR-04                                    |
 | Q-06 | Apakah penyelenggara sudah mengonfirmasi tertulis penggunaan siswa fiktif? Siapa memeriksa label dan izin demo?                                                                                                         | NFR-08, T13, J-01, ST-05                                      |
 | Q-07 | Apakah urutan P0/P1 diterima? Bila tidak sempat, apakah tim mengizinkan penundaan progres atau penyediaan tes? Tanpa keputusan, enam modul tetap lingkup MVP brief.                                                     | FR-02, FR-06, bagian 3/13/16, T11–T12                         |

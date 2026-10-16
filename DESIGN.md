@@ -462,3 +462,22 @@ content. Do not present unreviewed phase objectives as real tasks. Unknown level
 missing-assessment state. Apply the same guidance in independent rotation cells, saved-session
 tasks, board view, and print. Numeracy guidance can be previewed without claiming an available
 numeracy rotation. Retain shared controls, palette, typography, and the current page layout.
+
+## DES-29 — Subject-based groups and member level labels
+
+`UI-15` accepts Biru for levels 1–2, Hijau for 3–5, and Oranye for 6, evaluated independently
+for literacy/numeracy. Add a shared compact subject Select above the Siswa content so its table
+filters and group cards clearly share the same subject. Keep all three cards, including empty
+states; show the level range in each card header and each member's numeric/name level in a
+small, readable Badge. Show Belum dinilai for missing levels. Keep neutral group names,
+member counts, accessible move menus, pastel surfaces, and existing spacing/layout.
+
+Manual moves belong to the chosen subject and remain when switching subjects or reassessing;
+unadjusted students follow their current level. This supersedes DES-28's blanket no-move rule
+on assessment changes. Session snapshots retain saved assignments and the session subject;
+student-facing task outputs keep neutral group names and differentiated task guidance.
+
+Place a compact quiet xs BookOpen button labeled Panduan kelompok beside the subject Select
+(`UI-15-AC-06`), aligned with the trigger and wrapping on narrow screens. Reuse the existing
+Dialog pattern from Panduan level; explain Biru 1–2, Hijau 3–5, Oranye 6, their task rules,
+subject/class separation, manual moves, and missing assessments. No new grouping behavior.

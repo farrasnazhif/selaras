@@ -12,7 +12,7 @@ import type { ClassKey, PreviewStudent, Subject } from "@/features/shared/types/
 export function SessionTaskSummary({ board = false, roster, gradePair, subject = "literasi" }: { board?: boolean; roster?: PreviewStudent[]; gradePair?: Record<ClassKey, string>; subject?: Subject }) {
   const preview = usePreview();
   const grades = gradePair ?? preview.grades;
-  const students = roster ?? preview.students;
+  const students = roster ?? preview.getStudentsForSubject(subject);
   return <section>
     <h2 className="mb-ui-sm flex items-center gap-2 text-lg font-bold"><LayoutPanelTop size={20} aria-hidden="true" />{board ? "Tugas mandiri" : "Tugas kelompok"}</h2>
     <p className="mb-ui-sm text-sm text-muted">Panduan untuk guru. Siapkan kegiatan sesuai kemampuan anggota; level 1–2 tidak memerlukan membaca.</p>

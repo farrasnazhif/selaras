@@ -30,6 +30,10 @@ direct Observasi entry only in Level, and combines full saved schedules by date 
 `UI-14`/`DES-28` accepts six exact literacy/numeracy levels and criteria, keeps three groups,
 and makes independent-task guidance follow each member’s subject level: non-reading at 1–2,
 level practice at 3–5, and class-phase guidance at 6. Phase content remains pending review.
+`UI-15`/`DES-29` accepts automatic Biru 1–2 / Hijau 3–5 / Oranye 6 assignment per subject,
+member-level labels, a shared Siswa subject selector, and subject-specific manual adjustments.
+Panduan kelompok beside the subject selector explains the accepted rules in the shared Dialog
+pattern (`UI-15-AC-06`). Saved session rosters preserve their subject’s grouping. No backend integration is authorized.
 The observation action moves from Progres to the Level table between Tingkat Numerasi and
 Status (`UI-09`, `DES-18`); read-only history stays available on Progres.
 Implementation modules are split across `src/features/kelas`, `progres`, and `sesi`, with

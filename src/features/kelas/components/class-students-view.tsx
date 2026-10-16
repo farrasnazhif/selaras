@@ -14,10 +14,19 @@ import { usePreview } from "@/features/shared/components/preview-provider";
 import { AddStudentDialog } from "@/features/kelas/components/add-student-dialog";
 import { ObservationDialog } from "@/features/kelas/components/observation-dialog";
 import { GroupsStep } from "@/features/kelas/components/groups-step";
+import { GroupGuide } from "@/features/kelas/components/group-guide";
 
 export function ClassStudentsView() {
+  const { groupSubject, setGroupSubject } = usePreview();
   return (
     <div className="space-y-ui-group text-ink">
+      <div className="flex flex-wrap items-end gap-ui-sm">
+        <div className="field w-64 max-w-full">
+          <label htmlFor="student-group-subject">Kelompok berdasarkan</label>
+          <Select value={groupSubject} options={[{ value: "literasi", label: "Literasi" }, { value: "numerasi", label: "Numerasi" }]} onValueChange={(value) => { if (value === "literasi" || value === "numerasi") setGroupSubject(value); }} triggerProps={{ id: "student-group-subject" }} />
+        </div>
+        <GroupGuide />
+      </div>
       <div className="grid items-start gap-ui-md xl:grid-cols-2">
         {CLASS_KEYS.map((key) => (
           <StudentClassCard key={key} classKey={key} />

@@ -11,7 +11,7 @@ import type { ClassKey, PreviewStudent } from "@/features/shared/types/preview";
 export function RotationGrid({ builder = false, roster, gradePair }: { builder?: boolean; roster?: PreviewStudent[]; gradePair?: Record<ClassKey, string> }) {
   const preview = usePreview();
   const grades = gradePair ?? preview.grades;
-  const students = roster ?? preview.students;
+  const students = roster ?? preview.getStudentsForSubject("literasi");
   return (
     <section aria-label="Jadwal belajar literasi " className="overflow-hidden rounded-window border border-line bg-surface text-ink">
       <div className="hidden grid-cols-[72px_minmax(0,1fr)_minmax(0,1fr)] bg-inset md:grid">
