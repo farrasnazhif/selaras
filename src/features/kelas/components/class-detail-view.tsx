@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Tabs } from "@/components/ui/tabs";
 import { classPath, classroomTitle } from "@/features/shared/constants/presentation";
 import { usePreview } from "@/features/shared/components/preview-provider";
@@ -19,12 +18,6 @@ export function ClassDetailView({ tab = "level" }: { tab?: ClassTab }) {
   if (!classroom) return <ClassUnavailable />;
   return (
     <div className="space-y-ui-md">
-      <Breadcrumbs
-        items={[
-          { label: "Kelas", href: "/kelas" },
-          { label: classroomTitle(classroom) },
-        ]}
-      />
       <header>
         <h1 className="text-[28px] font-extrabold">{classroomTitle(classroom)}</h1>
         <p className="mt-1 text-sm text-muted">Kelola siswa, tingkat kemampuan, dan rencana belajar.</p>
@@ -32,6 +25,7 @@ export function ClassDetailView({ tab = "level" }: { tab?: ClassTab }) {
       <Tabs
         key={classroom.id}
         label="Detail kelas rangkap"
+        variant="underline"
         value={tab}
         onValueChange={(value) =>
           router.push(`${classPath(classroom.id)}/${value}`)

@@ -109,7 +109,7 @@
   .button {
     @apply inline-flex h-10 items-center justify-center gap-2 text-[14px] leading-5 px-4 shrink-0 rounded-control select-none;
     font-weight: 750;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     transition:
       background-color 150ms,
       transform 150ms,
@@ -875,7 +875,7 @@
 .selaras-shell .ui-card,
 .selaras-shell .ui-table-scroll {
   box-shadow: none;
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
 }
 
 @media print {
@@ -911,10 +911,8 @@
 
 /* Shared rounded controls and pastel option colors. */
 .input, .ui-popup, .dialog-popup {
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
 }
-.button-primary { border-color: var(--primary-hover); }
-.button-danger { border-color: var(--destructive-hover); }
 .ui-tone-purple { --control-fill: var(--primary-tint); --control-ink: var(--accent-ink); }
 .ui-tone-pink { --control-fill: var(--red-tint); --control-ink: var(--red); }
 .ui-tone-green { --control-fill: var(--green-tint); --control-ink: var(--green); }
@@ -953,15 +951,41 @@
 }
 .product-nav-line { transition: transform 180ms ease-out; }
 .selaras-shell .ui-table { font-size: 14px; }
-.selaras-shell .ui-table th { min-height: 48px; padding: var(--spacing-ui-sm); background: var(--primary-tint); color: var(--ink); border-bottom-width: 2px; font-weight: 800; }
+.selaras-shell .ui-table th { min-height: 48px; padding: var(--spacing-ui-sm); background: var(--primary-tint); color: var(--ink); font-weight: 800; }
 .selaras-shell .ui-table td { height: 52px; padding: var(--spacing-ui-sm); }
-.selaras-shell .tabs-list { border-bottom-width: 2px; }
 .selaras-shell .tab { color: var(--ink); }
 .selaras-shell .tab[data-active] { background: var(--primary-tint); color: var(--accent-ink); box-shadow: none; font-weight: 800; }
+.selaras-shell [data-variant="underline"] .tabs-list {
+  position: relative;
+  gap: 0;
+  padding-bottom: 0;
+}
+.selaras-shell [data-variant="underline"] .tab {
+  min-height: 48px;
+  padding: 15px;
+  border-radius: 0;
+  color: black;
+  font-weight: 800;
+}
+.selaras-shell [data-variant="underline"] .tab[data-active] { background: transparent; color: black; }
+@media (min-width: 640px) {
+  .selaras-shell [data-variant="underline"] .tab { padding-inline: 30px; }
+}
+.ui-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: var(--active-tab-width);
+  transform: translateX(var(--active-tab-left));
+  border-radius: 4px 4px 0 0;
+  background: var(--primary);
+  transition: transform 180ms ease-out, width 180ms ease-out;
+}
 .selaras-shell .ui-avatar-group .ui-avatar:nth-child(2) { background: var(--pastel-mint); color: var(--green); }
 .selaras-shell .ui-avatar-group .ui-avatar:nth-child(3) { background: var(--pastel-yellow); color: var(--orange); }
 @media (prefers-reduced-motion: reduce) {
-  .product-nav-line { transition: none; }
+  .product-nav-line, .ui-tab-indicator { transition: none; }
 }
 @media print {
   .selaras-shell .ui-table th { background: white; color: black; }

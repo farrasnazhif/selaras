@@ -40,7 +40,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
       return <Badge tone="neutral">Belum ada pembanding</Badge>;
     const Icon = difference > 0 ? ArrowUp : difference < 0 ? ArrowDown : Minus;
     return (
-      <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+      <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${difference > 0 ? "text-green" : difference < 0 ? "text-red" : "text-muted"}`}>
         <Icon size={16} aria-hidden="true" />
         {difference > 0 ? "Naik" : difference < 0 ? "Turun" : "Tetap"}
       </span>

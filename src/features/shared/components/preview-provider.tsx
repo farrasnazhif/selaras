@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { EXAMPLE_CLASS_ID, PREVIEW_STUDENTS } from "@/features/kelas/constants/preview";
+import { EXAMPLE_CLASS_ID, PREVIEW_ASSESSMENTS, PREVIEW_STUDENTS } from "@/features/kelas/constants/preview";
 import { EXAMPLE_SESSION_ID } from "@/features/sesi/constants/reference-content";
 import type { ClassKey, GroupKey, PreviewAssessment, PreviewClassroom, PreviewObservation, PreviewSession, PreviewStudent, Subject } from "@/features/shared/types/preview";
 
@@ -29,10 +29,7 @@ export function PreviewProvider({ children }: { children: ReactNode }) {
   const [classrooms, setClassrooms] = useState<PreviewClassroom[]>([{ id: EXAMPLE_CLASS_ID, grades: { first: "2", second: "3" } }]);
   const [allStudents, setStudents] = useState(PREVIEW_STUDENTS);
   const [sessions, setSessions] = useState<PreviewSession[]>([{ id: EXAMPLE_SESSION_ID, classroomId: EXAMPLE_CLASS_ID, subject: "literasi", date: "2026-10-14", duration: "70", blockMinutes: "15", roster: PREVIEW_STUDENTS, grades: { first: "2", second: "3" } }]);
-  const [assessments, setAssessments] = useState<PreviewAssessment[]>(() => PREVIEW_STUDENTS.flatMap((student) => [
-    { id: `${student.id}-literasi`, studentId: student.id, subject: "literasi", level: student.literacy!, recordedAt: "2026-10-14T12:00:00" },
-    { id: `${student.id}-numerasi`, studentId: student.id, subject: "numerasi", level: student.numeracy!, recordedAt: "2026-10-14T12:00:00" },
-  ]));
+  const [assessments, setAssessments] = useState<PreviewAssessment[]>(PREVIEW_ASSESSMENTS);
   const classId = pathname.split("/")[2] ?? EXAMPLE_CLASS_ID;
   const classroom = classrooms.find((item) => item.id === classId) ?? null;
   const grades = classroom?.grades ?? { first: "2", second: "3" };

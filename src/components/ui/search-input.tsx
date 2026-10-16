@@ -22,7 +22,7 @@ export function SearchInput({
   return (
     <div
       ref={containerRef}
-      className={`ui-search-input relative flex h-10 min-w-0 items-center gap-2 rounded-control border-2 border-line bg-inset pl-3 pr-0.5 text-muted ${props.disabled ? "opacity-50" : ""} ${className}`}
+      className={`ui-search-input relative flex h-10 min-w-0 items-center gap-2 rounded-control border border-line bg-inset pl-3 pr-0.5 text-muted ${props.disabled ? "opacity-50" : ""} ${className}`}
       data-invalid={props["aria-invalid"] === true || props["aria-invalid"] === "true" || undefined}
     >
       <Search

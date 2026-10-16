@@ -4,9 +4,13 @@ import { Select as BaseSelect } from "@base-ui/react/select";
 import { Check, ChevronDown } from "lucide-react";
 import { useState, type ComponentProps } from "react";
 
-export type SelectOption = { value: string; label: string; disabled?: boolean; tone?: "purple" | "pink" | "green" | "cyan" | "yellow" };
+export type SelectOption = { value: string; label: string; prefix?: string; disabled?: boolean; tone?: "purple" | "pink" | "green" | "cyan" | "yellow" };
 
 const tones = ["purple", "pink", "green", "cyan", "yellow"];
+
+function optionLabel(option: SelectOption) {
+  return option.prefix ? <span className="inline-flex items-center gap-2"><span className="font-extrabold tabular-nums">{option.prefix}</span><span>{option.label}</span></span> : option.label;
+}
 
 export function Select({
   options,
@@ -28,7 +32,7 @@ export function Select({
   return (
     <BaseSelect.Root items={options} {...props} value={selected} onValueChange={(next, details) => { setInternalValue(next); onValueChange?.(next, details); }}>
       <BaseSelect.Trigger className={`input ui-select-trigger ui-tone-${tone}`} {...triggerProps}>
-        <BaseSelect.Value placeholder={placeholder} />
+        <BaseSelect.Value placeholder={placeholder}>{options[index]?.prefix ? optionLabel(options[index]) : undefined}</BaseSelect.Value>
         <BaseSelect.Icon>
           <ChevronDown size={14} />
         </BaseSelect.Icon>
@@ -48,7 +52,7 @@ export function Select({
                   disabled={option.disabled}
                   className={`ui-option ui-coded-option ui-tone-${option.tone ?? tones[index % tones.length]}`}
                 >
-                  <BaseSelect.ItemText>{option.label}</BaseSelect.ItemText>
+                  <BaseSelect.ItemText>{optionLabel(option)}</BaseSelect.ItemText>
                   <BaseSelect.ItemIndicator>
                     <Check size={14} />
                   </BaseSelect.ItemIndicator>

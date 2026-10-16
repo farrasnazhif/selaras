@@ -163,8 +163,11 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 
 UI conventions:
 
+- Class tabs use the header’s moving purple underline. Breadcrumbs live in a thin white strip below the main header. Never use text dots to separate metadata; use separate elements.
+- Initial demo students have assigned groups and stable randomized previous/current levels. Progress uses success green / danger pink / neutral with labels. Keep group summaries compact with expandable member lists (`UI-13`, `DES-27`).
+
 - Product spacing uses 15 px small, 30 px medium, and 60 px between content groups (`UI-11`, `DES-25`); preserve icon micro-gaps and control heights.
-- Level uses direct Observasi entry; history-first dialogs elsewhere remain. Overall Jadwal combines complete saved schedules by date, using saved rosters/grades without inventing start times.
+- Level uses direct Observasi entry; history-first dialogs elsewhere remain. Overall Jadwal is a seven-day schedule overview with no roster/activity details or invented start times (`UI-13`, `DES-27`).
 
 - Keep reusable controls together in `src/components/ui/`; do not create a separate library folder.
 - Keep Beautiful UI components, Base UI behavior, and Lucide icons; apply the user-supplied Classroomscreen styling without adding shadcn.
@@ -196,10 +199,10 @@ UI conventions:
   underline, and profile menu. SidebarNav remains available to the sandbox and starter.
 - RootLayout keeps the public preview provider and shell mounted across product navigation;
   the shell renders its header only on `/kelas` and `/jadwal`, preserving other starter pages.
-- Product cards, fields, and table surfaces use consistent 2 px outlines. Selects and menus
+- Product cards, fields, and table surfaces use main’s 1 px outlines and lighter line tokens (`UI-12`, `DES-26`). Selects and menus
   use pastel fills with dark matching text; retain semantic danger and keyboard/focus behavior.
 - Level tables omit the redundant Kelas column and paginate ten rows per class. Observation
-  history opens before adding a note. Product copy avoids “contoh”, phase labels, and jargon;
+  entry opens directly on Level; history opens first elsewhere. Product copy avoids “contoh”, phase labels, and jargon;
   keep a concise, truthful notice that local changes disappear on reload.
 - Selaras app cards and table surfaces use borders with no resting or hover shadows. Its
   header profile uses shared Avatar/DropdownMenu with a labeled demo profile and only the
@@ -366,7 +369,7 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
   selecting a rule. Preserve stable PRD requirement/acceptance IDs in tickets and validation.
 - The user authorized the UI-only Selaras preview (`UI-01`). The latest four screenshots (`UI-02`, `DES-18`) supersede the guided-flow placeholders with
   class tabs and nested session routes. Use their supplied fixture content and breadcrumb hierarchy;
-  derive counts from the level screenshot's 7+8 roster; `UI-10` supersedes the earlier sidebar with the product header.
+  the initial demo roster now has 32 students per class (`UI-13`), replacing the screenshot’s 7+8 counts; `UI-10` supersedes the earlier sidebar with the product header.
   Memory-only saves and browser print must be identified accurately. This does not settle
   production auth/routes, pedagogical content, scheduling, persistence, or PDF contracts.
 - Templates/TODOs are not product decisions. Do not implement an unresolved requirement or

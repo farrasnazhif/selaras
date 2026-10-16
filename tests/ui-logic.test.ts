@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { validateFiles, formatFileSize } from "../src/lib/file-validation.ts";
-import { getMonthDays, shiftMonth, shiftDay } from "../src/lib/calendar.ts";
+import { getMonthDays, getWeekDays, shiftMonth, shiftDay } from "../src/lib/calendar.ts";
 import { getTableRows } from "../src/lib/table.ts";
 
 test("file selection validates extension, MIME, size, and count without losing valid files", () => {
@@ -42,4 +42,10 @@ test("table filtering and numeric sorting preserve caller data and handle empty 
   assert.deepEqual(getTableRows(rows, columns, "", { id: "name", direction: "asc" }), [rows[1], rows[2], rows[0]]);
   assert.deepEqual(rows.map((row) => row.name), ["Zoe", "Alex", "Sam"]);
   assert.deepEqual(getTableRows([], columns, "", null), []);
+});
+
+test("weekly schedules include Monday through Sunday across year and leap-day boundaries", () => {
+  assert.deepEqual(getWeekDays("2027-01-03"), ["2026-12-28", "2026-12-29", "2026-12-30", "2026-12-31", "2027-01-01", "2027-01-02", "2027-01-03"]);
+  assert.deepEqual(getWeekDays("2024-02-29"), ["2024-02-26", "2024-02-27", "2024-02-28", "2024-02-29", "2024-03-01", "2024-03-02", "2024-03-03"]);
+  assert.equal(getWeekDays("2026-10-12")[0], "2026-10-12");
 });

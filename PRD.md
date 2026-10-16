@@ -445,6 +445,35 @@ Gunakan daftar siswa dan kelas yang disimpan bersama sesi. Pertahankan tautan de
 keadaan kosong, dan pemberitahuan materi yang belum tersedia. Jangan mengarang jam mulai,
 urutan pelajaran dalam satu hari, atau aturan bentrok antar sesi yang belum ditetapkan.
 
+### UI-12 — Border tipis mengikuti main [instruksi pengguna]
+
+**UI-12-AC-01:** gunakan border normal 1 px dan token garis dari branch `main`
+(`--line: #E7E7F0`, `--line-strong: #D2D3E0`) pada kartu, kontrol, header, dan tabel.
+Ini menggantikan border normal 2 px pada `UI-10-AC-02`. Pertahankan fokus keyboard,
+penanda aktif/semantik, spasi, konten, dan alur yang sudah diterima.
+
+### UI-13 — Navigasi kelas, pekan belajar, dan roster demo [instruksi pengguna]
+
+**UI-13-AC-01:** navigasi Siswa/Level/Progres/Sesi memakai teks hitam dengan satu garis ungu
+bergerak seperti header utama, tanpa latar tab terpilih. Pertahankan keyboard dan reduced motion.
+**UI-13-AC-02:** jangan gunakan karakter titik sebagai pemisah metadata. Pisahkan nilai dalam
+elemen dengan gap atau baris sendiri, termasuk jumlah, durasi, label level, dan riwayat.
+**UI-13-AC-03:** Kelompok pada Siswa menampilkan nama/jumlah ringkas; daftar anggota dapat
+dibuka dan pemindahan dalam kelas yang sama tetap tersedia.
+**UI-13-AC-04:** Jadwal adalah ringkasan tujuh hari (Senin–Minggu) dengan pindah pekan dan
+kembali ke pekan ini. Tampilkan sesi tersimpan, kelas, mata pelajaran, dan durasi saja; tanpa
+roster, tugas kelompok, atau rotasi detail. Hari kosong tetap terlihat. Jangan mengarang jam
+mulai. Ini menggantikan rincian jadwal pada `UI-11-AC-04`.
+**UI-13-AC-05:** breadcrumb berada dalam strip header putih di bawah header utama, sekitar
+40 px tinggi, teks 12 px tebal; tampil pada rute produk dan tidak diduplikasi di konten.
+**UI-13-AC-06:** data demo awal memiliki 32 siswa fiktif per kelas (64 dalam pasangan 2–3).
+Setiap siswa memiliki kelompok serta level literasi/numerasi awal dan terbaru, diacak dari
+normal terdiskretisasi pada lima level dengan seed tetap. Ini bukan batas kapasitas produk
+atau hasil belajar nyata; kelas baru tetap mengikuti alur input siswa yang ada.
+**UI-13-AC-07:** indikator progres memakai hijau untuk naik, merah muda untuk turun, dan
+netral untuk tetap, disertai ikon/label. Riwayat awal/terbaru terurut dan tetap menerima
+penilaian baru. Jumlah pada daftar, kelompok, Level, dan sesi berasal dari roster yang sesuai.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |

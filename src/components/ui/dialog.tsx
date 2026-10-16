@@ -14,7 +14,7 @@ export function Dialog({
   busy = false,
 }: {
   title: string;
-  description: string;
+  description: ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: ReactNode;

@@ -15,3 +15,9 @@ export function shiftDay(date: string, delta: number) {
   day.setUTCDate(day.getUTCDate() + delta);
   return day.toISOString().slice(0, 10);
 }
+
+export function getWeekDays(date: string) {
+  const weekday = new Date(`${date}T00:00:00Z`).getUTCDay();
+  const monday = shiftDay(date, -((weekday + 6) % 7));
+  return Array.from({ length: 7 }, (_, index) => shiftDay(monday, index));
+}

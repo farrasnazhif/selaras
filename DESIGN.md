@@ -446,3 +446,35 @@ The overall Jadwal page shows full saved rotation grids grouped by date, with ea
 class, subject, duration, member count, and link to its detail page. Reuse RotationGrid with the
 saved roster/grade pair. Do not infer wall-clock times from elapsed-minute blocks, combine
 unrelated sessions into a new rotation, or substitute literacy material for unavailable subjects.
+
+## DES-26 — Lighter strokes matching main
+
+`UI-12` replaces the heavier resting outlines in DES-24/25 with main's 1 px borders.
+Restore `--line: #E7E7F0` and `--line-strong: #D2D3E0`; apply thin borders consistently
+across cards, search/inputs, overlays, group panels, headers, tables, and tab dividers.
+Filled primary/destructive buttons use main's transparent border. Retain focus indicators,
+the purple active navigation line, semantic activity rails, and existing icon weights from main;
+the header logo returns to main's default Lucide stroke. Other design decisions remain.
+
+## DES-27 — Underline navigation, compact groups, and weekly plan
+
+`UI-13` applies the header's black text and moving 4 px purple underline to the existing
+Base UI class tabs. No selected pill fill. Keep keyboard tab behavior and disable indicator
+motion for reduced motion. A separate white breadcrumb strip under the main header has a
+40 px minimum height, 12 px extra-bold text, thin border, and matching content gutters.
+
+Metadata never uses a text dot as a separator: use separate spans, rows, or definition-list
+items with gaps. Level numbers and labels use distinct elements. Group cards show one concise
+name/count header and a shared Collapsible for members with the existing move menu; avoid
+large instructions or nested colored panels. Retain neutral group names and count every member.
+
+Jadwal replaces the full grids with a Monday–Sunday overview, seven columns on wide screens
+and stacked days on phones. Week navigation and a Pekan ini action remain explicit. Each day
+shows its date and saved class/subject/duration cards linking to the session. Empty days show
+Belum ada jadwal. No roster, group tasks, teaching activities, or invented wall-clock times.
+
+The initial demo has 32 students per class, assigned groups, and seeded, discrete normally
+distributed previous/current levels (center 3, standard deviation 1, clamped to 1–5). Use
+fixed fictional fixtures to avoid hydration changes. Progress up uses the dark success green,
+down semantic pink, and unchanged muted ink, always with an arrow/label. This is fictional
+variation, not evidence of learning impact; production level contracts remain open.

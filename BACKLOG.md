@@ -27,6 +27,12 @@ Jadwal, rounded typography, 2 px outlines, coded dropdowns, 12 px minimum type, 
 avatars, ten-row Level pagination, observation history, and simpler session copy/controls.
 `UI-11`/`DES-25` refines spacing to 15/30/60 px, fixes the shared search field, restores
 direct Observasi entry only in Level, and combines full saved schedules by date on Jadwal.
+`UI-12`/`DES-26` replaces heavy resting borders with main’s 1 px strokes and lighter line
+tokens; preserve focus indicators and the accepted content/spacing.
+`UI-13`/`DES-27` adds underline class navigation, a thin breadcrumb header, separate metadata
+elements, concise expandable groups, a seven-day schedule overview, and 32 fictional students
+per class with stable randomized level histories and colored progress arrows. This supersedes
+the detailed overall Jadwal presentation in `UI-11`. Tests remain unrun by user request.
 The observation action moves from Progres to the Level table between Tingkat Numerasi and
 Status (`UI-09`, `DES-18`); read-only history stays available on Progres.
 Implementation modules are split across `src/features/kelas`, `progres`, and `sesi`, with
