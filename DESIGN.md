@@ -417,8 +417,8 @@ uses the same footer. Do not imply that the demo profile is authenticated.
 The user's student-tab request (`UI-04`) adds shared SearchInput and Select beside each
 class-card title. Search by name and filter by the existing group labels; wrap the header
 controls at narrow widths. Keep the current white, border-only Card and shared Table.
-Show the filtered result count and five rows per page, with shared Pagination below the table
-only when more than five results remain. Each class has independent controls; search/filter
+Show the filtered result count and five rows per page, with shared Pagination always below the
+table and disabled when five or fewer results remain. Each class has independent controls; search/filter
 changes reset its page. Keep AddStudentDialog available for empty results. Other tabs retain
 their existing scope; this overrides the earlier exclusion of filters only for these cards.
 

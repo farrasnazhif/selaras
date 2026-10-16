@@ -415,8 +415,9 @@ tetap terbuka (`Q-03`).
 
 **UI-04-AC-01:** tiap kartu kelas pada tab Siswa menampilkan pencarian nama dan filter
 kelompok Biru/Hijau/Oranye di samping judul; kontrol membungkus pada layar sempit.
-**UI-04-AC-02:** tampilkan maksimal lima siswa per halaman. Pagination muncul jika hasil
-setelah pencarian/filter melebihi lima; masing-masing kelas memiliki state terpisah.
+**UI-04-AC-02:** tampilkan maksimal lima siswa per halaman. Pagination selalu terlihat dan
+dinonaktifkan ketika hasil setelah pencarian/filter berjumlah lima atau kurang; masing-masing
+kelas memiliki state terpisah.
 **UI-04-AC-03:** pencarian/filter digabungkan dalam kelas yang sama, menampilkan jumlah hasil,
 dan kembali ke halaman pertama ketika kontrol berubah. Data kosong tetap dapat ditambah.
 Ini menerima pencarian/filter lokal untuk tab Siswa saja, bukan layanan pencarian backend

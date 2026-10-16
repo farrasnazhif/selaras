@@ -59,7 +59,7 @@ export function TaskVariationControls({
       <div className="flex items-end justify-between gap-ui-sm">
         <div>
           <h3 className="text-sm font-bold">Variasi kegiatan</h3>
-          <p className="text-xs text-muted">
+          <p className="mt-2 text-xs text-muted">
             Isi tugas, mata pelajaran, tingkat kemampuan, kelas, dan durasi
             dikirim ke AI. Namun, foto tidak dikirim otomatis.
           </p>
@@ -74,7 +74,7 @@ export function TaskVariationControls({
           loading={variation.isPending}
           onClick={generate}
         >
-          <Sparkles size={15} aria-hidden="true" />
+          {!variation.isPending && <Sparkles size={15} aria-hidden="true" />}
           Buat variasi AI
         </Button>
       </div>

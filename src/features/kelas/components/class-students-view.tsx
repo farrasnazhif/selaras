@@ -140,20 +140,19 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
         getRowId={(student) => student.id}
         caption={`Daftar siswa kelas ${grade}`}
       />
-      {pageCount > 1 && (
-        <div
-          className="mt-8"
-          role="group"
-          aria-label={`Halaman siswa kelas ${grade}`}
-        >
-          <Pagination
-            locale="id"
-            page={currentPage}
-            pageCount={pageCount}
-            onPageChange={setPage}
-          />
-        </div>
-      )}
+      <div
+        className="mt-8"
+        role="group"
+        aria-label={`Halaman siswa kelas ${grade}`}
+      >
+        <Pagination
+          locale="id"
+          page={currentPage}
+          pageCount={pageCount}
+          disabled={pageCount === 1}
+          onPageChange={setPage}
+        />
+      </div>
       <AddStudentDialog classKey={classKey} />
     </Card>
   );
