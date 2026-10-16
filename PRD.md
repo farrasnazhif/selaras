@@ -46,8 +46,8 @@ Pertahankan pilihan mapel, kolom, urutan siswa, dan riwayat observasi.
 publik di sandbox. Tampilkan hanya ikon loader dengan label status aksesibel yang dapat diganti,
 tanpa persentase progres buatan. Animasi mengikuti preferensi reduced motion.
 **UI-26-AC-02:** gunakan komponen yang sama untuk fallback pemuatan halaman, data awal
-kelas, dan perpindahan ke halaman masuk saat sesi berakhir. Tampilkan ikon di tengah area
-pemuatan; pertahankan batas autentikasi serta tampilan error dan aksi coba lagi.
+kelas, dan perpindahan ke halaman masuk saat sesi berakhir. Tampilkan ikon tepat di tengah
+viewport; pertahankan batas autentikasi serta tampilan error dan aksi coba lagi.
 
 **Versi:** 1.1 (melengkapi draf berdasarkan Product Brief v4)\
 **Tanggal:** 14 Oktober 2026\

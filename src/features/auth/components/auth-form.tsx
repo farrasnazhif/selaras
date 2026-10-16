@@ -42,13 +42,12 @@ export function AuthForm({
   });
   return (
     <Card className="max-w-md w-full">
-      <p className="eyebrow">{signup ? "Selaras untuk guru" : "Selamat datang kembali"}</p>
-      <h1 className="text-[32px] leading-[1.2] font-[750] tracking-[-0.4px] mt-2">
+      <h1 className="text-center text-[32px] leading-[1.2] font-[750] tracking-[-0.4px] mt-2">
         {signup ? "Buat akun guru" : "Masuk ke Selaras"}
       </h1>
-      <p className="text-muted text-base leading-relaxed mt-2 mb-6">
+      <p className="text-center text-muted text-base leading-relaxed mb-6">
         {signup
-          ? "Atur kelas dan kegiatan belajar dalam ruang pribadi Anda."
+          ? "Atur kelas dan kegiatan belajar Anda."
           : "Lanjutkan mengelola kelas dan rencana belajar Anda."}
       </p>
       {!configured && (
@@ -91,14 +90,19 @@ export function AuthForm({
               router.replace(safeReturnPath(next ?? "/kelas"));
               router.refresh();
             } catch {
-              setError(signup
-                ? "Akun belum dapat dibuat. Periksa isian dan koneksi, atau masuk jika sudah terdaftar."
-                : "Belum dapat masuk. Periksa email, kata sandi, konfirmasi akun, dan koneksi Anda.");
+              setError(
+                signup
+                  ? "Akun belum dapat dibuat. Periksa isian dan koneksi, atau masuk jika sudah terdaftar."
+                  : "Belum dapat masuk. Periksa email, kata sandi, konfirmasi akun, dan koneksi Anda.",
+              );
             }
           })}
           className="space-y-4"
         >
-          <fieldset disabled={!configured || isSubmitting} className="space-y-4 min-w-0">
+          <fieldset
+            disabled={!configured || isSubmitting}
+            className="space-y-4 min-w-0"
+          >
             <div className="field">
               <label htmlFor="email">Alamat email</label>
               <Input
@@ -144,30 +148,20 @@ export function AuthForm({
             className="w-full"
             disabled={!configured || isSubmitting}
           >
-            {isSubmitting
-              ? "Mohon tunggu…"
-              : signup
-                ? "Buat akun"
-                : "Masuk"}
+            {isSubmitting ? "Mohon tunggu…" : signup ? "Buat akun" : "Masuk"}
             <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </form>
       )}
-      <p className="text-sm text-muted mt-6">
+      <p className="text-center text-sm text-muted mt-6">
         {signup ? "Sudah punya akun?" : "Belum punya akun?"}{" "}
         <Link
           className="font-medium text-foreground underline underline-offset-4"
           href={signup ? "/login" : "/register"}
         >
-          {signup ? "Masuk" : "Buat akun guru"}
+          {signup ? "Masuk" : "Buat akun"}
         </Link>
       </p>
-      <Link
-        href="/auth/confirm"
-        className="inline-block text-xs text-muted underline underline-offset-4 mt-4"
-      >
-        Kirim ulang email konfirmasi
-      </Link>
     </Card>
   );
 }

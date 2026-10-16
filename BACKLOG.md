@@ -14,7 +14,8 @@ Keep the existing data, search and combine flow.
 UI-26/DES-39: add `src/components/ui/selaras-loading-state.tsx` using only LoaderCircle with
 a configurable accessible label and reduced-motion support. Register it in the sandbox catalog
 and SharedDemo. UI-26-AC-02 additionally uses it in root/Kelas/Jadwal loading boundaries,
-initial workspace fetch, and auth redirect loading; preserve route protection and error states.
+initial workspace fetch, and auth redirect loading; center page loaders in the viewport,
+preserving route protection, header interaction and error states.
 
 DES-37 button refinement: style only Buat variasi AI with a primary-color gradient and sweeping shine
 through a scoped CSS class. Keep shared Button behavior and disable motion for reduced-motion,

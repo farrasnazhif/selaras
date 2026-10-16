@@ -48,7 +48,7 @@ export function PreviewProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState("");
   const busy = useRef(false);
   if (!user) return null;
-  if (workspace.isPending) return <div className="flex min-h-[60dvh] items-center justify-center"><SelarasLoadingState label="Memuat kelas Anda…" /></div>;
+  if (workspace.isPending) return <div className="pointer-events-none fixed inset-0 flex items-center justify-center"><SelarasLoadingState label="Memuat kelas Anda…" /></div>;
   if (!workspace.data) return <div className="space-y-ui-sm p-ui-md"><Callout tone="danger" title="Kelas belum dapat dimuat">Periksa koneksi dan konfigurasi Supabase. Data Anda belum diubah.</Callout><Button onClick={() => workspace.refetch()}>Coba lagi</Button></div>;
 
   const { classrooms, students: allStudents, sessions, assessments, observations, groupOverrides } = workspace.data.state;

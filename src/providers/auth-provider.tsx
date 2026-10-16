@@ -47,7 +47,7 @@ export function AuthProvider({
 
   if (!user)
     return (
-      <div className="flex min-h-[60dvh] items-center justify-center">
+      <div className="pointer-events-none fixed inset-0 flex items-center justify-center">
         <SelarasLoadingState label="Kembali ke halaman masuk…" />
       </div>
     );

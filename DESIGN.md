@@ -29,7 +29,9 @@ UI-26 uses only a 32 px primary-colored Lucide LoaderCircle, spinning unless red
 is enabled. No logo, background, or visible copy. Keep a configurable accessible status label.
 The sandbox entry is “Selaras Loading State”.
 UI-26-AC-02 centers this same loader in page fallbacks and initial workspace/auth loading.
-Route fallbacks use at least 60dvh; existing product headers remain around nested loading.
+Page loaders use a fixed, viewport-wide container to center the icon vertically and horizontally,
+independent of header height and content padding. The container does not intercept pointer events;
+existing product headers remain visible and usable during nested loading.
 
 ## DES-40 — Selaras logo asset
 
