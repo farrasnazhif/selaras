@@ -60,7 +60,7 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
               </Button>
             }
           >
-            <SessionTaskSummary
+            <SessionTaskSummary subject={session.subject}
               board
               roster={session.roster}
               gradePair={session.grades}
@@ -73,8 +73,8 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
         </div>
       </header>
       <RotationGrid roster={session.roster} gradePair={session.grades} />
-      <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary roster={session.roster} gradePair={session.grades} /></Collapsible></div>
-      <div className="hidden print:block"><SessionTaskSummary roster={session.roster} gradePair={session.grades} /></div>
+      <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></Collapsible></div>
+      <div className="hidden print:block"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></div>
     </div>
   );
 }

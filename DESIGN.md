@@ -267,7 +267,7 @@ Pertanyaan ini menambah konteks presentasi, tanpa mengubah pertanyaan/keputusan 
 | ID    | Keputusan yang belum tersedia                                                                                                                        | Desain / PRD terdampak                                                                                                                           |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | DQ-01 | Apa titik masuk produk, shell/navigasi, serta wizard satu layar/beberapa route? Adakah daftar sesi/sesi terakhir yang disetujui?                     | DES-02, DES-06–DES-07; SCR-01–SCR-07; Q-03/Q-08. `/` tetap sandbox.                                                                              |
-| DQ-02 | Apa nama/indikator/urutan level, mapel, tes, grade limits, dan parameter jadwal final?                                                               | DES-07–DES-10, DES-12; FR-01–FR-04/FR-06; Q-01/Q-02/Q-04/Q-12/Q-13.                                                                              |
+| DQ-02 | Nama/indikator/urutan enam level per mapel diterima (UI-14). Apa isi/skor tes, grade limits, dan parameter jadwal final?                                                               | DES-07–DES-10, DES-12; FR-01–FR-04/FR-06; Q-01/Q-02/Q-04/Q-12/Q-13.                                                                              |
 | DQ-03 | Apa data minimum/alur tambah-edit-hapus siswa; bagaimana pemindahan manual dikonfirmasi, dan kelompok kosong/timpang dijelaskan?                     | DES-08–DES-09; FR-01–FR-03/FR-07; Q-04/Q-09. Inline atau dialog pemindahan belum dipilih.                                                        |
 | DQ-04 | Apa aturan kembali, reload/keluar, generate ulang, dan edit setelah hasil dibuat?                                                                    | DES-02/DES-07–DES-11/DES-13; FR-03–FR-06/FR-08; Q-08/Q-11. Tidak menjanjikan autosave/draft recovery.                                            |
 | DQ-05 | Perangkat/jaringan/ambang uji apa, dan bagaimana kontrol compact memenuhi kebutuhan uji sentuh?                                                      | DES-02–DES-05/DES-13; NFR-01/NFR-03/NFR-09; Q-14/Q-15. Shared sizes mengikuti DES-05; hardware/performance acceptance tetap terbuka.             |
@@ -446,3 +446,19 @@ The overall Jadwal page shows full saved rotation grids grouped by date, with ea
 class, subject, duration, member count, and link to its detail page. Reuse RotationGrid with the
 saved roster/grade pair. Do not infer wall-clock times from elapsed-minute blocks, combine
 unrelated sessions into a new rotation, or substitute literacy material for unavailable subjects.
+
+## DES-28 — Six levels, three groups
+
+`UI-14` replaces the earlier five-level example rubrics with the user's six exact labels and
+criteria for literacy/numeracy. Keep the existing Select, numeric value 1–6, separate number
+and label presentation, and a readable Sesuai fase option. Keep three neutral groups A/B/C;
+changing assessment level does not move a student. Preserve history and numeric comparisons.
+
+Task summaries differentiate members by their subject level inside each of the three groups.
+Show the activity, eligible member names/count, and instruction, without naming a new group
+for each level. Levels 1–2 use non-reading picture/concrete-object guidance only; 3–5 use the
+corresponding practice; 6 uses the grade's phase and explicitly awaits teacher-selected phase
+content. Do not present unreviewed phase objectives as real tasks. Unknown levels show a
+missing-assessment state. Apply the same guidance in independent rotation cells, saved-session
+tasks, board view, and print. Numeracy guidance can be previewed without claiming an available
+numeracy rotation. Retain shared controls, palette, typography, and the current page layout.

@@ -163,6 +163,9 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 
 UI conventions:
 
+- Use the six accepted literacy/numeracy levels and criteria in `UI-14`/`DES-28`, while keeping three groups A/B/C per class. Level changes append history and never move members.
+- Independent-task guidance uses each student’s subject level: 1–2 non-reading only, 3–5 matching practice, 6 class-phase content. Mixed groups need differentiated guidance; no invented phase objectives or numeracy rotation.
+
 - Product spacing uses 15 px small, 30 px medium, and 60 px between content groups (`UI-11`, `DES-25`); preserve icon micro-gaps and control heights.
 - Level uses direct Observasi entry; history-first dialogs elsewhere remain. Overall Jadwal combines complete saved schedules by date, using saved rosters/grades without inventing start times.
 
@@ -372,7 +375,7 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
 - Templates/TODOs are not product decisions. Do not implement an unresolved requirement or
   invent missing behavior to mark a ticket Ready; continue independent authorized work.
 - PRD labels `[USULAN]`/`[ASUMSI]` and its `Q-*` table identify unresolved choices. Proposed
-  schemas, three level names, routes, endpoints, and Dev 1–4 assignments are not approved.
+  schemas, routes, endpoints, and Dev 1–4 assignments are not approved. Six subject-level names/criteria are accepted in UI-14.
   BACKLOG.md has no product tickets; the PRD's `B*` planning table is not a Ready backlog.
 - Keep complete, specific implementation prompts inside each Ready BACKLOG.md ticket.
   Use one owner, branch, and PR per ticket; do not merge or expand scope without authorization.
@@ -414,7 +417,7 @@ Product decisions still required (PRD.md section 17 owns the full questions and 
 | TODO / PRD question IDs        | Boundary to preserve until decided                                                                                                                                                                                             |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Q-01`, `Q-04`, `Q-12`         | Session/block duration, tie-breaking, class/group edge cases, capacity, and final grade-input limits are not fixed contracts (`FR-01`–`FR-04`).                                                                                |
-| `Q-02`, `Q-10`, `Q-13`         | Level indicators/names/order, assessment scoring, baseline/correction rules, subject selection, and curriculum/template review remain open (`FR-02`–`FR-06`).                                                                  |
+| `Q-02`, `Q-10`, `Q-13`         | Six level names/order/criteria per subject are accepted (UI-14); assessment scoring, baseline/correction rules, session subject selection, and curriculum/template review remain open (`FR-02`–`FR-06`).                                                                  |
 | `Q-03`, `Q-08`, `Q-09`, `Q-11` | Login/demo identity, product entry/routes, example adaptation, persistence/retention/deletion, and draft/regeneration semantics remain open (`FR-07`–`FR-08`, `ST-01`–`ST-04`).                                                |
 | `Q-05`, `Q-06`, `Q-14`         | PDF/board layout, fictional-demo permission, and device/network/performance acceptance need decisions (`FR-05`, `NFR-01`–`NFR-03`, `NFR-08`).                                                                                  |
 | `Q-07`                         | P0/P1 planning is proposed; the six MVP modules remain in scope until a cut is explicitly accepted.                                                                                                                            |

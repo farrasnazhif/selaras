@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { EXAMPLE_CLASS_ID, PREVIEW_STUDENTS } from "@/features/kelas/constants/preview";
+import { LITERACY_LEVELS, NUMERACY_LEVELS } from "@/features/kelas/constants/reference-content";
 import { EXAMPLE_SESSION_ID } from "@/features/sesi/constants/reference-content";
 import type { ClassKey, GroupKey, PreviewAssessment, PreviewClassroom, PreviewObservation, PreviewSession, PreviewStudent, Subject } from "@/features/shared/types/preview";
 
@@ -59,7 +60,7 @@ export function PreviewProvider({ children }: { children: ReactNode }) {
       setLevel: (studentId, subject, level) => {
         const field = subject === "literasi" ? "literacy" : "numeracy";
         const student = students.find((item) => item.id === studentId);
-        if (!student || student[field] === level || !["1", "2", "3", "4", "5"].includes(level)) return;
+        if (!student || student[field] === level || !(subject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS).some((option) => option.value === level)) return;
         setStudents((current) => current.map((item) => item.id === studentId ? { ...item, [field]: level } : item));
         setAssessments((current) => [...current, { id: crypto.randomUUID(), studentId, subject, level, recordedAt: new Date().toISOString() }]);
       },

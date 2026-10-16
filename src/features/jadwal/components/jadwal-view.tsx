@@ -36,8 +36,8 @@ export function JadwalView() {
                 </header>
                 {available ? <>
                   <RotationGrid roster={session.roster} gradePair={session.grades} />
-                  <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary roster={session.roster} gradePair={session.grades} /></Collapsible></div>
-                  <div className="hidden print:block"><SessionTaskSummary roster={session.roster} gradePair={session.grades} /></div>
+                  <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></Collapsible></div>
+                  <div className="hidden print:block"><SessionTaskSummary subject={session.subject} roster={session.roster} gradePair={session.grades} /></div>
                 </> : <EmptyState title="Materi belum tersedia" description="Kegiatan untuk jadwal ini belum tersedia." />}
               </article>
             );

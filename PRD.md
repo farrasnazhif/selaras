@@ -120,15 +120,15 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 **Persyaratan:**
 
 - Guru memilih level setiap siswa secara manual.
-- Level disimpan terpisah per mata pelajaran [USULAN].
+- Level ditetapkan terpisah untuk literasi dan numerasi sesuai spesifikasi enam level pengguna (`UI-14`).
 - Tes singkat bersifat opsional; hasilnya menjadi saran, bukan penggantian otomatis observasi guru [USULAN].
-- Gunakan tiga level kerja untuk prototipe: **Dasar, Berkembang, Mandiri** [USULAN; definisi dan indikator harus disepakati sebelum implementasi].
+- Gunakan enam level per mata pelajaran pada tabel `UI-14`; usulan tiga level Dasar/Berkembang/Mandiri digantikan. Jumlah kelompok tetap tiga per kelas.
 
 **Acceptance criteria:**
 
 - **FR-02-AC-01:** 15 siswa fiktif dapat diberi level dari observasi tanpa menjalankan tes.
 - **FR-02-AC-02:** guru dapat mengubah level; tes tidak menjadi prasyarat menuju pengelompokan.
-- **FR-02-AC-03 [tertunda]:** isi tes, indikator, dan pemetaan hasil ke level dapat diuji setelah `Q-02` dijawab. Nama tiga level di atas belum menjadi kontrak final.
+- **FR-02-AC-03 [sebagian tertunda]:** nama, urutan, dan indikator enam level mengikuti `UI-14`; isi/skor tes serta pemetaan hasil tes masih menunggu `Q-02`.
 
 ### FR-03 — Pengelompokan [P0]
 
@@ -192,7 +192,7 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 **Persyaratan:**
 
 - Buat satu lembar tugas per kelompok berdasarkan mata pelajaran dan level.
-- Untuk level terendah, utamakan gambar, benda konkret, atau tutor sebaya, bukan instruksi yang mengharuskan membaca.
+- Level 1–2 pada kedua mapel hanya mendapat tugas tanpa membaca; level 3–5 latihan sesuai level (boleh tertulis); level 6 memakai capaian fase kelas (`UI-14`).
 - Tersedia tampilan tugas per kelompok, PDF yang bisa diunduh, dan versi papan tulis.
 - PDF yang telah diunduh dapat dibuka tanpa koneksi internet; ini **bukan** klaim bahwa seluruh aplikasi offline.
 - Konten dari bank template harus tetap tersedia ketika API AI gagal.
@@ -200,7 +200,7 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 
 **Acceptance criteria:**
 
-- **FR-05-AC-01:** setiap kelompok mendapatkan tugas sesuai mata pelajaran dan level, termasuk aktivitas nonteks pada level terendah.
+- **FR-05-AC-01:** setiap kelompok mendapatkan tugas sesuai mata pelajaran dan level, termasuk tugas tanpa membaca pada level 1–2 dan tugas fase pada level 6 (`UI-14`).
 - **FR-05-AC-02:** PDF yang berhasil diunduh dapat dibuka setelah koneksi diputus; aplikasi web tidak diwajibkan berjalan offline.
 - **FR-05-AC-03:** versi papan tulis tersedia; waktu salin kurang dari lima menit tetap target uji, belum hasil terverifikasi.
 - **FR-05-AC-04:** tanpa API AI, tugas template tetap tersedia dan penjadwalan tetap berfungsi.
@@ -215,14 +215,14 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 
 - Simpan histori penilaian level bertanggal.
 - Guru dapat melakukan penilaian ulang setelah sekitar dua minggu; tidak perlu memblokir pembaruan lebih awal [USULAN].
-- Bandingkan level terbaru dengan baseline; pemisahan per mata pelajaran masih [USULAN, Q-02].
+- Bandingkan level terbaru dengan baseline secara terpisah per mata pelajaran (UI-14); aturan baseline menunggu Q-10.
 - Tampilkan status **naik, tetap, turun** per siswa.
 - Jangan menyimpulkan kausalitas bahwa perubahan terjadi karena aplikasi.
 
 **Acceptance criteria:**
 
 - **FR-06-AC-01:** pembaruan menambahkan histori bertanggal tanpa menimpa penilaian sebelumnya.
-- **FR-06-AC-02:** pada urutan level yang disepakati, perubahan ke level lebih tinggi ditampilkan naik, level sama tetap, dan lebih rendah turun. Dasar → Berkembang adalah contoh berdasarkan nama level usulan.
+- **FR-06-AC-02:** pada urutan level yang disepakati, perubahan ke level lebih tinggi ditampilkan naik, level sama tetap, dan lebih rendah turun. Contoh: literasi Kata (3) → Paragraf (4) ditampilkan naik; urutan mengikuti UI-14.
 - **FR-06-AC-03:** perbandingan tidak dinyatakan sebagai bukti dampak kausal aplikasi.
 
 **Belum diputuskan:** baseline, mata pelajaran, penilaian pertama/tanpa pembanding, koreksi histori, dan waktu pembaruan (`Q-02`, `Q-10`).
@@ -335,7 +335,7 @@ Breadcrumb: Kelas → Kelas Rangkap 2-3 → Sesi → Susun Sesi Baru atau Litera
 
 **UI-02-AC-01:** daftar rombel, detail kelas dengan empat tab, matriks level literasi/numerasi,
 rubrik pada screenshot, pembuat sesi, dan detail sesi tersedia memakai shared UI/SidebarNav.
-**UI-02-AC-02:** lima label level dan rubrik screenshot adalah konten contoh yang disetujui
+**UI-02-AC-02:** lima label level dan rubrik screenshot adalah konten historis, digantikan UI-14; sebelumnya disetujui
 untuk UI; perubahan level, catatan, rombel, dan sesi hanya disimpan dalam state lokal.
 **UI-02-AC-03:** contoh Literasi memakai 70 menit, blok 15 menit, pembukaan/penutup 5 menit,
 dan kegiatan yang diberikan screenshot. Susun jadwal menampilkan template contoh, bukan
@@ -445,6 +445,38 @@ Gunakan daftar siswa dan kelas yang disimpan bersama sesi. Pertahankan tautan de
 keadaan kosong, dan pemberitahuan materi yang belum tersedia. Jangan mengarang jam mulai,
 urutan pelajaran dalam satu hari, atau aturan bentrok antar sesi yang belum ditetapkan.
 
+### UI-14 — Enam level dan tugas mandiri, tetap tiga kelompok [instruksi pengguna]
+
+**UI-14-AC-01:** dropdown, panduan, observasi, dan progres memakai enam level per mapel berikut.
+
+| Level | Literasi | Kriteria literasi | Numerasi | Kriteria numerasi |
+| --- | --- | --- | --- | --- |
+| 1 | Pemula | Belum mengenal huruf | Pemula | Belum mengenal angka 1-9 |
+| 2 | Huruf | Mengenal huruf, tetapi belum bisa membaca kata | Angka 1-9 | Mengenal angka 1-9, tetapi belum mengenal angka 11-99 |
+| 3 | Kata | Membaca kata sederhana, tetapi belum bisa membaca paragraf | Angka 11-99 | Mengenal angka 11-99, tetapi belum bisa pengurangan |
+| 4 | Paragraf | Membaca paragraf pendek, tetapi belum bisa membaca cerita | Pengurangan | Bisa pengurangan dua angka dengan meminjam, tetapi belum bisa pembagian |
+| 5 | Cerita | Membaca cerita pendek dengan lancar | Pembagian | Bisa membagi bilangan tiga angka dengan satu angka |
+| 6 | Sesuai fase | Sudah melampaui level dasar; tugas mengikuti capaian fase kelasnya | Sesuai fase | Sudah melampaui level dasar; tugas mengikuti capaian fase kelasnya |
+
+**UI-14-AC-02:** simpan level 1–6 dalam state preview dan tambah histori saat penilaian berubah;
+jangan menimpa histori atau mengganti kelompok saat mengubah level.
+**UI-14-AC-03:** pertahankan tepat tiga pilihan kelompok netral A/B/C per kelas serta pemindahan
+manual dalam kelas. Enam level bukan enam kelompok. Dalam kelompok campuran, bedakan panduan
+tugas menurut level tiap siswa pada mata pelajaran sesi; jangan menetapkan satu tugas tertulis
+untuk semua anggota berdasarkan kelompoknya saja.
+**UI-14-AC-04:** level 1–2 hanya tugas tanpa membaca pada kedua mapel (gambar/benda konkret);
+level 3–5 latihan sesuai level, boleh tertulis; level 6 diarahkan ke fase kelas A/B/C, tanpa
+fallback ke latihan level dasar. Siswa tanpa level tetap ditandai belum dinilai.
+**UI-14-AC-05:** preview tugas, rotasi mandiri, papan tulis, dan cetak memakai aturan yang sama
+serta roster/kelas/mapel sesi tersimpan. Konten fase yang belum dipilih dinyatakan belum tersedia;
+jangan mengarang capaian kurikulum. Template latihan di UI merupakan panduan, bukan worksheet
+visual yang telah ditinjau. Jadwal numerasi belum tersedia tidak boleh memakai rotasi literasi.
+
+Keputusan ini menyelesaikan nama/urutan/indikator level dalam `Q-02`. Isi/skor tes, koreksi dan
+baseline (`Q-02`, `Q-10`), konten/capaian fase serta bank visual (`Q-13`), dan algoritme awal
+untuk membagi enam level menjadi tiga kelompok (`Q-04`) masih terbuka. Preview mempertahankan
+keanggotaan yang sudah ada dan tidak mengimplementasikan algoritme pengelompokan baru.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |
@@ -499,7 +531,7 @@ Untuk hackathon, satu database dan satu aplikasi web sudah cukup. Pilihan penyim
 ```ts
 type Grade = 1 | 2 | 3 | 4 | 5 | 6;
 type Phase = "A" | "B" | "C";
-type Level = "basic" | "developing" | "independent";
+type Level = "1" | "2" | "3" | "4" | "5" | "6";
 
 type PhaseMode = "same_phase" | "cross_phase";
 
@@ -519,17 +551,17 @@ function compareLevels(previous: Level, current: Level): "up" | "same" | "down";
 | `GET`  | `/api/sessions/[id]/export`   | Hasil PDF jadwal dan lembar tugas                     |
 | `POST` | `/api/worksheets/variation`   | Variasi tugas berbasis AI, opsional                   |
 
-CRUD mengikuti jalur Supabase SDK starter dengan RLS dan constraints yang benar sebelum data privat disimpan. Route Handler tidak otomatis menggantikan kontrol kepemilikan. Endpoint di atas adalah alternatif rancangan, bukan API yang tersedia atau persyaratan untuk MVP; scheduling deterministik tidak otomatis membutuhkan endpoint server. Kontrak level, durasi, dan penyimpanan menunggu `Q-01`/`Q-02`/`Q-09`.
+CRUD mengikuti jalur Supabase SDK starter dengan RLS dan constraints yang benar sebelum data privat disimpan. Route Handler tidak otomatis menggantikan kontrol kepemilikan. Endpoint di atas adalah alternatif rancangan, bukan API yang tersedia atau persyaratan untuk MVP; scheduling deterministik tidak otomatis membutuhkan endpoint server. Enam level mengikuti UI-14; kontrak tes, durasi, dan penyimpanan menunggu `Q-01`/`Q-02`/`Q-09`.
 
-## 11. Aturan konten tugas [USULAN]
+## 11. Aturan konten tugas [aturan dasar diterima; bank konten belum ditetapkan]
 
 | Level      | Literasi dasar                                                         | Numerasi dasar                        | Format                         |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------------- | ------------------------------ |
-| Dasar      | Cocokkan gambar dengan bunyi atau huruf menggunakan bantuan guru/tutor | Kelompokkan atau hitung benda konkret | Instruksi visual, sedikit teks |
-| Berkembang | Susun suku kata/kata sederhana                                         | Hitung dan bandingkan jumlah          | Teks pendek dan contoh         |
-| Mandiri    | Baca paragraf singkat dan jawab pertanyaan                             | Latihan soal kontekstual sederhana    | Instruksi tertulis mandiri     |
+| Level 1–2 | Mencocokkan gambar tanpa membaca | Berhitung dengan benda konkret tanpa membaca | Tidak membutuhkan membaca, termasuk petunjuk tertulis |
+| Level 3–5 | Latihan kata, paragraf, atau cerita sesuai level | Latihan angka, pengurangan, atau pembagian sesuai level | Boleh tertulis; sesuai kriteria UI-14 |
+| Level 6 | Tugas sesuai capaian fase kelas | Tugas sesuai capaian fase kelas | Bank/capaian fase menunggu Q-13; tanpa fallback level dasar |
 
-Contoh ini merupakan ide template, **bukan** kurikulum atau validasi pedagogis. Guru harus bisa meninjau kesesuaian tugas. Hindari penggunaan label level pada lembar siswa jika berpotensi menstigma.
+Batas tugas pada tabel mengikuti UI-14; worksheet dan capaian fase final masih menunggu Q-13. Ini **bukan** klaim kurikulum atau validasi pedagogis. Guru harus bisa meninjau kesesuaian tugas. Hindari penggunaan label level pada lembar siswa jika berpotensi menstigma.
 
 ## 12. Strategi pengujian
 
@@ -545,8 +577,8 @@ Contoh ini merupakan ide template, **bukan** kurikulum atau validasi pedagogis. 
 | T08 | Prioritas level dasar            | Kelompok level terendah dibimbing lebih awal           | FR-04-AC-03                    |
 | T09 | AI tidak tersedia                | Jadwal dan template tugas tetap tersedia               | FR-05-AC-04, NFR-06            |
 | T10 | PDF diunduh lalu koneksi diputus | File tetap dapat dibuka                                | FR-05-AC-02, NFR-02            |
-| T11 | Level Dasar → Berkembang         | Status `up`                                            | FR-06-AC-02 (level final Q-02) |
-| T12 | Level Mandiri → Berkembang       | Status `down`                                          | FR-06-AC-02 (level final Q-02) |
+| T11 | Literasi Kata (3) → Paragraf (4)         | Status `up`                                            | FR-06-AC-02, UI-14 |
+| T12 | Literasi Cerita (5) → Kata (3)       | Status `down`                                          | FR-06-AC-02, UI-14 |
 | T13 | Siswa fiktif                     | Label demo jelas dan data tidak diklaim nyata          | NFR-08, Q-06                   |
 
 ## 13. Urutan kerja dari draf [USULAN; bukan backlog Ready]
@@ -619,9 +651,9 @@ Jawaban berikut tidak boleh ditebak saat membuat tiket Ready. Bila suatu kebutuh
 | ID   | Keputusan yang dibutuhkan                                                                                                                                                                                               | Persyaratan / layar terdampak                                 |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | Q-01 | Berapa durasi sesi/blok dan minimum bimbingan? Bagaimana pembagian menit, prioritas jika level sama, kegiatan bersama satu fase, dan sesi terlalu singkat?                                                              | FR-04, SCR-02, SCR-05, T06–T08                                |
-| Q-02 | Apa indikator, jumlah/urutan/nama level final dan isi/skor tes? Apakah level per mapel? Apakah hasil tes hanya saran, dan bagaimana guru mengoreksinya?                                                                 | FR-02–FR-06, SCR-03–SCR-07, T03–T08, T11–T12                  |
+| Q-02 | Nama/urutan/indikator enam level per mapel disetujui pada UI-14. Apa isi/skor tes, pemetaan hasil, status saran, dan koreksi guru?                                                                 | FR-02–FR-06, SCR-03–SCR-07, T03–T08, T11–T12                  |
 | Q-03 | Apakah Selaras memakai registrasi/login guru starter? Bagaimana demo diakses: akun fiktif individual atau alur fiktif publik terpisah? Apakah profil guru diperlukan?                                                   | FR-07, J-03, ST-01, SCR-01, NFR-04–NFR-05                     |
-| Q-04 | Bagaimana menangani kelas kosong, siswa tanpa level, siswa sangat sedikit, kelompok kosong/ukuran timpang, serta batas jumlah siswa?                                                                                    | FR-01–FR-04, SCR-03–SCR-05, T03–T06                           |
+| Q-04 | Bagaimana menangani kelas kosong, siswa tanpa level, siswa sangat sedikit, kelompok kosong/ukuran timpang, batas jumlah siswa, serta pemetaan awal enam level menjadi tiga kelompok?                                                                                    | FR-01–FR-04, SCR-03–SCR-05, T03–T06                           |
 | Q-05 | Bagaimana format tugas visual hitam-putih, ukuran/orientasi halaman, isi paket PDF (jadwal/tugas/nama siswa), dan versi papan tulis ditentukan?                                                                         | FR-05, SCR-06, T10, NFR-04                                    |
 | Q-06 | Apakah penyelenggara sudah mengonfirmasi tertulis penggunaan siswa fiktif? Siapa memeriksa label dan izin demo?                                                                                                         | NFR-08, T13, J-01, ST-05                                      |
 | Q-07 | Apakah urutan P0/P1 diterima? Bila tidak sempat, apakah tim mengizinkan penundaan progres atau penyediaan tes? Tanpa keputusan, enam modul tetap lingkup MVP brief.                                                     | FR-02, FR-06, bagian 3/13/16, T11–T12                         |

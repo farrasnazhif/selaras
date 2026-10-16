@@ -1,17 +1,5 @@
 import type { ClassKey } from "@/features/shared/types/preview";
 export const EXAMPLE_SESSION_ID = "literasi-2026-10-14";
-export const GROUP_TASKS = {
-  first: [
-    { group: "A", title: "Fonik dasar", material: "Kartu bunyi awal & fonik", instruction: "Mencocokkan 8 kartu kata ba, bi, bu pada buku bergambar." },
-    { group: "B", title: "Suku kata", material: "Kartu suku kata bergambar", instruction: "Menyambungkan suku kata menjadi benda di ruang kelas." },
-    { group: "C", title: "Kalimat awal", material: "Membaca kalimat sederhana", instruction: "Membaca mandiri teks 2 baris lalu mewarnai bintang pencapaian." },
-  ],
-  second: [
-    { group: "A", title: "Pengayaan kosa kata", material: "Susun kata kartu huruf", instruction: "Menyusun minimal 6 kata benda dari kumpulan huruf meja tengah." },
-    { group: "B", title: "Menulis analitis", material: "Ringkasan cerita pendek", instruction: "Menjawab 3 pertanyaan inti (Siapa, Di mana, Mengapa) dari buku cerita pojok baca." },
-  ],
-} as const;
-
 export type RotationBlock = {
   start: number;
   end: number;

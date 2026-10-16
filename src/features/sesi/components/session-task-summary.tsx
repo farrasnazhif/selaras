@@ -1,20 +1,41 @@
 "use client";
 
-import { BookOpen, FolderOpen, LayoutPanelTop } from "lucide-react";
+import { LayoutPanelTop } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { CLASS_KEYS, GROUP_KEYS } from "@/features/kelas/constants/preview";
 import { GROUP_COLORS, GROUP_LABELS } from "@/features/kelas/constants/groups";
-import { GROUP_TASKS } from "@/features/sesi/constants/reference-content";
+import { getIndependentTasks } from "@/features/sesi/constants/independent-tasks";
 import { usePreview } from "@/features/shared/components/preview-provider";
-import type { ClassKey, PreviewStudent } from "@/features/shared/types/preview";
+import type { ClassKey, PreviewStudent, Subject } from "@/features/shared/types/preview";
 
-export function SessionTaskSummary({ board = false, roster, gradePair }: { board?: boolean; roster?: PreviewStudent[]; gradePair?: Record<ClassKey, string> }) {
+export function SessionTaskSummary({ board = false, roster, gradePair, subject = "literasi" }: { board?: boolean; roster?: PreviewStudent[]; gradePair?: Record<ClassKey, string>; subject?: Subject }) {
   const preview = usePreview();
   const grades = gradePair ?? preview.grades;
   const students = roster ?? preview.students;
-  return <section><div className="mb-ui-sm flex flex-wrap items-center justify-between gap-ui-sm"><h2 className="flex items-center gap-2 text-lg font-bold"><LayoutPanelTop size={20} aria-hidden="true" />{board ? "Tugas mandiri" : "Tugas kelompok"}</h2></div><div className={`grid gap-ui-md ${board ? "" : "xl:grid-cols-2"}`}>{CLASS_KEYS.map((key) => <Card key={key} className="flex flex-col p-ui-sm"><div className="mb-ui-sm flex flex-wrap items-center justify-between gap-2 border-b border-line pb-ui-sm"><h3 className="text-sm font-bold">Daftar tugas Kelas {grades[key]}</h3><span className="rounded-chip bg-inset px-2 py-1 text-xs font-semibold">{students.filter((student) => student.classKey === key).length} siswa</span></div><div className="flex-1 space-y-ui-sm">{GROUP_KEYS.filter((group) => students.some((student) => student.classKey === key && student.group === group)).map((group) => {
-    const task = GROUP_TASKS[key].find((item) => item.group === group);
-    const count = students.filter((student) => student.classKey === key && student.group === group).length;
-    return <div key={group} className="border-l-[3px] bg-inset p-ui-sm" style={{ borderLeftColor: GROUP_COLORS[group] }}><div className="flex flex-wrap items-center justify-between gap-2"><h4 className="text-sm font-bold">Kelompok {GROUP_LABELS[group]} <span className="text-xs font-normal text-muted">({count} siswa)</span></h4>{task && <span className="rounded-chip bg-surface px-2 py-1 text-xs font-semibold">{task.title}</span>}</div><p className={`mt-2 font-semibold ${board ? "text-xl" : "text-xs"}`}>{task?.material ?? "Kegiatan belum ditetapkan"}</p><p className={`mt-2 leading-relaxed ${board ? "text-[28px] font-bold" : "text-xs text-muted"}`}>{task?.instruction ?? "Tugas untuk kelompok ini belum tersedia."}</p></div>;
-  })}</div><p className="mt-ui-sm flex items-center gap-2 border-t border-line pt-ui-sm text-xs text-muted">{key === "first" ? <FolderOpen size={14} aria-hidden="true" /> : <BookOpen size={14} aria-hidden="true" />}Media: {key === "first" ? "Amplop tugas warna-warni" : "Buku bergaris & kartu domino kata"}</p></Card>)}</div></section>;
+  return <section>
+    <h2 className="mb-ui-sm flex items-center gap-2 text-lg font-bold"><LayoutPanelTop size={20} aria-hidden="true" />{board ? "Tugas mandiri" : "Tugas kelompok"}</h2>
+    <p className="mb-ui-sm text-sm text-muted">Panduan untuk guru. Siapkan kegiatan sesuai kemampuan anggota; level 1–2 tidak memerlukan membaca.</p>
+    <div className={`grid gap-ui-md ${board ? "" : "xl:grid-cols-2"}`}>
+      {CLASS_KEYS.map((key) => <Card key={key} className="p-ui-sm">
+        <div className="mb-ui-sm flex flex-wrap items-center justify-between gap-2 border-b border-line pb-ui-sm"><h3 className="text-sm font-bold">Kelas {grades[key]}</h3><span className="text-xs font-semibold text-muted">{students.filter((student) => student.classKey === key).length} siswa</span></div>
+        <div className="space-y-ui-sm">
+          {GROUP_KEYS.map((group) => {
+            const members = students.filter((student) => student.classKey === key && student.group === group);
+            if (!members.length) return null;
+            return <div key={group} className="border-l-[3px] bg-inset p-ui-sm" style={{ borderLeftColor: GROUP_COLORS[group] }}>
+              <div className="mb-ui-sm flex flex-wrap items-center justify-between gap-2"><h4 className="text-sm font-bold">Kelompok {GROUP_LABELS[group]}</h4><span className="text-xs text-muted">{members.length} siswa</span></div>
+              <ul className="space-y-ui-sm">
+                {getIndependentTasks(members, subject, grades[key]).map((task) => <li key={task.level ?? "unassessed"}>
+                  <div className="flex flex-wrap items-center gap-2"><h5 className={board ? "text-xl font-bold" : "text-sm font-bold"}>{task.title}</h5>{task.mode === "non-reading" && <Badge tone="primary">Tanpa membaca</Badge>}{task.mode === "phase" && <Badge tone="warning">Belum dipilih</Badge>}</div>
+                  <p className={`mt-2 leading-relaxed ${board ? "text-[28px] font-bold" : "text-sm"}`}>{task.instruction}</p>
+                  <ul aria-label="Siswa yang menerima tugas" className="mt-2 flex flex-wrap gap-x-ui-sm gap-y-1 text-xs text-muted">{task.students.map((student) => <li key={student.id}>{student.name}</li>)}</ul>
+                </li>)}
+              </ul>
+            </div>;
+          })}
+        </div>
+      </Card>)}
+    </div>
+  </section>;
 }
