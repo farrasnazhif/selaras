@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsUpDown, LogOut, Settings } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
@@ -28,11 +28,6 @@ export function AccountMenu() {
               {profile.email}
             </span>
           </span>
-          <ChevronsUpDown
-            size={14}
-            className="hidden shrink-0 text-muted sm:block"
-            aria-hidden="true"
-          />
         </Button>
       }
       header={
