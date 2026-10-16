@@ -1,6 +1,7 @@
+import { PAGE_METADATA } from "@/constants/metadata";
 import { ClassDetailView } from "@/features/kelas/components/class-detail-view";
 
-export const metadata = { title: "Sesi kelas" };
+export const metadata = PAGE_METADATA.classSessions;
 
 export default function ClassSessionsPage() {
   return <ClassDetailView tab="sesi" />;

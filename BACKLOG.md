@@ -2,6 +2,9 @@
 
 ## UI-24 — Authorized teacher integration
 
+Metadata refactor: centralize all existing route/layout metadata in `src/constants/metadata.ts`.
+Route exports reference PAGE_METADATA entries; preserve current values and inheritance.
+
 DES-40: replace the Selaras icon/text branding in PreviewShell and LandingPage with
 `/main-logo.png` using next/image, intrinsic proportions and responsive sizing.
 

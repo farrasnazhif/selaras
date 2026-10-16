@@ -1,7 +1,8 @@
+import { PAGE_METADATA } from "@/constants/metadata";
 import { notFound } from "next/navigation";
 import { ClassDetailView, type ClassTab } from "@/features/kelas/components/class-detail-view";
 
-export const metadata = { title: "Detail kelas" };
+export const metadata = PAGE_METADATA.classTab;
 
 export default async function ClassTabPage({ params }: { params: Promise<{ tab: string }> }) {
   const { tab } = await params;

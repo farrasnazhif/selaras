@@ -1,7 +1,8 @@
+import { PAGE_METADATA } from "@/constants/metadata";
 import { Sandbox } from "@/features/sandbox/components/sandbox";
 import { getSandboxComponentId } from "@/features/sandbox/validations/component";
 
-export const metadata = { title: "UI sandbox" };
+export const metadata = PAGE_METADATA.sandbox;
 
 export default async function SandboxPage({
   searchParams,

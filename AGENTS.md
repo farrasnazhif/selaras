@@ -86,6 +86,9 @@ the preview's Siswa class cards (`UI-04`); other application filtering remains o
 - `supabase/`: Local service configuration, timestamped SQL migrations, and seed file.
 - `tests/`: Node contract, utility, color, catalog, and component-rendering tests.
 - Root configuration: `package.json`, `pnpm-lock.yaml`, `.nvmrc`, TypeScript, ESLint, and Next.js.
+- `src/constants/metadata.ts`: Central page/layout titles, descriptions, and title templates;
+  route files export the relevant PAGE_METADATA entry. Preserve Next.js metadata inheritance.
+  Site metadata uses Selaras branding and `|` for title separators.
 - `.env.example`: Public Supabase configuration and optional disposable test-account variables.
 
 ## Build & Development Commands
