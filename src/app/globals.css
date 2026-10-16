@@ -253,7 +253,7 @@
   .dialog-popup {
     @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-surface p-6 sm:p-7;
     box-shadow: var(--shadow-overlay);
-    width: min(520px, calc(100vw - 32px));
+    width: min(1080px, calc(100vw - 32px));
     max-height: calc(100dvh - 48px);
     overflow-y: auto;
     border-radius: var(--radius);
