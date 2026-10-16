@@ -40,33 +40,19 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
     if (difference === null)
       return <Badge tone="neutral">Belum ada pembanding</Badge>;
     const Icon = difference > 0 ? ArrowUp : difference < 0 ? ArrowDown : Minus;
+    const iconColorClass =
+      difference > 0
+        ? "text-[#73d92d]"
+        : difference < 0
+          ? "text-[#ff3c7f]"
+          : "text-muted";
     return (
-      <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
-        <Icon size={16} aria-hidden="true" />
+      <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${iconColorClass}`}>
+        <Icon size={16} aria-hidden="true" className={iconColorClass} />
         {difference > 0 ? "Naik" : difference < 0 ? "Turun" : "Tetap"}
       </span>
     );
   }
-  const columns: TableColumn<PreviewStudent>[] = [
-    { id: "name", label: "Nama siswa", value: (student) => student.name },
-    {
-      id: "baseline",
-      label: "Level awal",
-      value: (student) => levelLabel(comparison(student).baseline?.level),
-    },
-    {
-      id: "latest",
-      label: "Level terbaru",
-      value: (student) => levelLabel(comparison(student).latest?.level),
-    },
-    { id: "change", label: "Perubahan", value: () => "", render: change },
-    {
-      id: "actions",
-      label: "Riwayat observasi",
-      value: () => "",
-      render: (student) => <ObservationDialog student={student} />,
-    },
-  ];
   return (
     <div className="space-y-ui-group text-ink">
       {!embedded && <h1 className="text-[28px] font-bold">Progres siswa</h1>}
@@ -102,6 +88,32 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
         const pageCount = Math.max(1, Math.ceil(roster.length / 10));
         const page = Math.min(pages[pageKey] ?? 1, pageCount);
         const visibleStudents = roster.slice((page - 1) * 10, page * 10);
+        const columns: TableColumn<PreviewStudent>[] = [
+          {
+            id: "number",
+            label: "No",
+            value: (student) =>
+              String(roster.findIndex((row) => row.id === student.id) + 1).padStart(2, "0"),
+          },
+          { id: "name", label: "Nama siswa", value: (student) => student.name },
+          {
+            id: "baseline",
+            label: "Level awal",
+            value: (student) => levelLabel(comparison(student).baseline?.level),
+          },
+          {
+            id: "latest",
+            label: "Level terbaru",
+            value: (student) => levelLabel(comparison(student).latest?.level),
+          },
+          { id: "change", label: "Perubahan", value: () => "", render: change },
+          {
+            id: "actions",
+            label: "Riwayat observasi",
+            value: () => "",
+            render: (student) => <ObservationDialog student={student} />,
+          },
+        ];
         return (
           <section key={classKey}>
             <h3 className="mb-ui-sm flex items-center gap-2 text-lg font-bold">

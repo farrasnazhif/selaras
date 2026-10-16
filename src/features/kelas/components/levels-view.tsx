@@ -22,7 +22,11 @@ export function LevelsView() {
       id: "no",
       label: "No",
       value: (student) =>
-        String(students.indexOf(student) + 1).padStart(2, "0"),
+        String(
+          students
+            .filter((row) => row.classKey === student.classKey)
+            .findIndex((row) => row.id === student.id) + 1,
+        ).padStart(2, "0"),
     },
     {
       id: "name",
