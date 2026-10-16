@@ -112,7 +112,7 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
       <p role="status" className="mb-ui-sm text-xs text-muted">
         {total} siswa{query || group !== "all" ? " ditemukan" : ""}
       </p>
-      <Table emptyMessage="Tidak ada data yang ditampilkan."
+      <Table minRows={5} emptyMessage="Tidak ada data yang ditampilkan."
         rows={rows}
         columns={columns}
         getRowId={(student) => student.id}

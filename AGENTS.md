@@ -201,6 +201,10 @@ UI conventions:
   Carry mapel/topic/focus through session lists, detail, Jadwal, board and print. No backend.
 
 - Siswa tables, group filters/cards, and member-level labels share the selected subject (`UI-15`, `DES-29`). Save session rosters with that session’s subject grouping; preserve saved snapshots. Missing levels keep their current group and show Belum dinilai in the preview. Keep the Panduan kelompok dialog beside the subject selector (`UI-15-AC-06`).
+- UI-23 keeps Siswa tables at five 52 px rows and group-member tables at five 64 px slots, filling
+  unused space with same-height blank rows (plus one empty message row for empty lists). Group cards paginate five
+  actual members per page, independently by class/group/subject. Always show shared Pagination, disabled at five or fewer, reduce
+  member-row padding, hide its decorative level Badge dot, and do not fix card height.
 
 - Use the six accepted literacy/numeracy levels and criteria in `UI-14`/`DES-28`, while keeping three groups A/B/C per class. Level changes append history; UI-15 maps unadjusted students to Biru 1–2 / Hijau 3–5 / Oranye 6 per subject, preserving manual moves for that subject.
 - Independent-task guidance uses each student’s focus level: 1–2 non-reading only, 3–5 matching practice, 6 class-phase content. Mixed groups need differentiated guidance; no invented phase objectives. UI-17 permits a neutral timing structure for numeracy and other subjects, with teacher-prepared lesson content.

@@ -472,6 +472,12 @@ filters and group cards clearly share the same subject. Keep all three cards, in
 states; show the level range in each card header and each member's numeric/name level in a
 small, readable Badge. Show Belum dinilai for missing levels. Keep neutral group names,
 member counts, accessible move menus, pastel surfaces, and existing spacing/layout.
+Keep both student and group-member tables at five rows of fixed height. Student rows/placeholders
+are 52 px; group-member rows/placeholders are 64 px. Fill unused rows with blank rows, or one
+empty-state row plus blank fillers when the list is empty. Group cards show up to five actual
+members per page and always show shared Indonesian Pagination, disabled at five or fewer members,
+with state independent by class, group and subject. Tighten member row spacing and hide the Badge's decorative dot on
+the group-member level label. Do not set a fixed card height.
 
 Manual moves belong to the chosen subject and remain when switching subjects or reassessing;
 unadjusted students follow their current level. This supersedes DES-28's blanket no-move rule

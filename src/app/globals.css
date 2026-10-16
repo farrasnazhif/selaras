@@ -1010,7 +1010,7 @@
 }
 .selaras-shell .ui-table td {
   height: 52px;
-  padding: var(--spacing-ui-sm);
+  padding: 8px var(--spacing-ui-sm);
 }
 .selaras-shell .tabs-list {
   border-bottom-width: 2px;

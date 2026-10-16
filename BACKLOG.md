@@ -77,6 +77,11 @@ print/board outputs, `/kelas` CTA and `/sandbox` footer access. Keep white/paste
 no card shadows or gradients, and explicit fictional-data/reload notice. No backend or new
 dependencies. Tests stay unrun; typecheck/lint/build apply.
 
+UI-23 keeps student tables at five 52 px rows and group-member lists at five 64 px rows, filling
+unused slots with same-height blanks and one empty message for an empty list. Group cards paginate five actual members per page, by
+class/group/subject. Always show shared Pagination, disabled at five or fewer; reduce row padding, hide the level dot,
+and do not fix card height.
+
 ## Working agreement
 
 Current direct implementation scope (`UI-17`, `DES-31`): separate teacher-entered subject/topic

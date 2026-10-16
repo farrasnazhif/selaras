@@ -503,6 +503,16 @@ membedakan kebutuhan anggota yang dipindah manual.
 Dialog mengikuti pola Panduan level dan menjelaskan tiga rentang level, jenis tugas,
 pemisahan per kelas/mapel, perpindahan manual, dan siswa yang belum dinilai.
 
+### UI-23 — Pagination anggota pada kartu kelompok [instruksi pengguna]
+
+**UI-23-AC-01:** tabel Siswa selalu menampilkan lima baris per halaman; isi baris kosong dengan
+placeholder, termasuk satu pesan baris kosong bila tidak ada hasil. Tabel anggota di setiap kartu
+kelompok selalu menyediakan lima slot dengan baris tetap 64 px. Tabel Siswa memakai baris tetap
+52 px untuk data dan placeholder. Setiap halaman kartu kelompok menampilkan lima siswa;
+pagination selalu terlihat dan dinonaktifkan bila anggota lima atau kurang. Isi slot yang tersisa
+dengan baris kosong. Halaman terpisah menurut kelas, kelompok, dan mata pelajaran. Pendekkan tinggi baris anggota dan hilangkan
+titik dekoratif level. Jangan mengubah tinggi keseluruhan kartu atau jumlah siswa/kelompok.
+
 Keputusan ini menerima pemetaan yang sebelumnya terbuka pada Q-04 dan menggantikan aturan
 keanggotaan tetap untuk semua perubahan level pada UI-14. Tidak menambahkan backend, batas
 kapasitas, algoritme balancing, atau kebijakan generate ulang sesi produksi.

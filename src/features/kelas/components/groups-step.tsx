@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeftRight, Users } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { IconButton } from "@/components/ui/icon-button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
-import { EmptyState } from "@/components/ui/empty-state";
+import { Pagination } from "@/components/ui/pagination";
 import { GROUP_KEYS } from "@/features/kelas/constants/preview";
 import { GROUP_LABELS, GROUP_LEVELS } from "@/features/kelas/constants/groups";
 import { LITERACY_LEVELS, NUMERACY_LEVELS } from "@/features/kelas/constants/reference-content";
@@ -22,6 +22,7 @@ export function GroupsStep() {
   const { grades, students, groupSubject, moveStudent, classKeys } = usePreview();
   const levels = groupSubject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
   const [message, setMessage] = useState("");
+  const [pages, setPages] = useState<Record<string, number>>({});
   return (
     <div className="space-y-ui-group">
       <div className="flex flex-wrap items-center justify-between gap-ui-sm rounded-window border-2 border-line bg-surface p-ui-sm">
@@ -52,6 +53,11 @@ export function GroupsStep() {
                 (student) =>
                   student.classKey === classKey && student.group === group,
               );
+              const pageKey = `${groupSubject}-${classKey}-${group}`;
+              const pageCount = Math.max(1, Math.ceil(members.length / 5));
+              const page = Math.min(pages[pageKey] ?? 1, pageCount);
+              const pageMembers = members.slice((page - 1) * 5, page * 5);
+              const emptyRows = 5 - Math.max(pageMembers.length, 1);
               return (
                 <Card key={group} className="min-w-0 p-ui-sm">
                   <div
@@ -65,53 +71,92 @@ export function GroupsStep() {
                     </p>
                     <p className="mt-1 text-xs font-semibold">{GROUP_LEVELS[group]}</p>
                   </div>
-                  {members.length ? (
-                    <ul className="divide-y divide-line">
-                      {members.map((student) => {
-                        const level = levels.find((option) => option.value === student[groupSubject === "literasi" ? "literacy" : "numeracy"]);
-                        return (
-                          <li
-                            key={student.id}
-                            className="flex items-center gap-2 py-ui-sm"
-                          >
-                            <div className="min-w-0 flex-1">
-                              <p className="break-words text-sm font-semibold">{student.name}</p>
-                              <Badge tone={level ? "primary" : "warning"} className="mt-1 max-w-full flex-wrap whitespace-normal">
-                                {level ? <><span>Level {level.value}</span>{" "}<span>{level.label}</span></> : "Belum dinilai"}
-                              </Badge>
-                            </div>
-                            <DropdownMenu
-                              trigger={
-                                <IconButton
-                                  size="xs"
-                                  variant="quiet"
-                                  label={`Pindahkan ${student.name} dalam kelas ${grades[classKey]}`}
-                                >
-                                  <ArrowLeftRight size={15} />
-                                </IconButton>
-                              }
-                              items={GROUP_KEYS.map((target) => ({
-                                id: target,
-                                label: `Ke Kelompok ${GROUP_LABELS[target]}`,
-                                disabled: target === group,
-                                onSelect: () => {
-                                  moveStudent(student.id, target);
-                                  setMessage(
-                                    `${student.name} dipindahkan ke Kelompok ${GROUP_LABELS[target]} untuk ${groupSubject}, Kelas ${grades[classKey]}.`,
-                                  );
-                                },
-                              }))}
-                            />
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <EmptyState
-                      title="Kelompok kosong"
-                      icon={<Users size={22} />}
+                  <ul className="divide-y divide-line">
+                    {pageMembers.map((student) => {
+                      const level = levels.find(
+                        (option) =>
+                          option.value ===
+                          student[
+                            groupSubject === "literasi"
+                              ? "literacy"
+                              : "numeracy"
+                          ],
+                      );
+                      return (
+                        <li
+                          key={student.id}
+                          className="flex h-16 items-center gap-2 py-1"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <p className="break-words text-sm font-semibold">
+                              {student.name}
+                            </p>
+                            <Badge
+                              tone={level ? "primary" : "warning"}
+                              className="mt-1 max-w-full flex-wrap whitespace-normal before:hidden"
+                            >
+                              {level ? (
+                                <>
+                                  <span>Level {level.value}</span>{" "}
+                                  <span>{level.label}</span>
+                                </>
+                              ) : (
+                                "Belum dinilai"
+                              )}
+                            </Badge>
+                          </div>
+                          <DropdownMenu
+                            trigger={
+                              <IconButton
+                                size="xs"
+                                variant="quiet"
+                                label={`Pindahkan ${student.name} dalam kelas ${grades[classKey]}`}
+                              >
+                                <ArrowLeftRight size={15} />
+                              </IconButton>
+                            }
+                            items={GROUP_KEYS.map((target) => ({
+                              id: target,
+                              label: `Ke Kelompok ${GROUP_LABELS[target]}`,
+                              disabled: target === group,
+                              onSelect: () => {
+                                moveStudent(student.id, target);
+                                setMessage(
+                                  `${student.name} dipindahkan ke Kelompok ${GROUP_LABELS[target]} untuk ${groupSubject}, Kelas ${grades[classKey]}.`,
+                                );
+                              },
+                            }))}
+                          />
+                        </li>
+                      );
+                    })}
+                    {!pageMembers.length && (
+                      <li className="flex h-16 items-center text-xs text-muted">
+                        Belum ada siswa di kelompok ini.
+                      </li>
+                    )}
+                    {Array.from({ length: emptyRows }, (_, index) => (
+                      <li
+                        key={`empty-${index}`}
+                        aria-hidden="true"
+                        className="h-16"
+                      />
+                    ))}
+                  </ul>
+                  <div className="mt-ui-sm">
+                    <Pagination
+                      locale="id"
+                      page={page}
+                      pageCount={pageCount}
+                      disabled={members.length <= 5}
+                      onPageChange={(nextPage) =>
+                        setPages((current) => ({
+                          ...current,
+                          [pageKey]: nextPage,
+                        }))
+                      }
                     />
-                  )}
+                  </div>
                 </Card>
               );
             })}
