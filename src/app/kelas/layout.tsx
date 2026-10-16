@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { TeacherLayout } from "@/features/shared/components/teacher-layout";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: { default: "Selaras", template: "%s · Selaras" },
@@ -6,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function SelarasLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return <TeacherLayout>{children}</TeacherLayout>;
 }

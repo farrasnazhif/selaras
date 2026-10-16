@@ -9,13 +9,14 @@ import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { TaskVariationControls } from "./task-variation-controls";
 import { TaskPhotoInput } from "./task-photo-input";
 import { GROUP_LABELS } from "@/features/kelas/constants/groups";
 import { taskEditorSchema, type TaskEditorInput } from "@/features/sesi/validations/task";
 import type { ClassKey, GroupKey, PreviewStudent, Subject } from "@/features/shared/types/preview";
 import type { PlannedTask } from "@/features/sesi/types/schedule";
 
-type Props = { task?: PlannedTask; classKey: ClassKey; group: GroupKey; grade: string; focus: Subject; members: PreviewStudent[]; onSave: (task: PlannedTask) => void };
+type Props = { task?: PlannedTask; classKey: ClassKey; group: GroupKey; grade: string; focus: Subject; lessonSubject: string; blockMinutes: number; members: PreviewStudent[]; onSave: (task: PlannedTask) => void };
 
 export function TaskEditor(props: Props) {
   const [open, setOpen] = useState(false);
@@ -24,9 +25,10 @@ export function TaskEditor(props: Props) {
   </Dialog>;
 }
 
-function TaskEditorForm({ task, classKey, group, grade, focus, members, onSave, onClose }: Props & { onClose: () => void }) {
+function TaskEditorForm({ task, classKey, group, grade, focus, lessonSubject, blockMinutes, members, onSave, onClose }: Props & { onClose: () => void }) {
   const id = useId();
   const [photoBusy, setPhotoBusy] = useState(false);
+  const [usedAi, setUsedAi] = useState(false);
   const levelField = focus === "literasi" ? "literacy" : "numeracy";
   const levels = ["1", "2", "3", "4", "5", "6"].filter((level) => members.some((student) => student[levelField] === level));
   const level = (task?.level ?? levels[0] ?? "1") as TaskEditorInput["level"];
@@ -41,7 +43,7 @@ function TaskEditorForm({ task, classKey, group, grade, focus, members, onSave, 
     photo: template?.photo ?? null,
     values: content && content.kind !== "written" && content.values ? content.values.join(", ") : kind === "picture-match" ? "0, 1, 2" : "2, 5, 8",
   };
-  const { register, control, handleSubmit, setValue, formState: { errors } } = useForm<TaskEditorInput>({ resolver: zodResolver(taskEditorSchema), defaultValues: defaults });
+  const { register, control, handleSubmit, setValue, getValues, formState: { errors } } = useForm<TaskEditorInput>({ resolver: zodResolver(taskEditorSchema), defaultValues: defaults });
   const selectedKind = useWatch({ control, name: "kind" });
   const selectedLevel = useWatch({ control, name: "level" });
   const lowLevel = selectedLevel === "1" || selectedLevel === "2";
@@ -51,6 +53,7 @@ function TaskEditorForm({ task, classKey, group, grade, focus, members, onSave, 
     if (!cohort.length) return;
     onSave({ id: taskId, classKey, group, level: input.level, memberIds: cohort.map((student) => student.id), template: {
       id: input.level === "6" ? `class-task-${grade}` : `edited-${taskId}`,
+      aiGenerated: usedAi || template?.aiGenerated ? true : undefined,
       title: input.title, instruction: input.instruction, requiresReading: input.kind === "written", photo: input.photo ?? undefined,
       content: input.kind === "written" ? { kind: "written", passage: input.passage, questions: input.questions.split("\n").map((question) => question.trim()).filter(Boolean) } : { kind: input.kind, values: input.values.split(",").map(Number) },
     } });
@@ -72,6 +75,25 @@ function TaskEditorForm({ task, classKey, group, grade, focus, members, onSave, 
       <div className="field"><label htmlFor={`${id}-passage`}>Bacaan (opsional)</label><Textarea id={`${id}-passage`} maxLength={2000} aria-invalid={!!errors.passage} aria-describedby={errors.passage ? `${id}-passage-error` : undefined} {...register("passage")} />{errors.passage && <p id={`${id}-passage-error`} className="field-error">{errors.passage.message}</p>}</div>
       <div className="field"><label htmlFor={`${id}-questions`}>Soal / kegiatan, satu per baris</label><Textarea id={`${id}-questions`} maxLength={10000} aria-invalid={!!errors.questions} aria-describedby={errors.questions ? `${id}-questions-error` : undefined} {...register("questions")} />{errors.questions && <p id={`${id}-questions-error`} className="field-error">{errors.questions.message}</p>}</div>
     </> : <div className="field"><label htmlFor={`${id}-values`}>{selectedKind === "picture-match" ? "Pola bentuk" : "Jumlah benda"}</label><Input id={`${id}-values`} aria-invalid={!!errors.values} aria-describedby={`${id}-values-help${errors.values ? ` ${id}-values-error` : ""}`} {...register("values")} /><p id={`${id}-values-help`} className="text-xs text-muted">{selectedKind === "picture-match" ? "0 lingkaran, 1 segitiga, 2 persegi. Pisahkan dengan koma; maksimal 6 bentuk." : "Isi angka 1–9, pisahkan dengan koma; maksimal 6 baris. Pasangan disusun otomatis."}</p>{errors.values && <p id={`${id}-values-error`} className="field-error">{errors.values.message}</p>}</div>}
+    <TaskVariationControls disabled={photoBusy} getRequest={() => {
+      const values = getValues();
+      return {
+        lessonSubject, focus, level: values.level, grade, blockMinutes,
+        source: {
+          title: values.title, instruction: values.instruction, kind: values.kind,
+          passage: values.kind === "written" ? values.passage : "",
+          questions: values.kind === "written" ? values.questions.split("\n").map((line) => line.trim()).filter(Boolean) : [],
+          values: values.kind !== "written" ? values.values.split(",").map(Number) : [],
+        },
+      };
+    }} onApply={(variation) => {
+      setValue("title", variation.title, { shouldDirty: true, shouldValidate: true });
+      setValue("instruction", variation.instruction, { shouldDirty: true, shouldValidate: true });
+      setValue("passage", variation.passage, { shouldDirty: true, shouldValidate: true });
+      setValue("questions", variation.questions.join("\n"), { shouldDirty: true, shouldValidate: true });
+      setValue("values", variation.values.join(", "), { shouldDirty: true, shouldValidate: true });
+      setUsedAi(true);
+    }} />
     <Controller control={control} name="photo" render={({ field }) => <TaskPhotoInput value={field.value ?? undefined} onChange={(value) => field.onChange(value ?? null)} lowLevel={lowLevel} onBusyChange={setPhotoBusy} error={errors.photo?.message ?? errors.photo?.alt?.message ?? errors.photo?.src?.message ?? errors.photo?.nonReadingConfirmed?.message} />} />
     <div className="flex flex-wrap justify-end gap-ui-sm"><Button type="button" variant="secondary" onClick={onClose}>Batal</Button><Button type="submit" variant="primary" disabled={photoBusy} loading={photoBusy}>Simpan kegiatan</Button></div>
   </form>;

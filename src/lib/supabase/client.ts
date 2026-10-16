@@ -2,7 +2,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { getPublicEnv } from "@/lib/env";
 import type { Database } from "@/types/database";
 
-export function createClient() {
+export function createClient<Db = Database>() {
   const { url, key } = getPublicEnv();
-  return createBrowserClient<Database>(url, key);
+  return createBrowserClient<Db>(url, key);
 }

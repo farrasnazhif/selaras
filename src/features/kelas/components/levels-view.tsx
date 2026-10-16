@@ -16,7 +16,7 @@ import { DiagnosticGuide, LevelRubrics } from "./level-rubrics";
 import { ObservationDialog } from "./observation-dialog";
 
 export function LevelsView() {
-  const { students, grades, setLevel, classKeys } = usePreview();
+  const { students, grades, setLevel, classKeys, saving } = usePreview();
   const columns: TableColumn<PreviewStudent>[] = [
     {
       id: "no",
@@ -36,6 +36,7 @@ export function LevelsView() {
       value: (student) => student.literacy ?? "",
       render: (student) => (
         <Select
+          disabled={saving}
           value={student.literacy}
           options={LITERACY_LEVELS}
           placeholder="Pilih level"
@@ -52,6 +53,7 @@ export function LevelsView() {
       value: (student) => student.numeracy ?? "",
       render: (student) => (
         <Select
+          disabled={saving}
           value={student.numeracy}
           options={NUMERACY_LEVELS}
           placeholder="Pilih level"

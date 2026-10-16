@@ -152,6 +152,48 @@
   .button-secondary[aria-expanded="true"] {
     background: var(--hover);
   }
+  .button.button-ai-variation {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      110deg,
+      var(--primary),
+      color-mix(in srgb, var(--primary) 75%, var(--ink))
+    );
+    border-color: transparent;
+    color: var(--primary-foreground);
+  }
+  .button.button-ai-variation:hover:not(:disabled):not([data-disabled]) {
+    background: linear-gradient(
+      110deg,
+      var(--primary-hover),
+      color-mix(in srgb, var(--primary) 65%, var(--ink))
+    );
+  }
+  .button-ai-variation::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgb(255 255 255 / 16%) 50%,
+      transparent 70%
+    );
+    transform: translateX(-160%);
+    animation: ai-button-shine 3s ease-in-out infinite;
+  }
+  .button-ai-variation:is(:disabled, [data-disabled], [data-loading])::after {
+    animation: none;
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .button-ai-variation::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
   .button-ghost {
     @apply text-foreground bg-inset;
   }
@@ -420,6 +462,16 @@
     background: var(--surface);
     box-shadow: var(--shadow-btn);
     font-weight: 500;
+  }
+}
+
+@keyframes ai-button-shine {
+  0%,
+  10% {
+    transform: translateX(-160%);
+  }
+  100% {
+    transform: translateX(160%);
   }
 }
 

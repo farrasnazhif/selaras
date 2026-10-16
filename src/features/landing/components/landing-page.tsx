@@ -8,7 +8,6 @@ import {
   ArrowRight,
   ClipboardList,
   Clock3,
-  Layers3,
   NotebookPen,
   Printer,
   UsersRound,
@@ -218,7 +217,7 @@ export function LandingPage() {
       <header className="border-b border-line">
         <div className="mx-auto flex min-h-[76px] max-w-[1200px] items-center justify-between gap-ui-sm px-ui-sm md:px-ui-md">
           <Link href="/" aria-label="Selaras, beranda" className="flex items-center gap-2 text-2xl font-extrabold">
-            <Layers3 className="text-[#6669E3]" size={28} aria-hidden="true" />Selaras
+            <Image src="/main-logo.png" alt="Selaras" width={863} height={187} priority className="h-auto w-28 sm:w-36" />
           </Link>
           <nav aria-label="Navigasi beranda" className="hidden items-center gap-ui-md text-sm font-extrabold md:flex">
             <a href="#cara-kerja" className="py-2 hover:text-[#6669E3]">Cara kerja</a>
@@ -236,10 +235,10 @@ export function LandingPage() {
             <h1 id="hero-title" className="text-[42px] leading-[1.08] font-extrabold tracking-[-1.5px] sm:text-[56px] lg:text-[64px]">Dua kelas,<br />satu ritme<br /><span className="text-[#6669E3]">belajar.</span></h1>
             <p className="mt-ui-md max-w-[36ch] text-lg leading-relaxed text-[var(--body)]">Saat Anda mendampingi satu kelas, kelas lainnya tetap punya kegiatan. Atur giliran mengajar dan tugas mandiri sesuai kemampuan siswa bersama Selaras.</p>
             <div className="mt-ui-md flex flex-wrap items-center gap-ui-sm">
-              <Button variant="primary" nativeButton={false} role="link" render={<Link href="/kelas" />}>Buka DEMO<ArrowRight size={20} aria-hidden="true" /></Button>
+              <Button variant="primary" nativeButton={false} role="link" render={<Link href="/kelas" />}>Buka kelas<ArrowRight size={20} aria-hidden="true" /></Button>
               <a href="#cara-kerja" className="py-2 text-sm font-extrabold underline decoration-line-strong underline-offset-4 hover:text-[#6669E3]">Lihat cara kerjanya</a>
             </div>
-            <p className="mt-ui-sm max-w-[44ch] text-xs leading-relaxed text-muted">DEMO dengan data fiktif. Perubahan hilang jika halaman dimuat ulang.</p>
+            <p className="mt-ui-sm max-w-[44ch] text-xs leading-relaxed text-muted">Masuk dengan akun guru untuk menyimpan kelas dan rencana belajar Anda.</p>
           </div>
           <SessionPreview />
         </section>
@@ -277,7 +276,7 @@ export function LandingPage() {
         </section>
 
         {/* Minimal Call-To-Action Section */}
-        <section aria-label="Mulai DEMO" className="mx-auto max-w-[1200px] px-ui-sm pb-ui-group pt-ui-md text-center">
+        <section aria-label="Mulai menggunakan Selaras" className="mx-auto max-w-[1200px] px-ui-sm pb-ui-group pt-ui-md text-center">
           <div className="flex flex-col items-center justify-center gap-6">
             <h2 className="text-2xl font-extrabold sm:text-3xl text-ink">
               Siapkan Sesi Kelas Anda Sekarang
@@ -291,7 +290,7 @@ export function LandingPage() {
               render={<Link href="/kelas" />}
               className="px-8 py-4 text-base font-extrabold shadow-md transition-transform hover:scale-105 active:scale-95"
             >
-              Coba DEMO Selaras <ArrowRight size={20} className="ml-1" aria-hidden="true" />
+              Mulai menggunakan Selaras <ArrowRight size={20} className="ml-1" aria-hidden="true" />
             </Button>
           </div>
         </section>
@@ -299,7 +298,7 @@ export function LandingPage() {
 
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-ui-md px-ui-sm py-ui-md md:px-ui-md">
-          <div><p className="flex items-center gap-2 text-lg font-extrabold"><Layers3 size={22} className="text-[#6669E3]" aria-hidden="true" />Selaras</p><p className="mt-1 text-xs text-muted">Untuk guru, bersama setiap kelompok belajar.</p></div>
+          <div><Image src="/main-logo.png" alt="Selaras" width={863} height={187} className="h-auto w-32" /><p className="mt-1 text-xs text-muted">Untuk guru, bersama setiap kelompok belajar.</p></div>
           <nav aria-label="Navigasi footer" className="flex flex-wrap gap-ui-sm text-sm font-bold sm:gap-ui-md">
             <a className="py-2 hover:underline" href="#cara-kerja">Cara kerja</a>
             <Link className="py-2 hover:underline" href="/kelas">Buka kelas</Link>

@@ -23,7 +23,7 @@ const groupSurfaces = {
 };
 
 export function GroupsStep() {
-  const { grades, students, groupSubject, moveStudent, classKeys } =
+  const { grades, students, groupSubject, moveStudent, classKeys, saving } =
     usePreview();
   const levels =
     groupSubject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
@@ -126,9 +126,9 @@ export function GroupsStep() {
                             items={GROUP_KEYS.map((target) => ({
                               id: target,
                               label: `Ke Kelompok ${GROUP_LABELS[target]}`,
-                              disabled: target === group,
-                              onSelect: () => {
-                                moveStudent(student.id, target);
+                              disabled: saving || target === group,
+                              onSelect: async () => {
+                                if (!await moveStudent(student.id, target)) return;
                                 setMessage(
                                   `${student.name} dipindahkan ke Kelompok ${GROUP_LABELS[target]} untuk ${groupSubject}, Kelas ${grades[classKey]}.`,
                                 );

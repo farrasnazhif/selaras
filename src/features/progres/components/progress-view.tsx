@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowDown, ArrowUp, Minus, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Pagination } from "@/components/ui/pagination";
 import { Select } from "@/components/ui/select";
 import { Table, type TableColumn } from "@/components/ui/table";
 import {
@@ -15,8 +16,9 @@ import { usePreview } from "@/features/shared/components/preview-provider";
 import { ObservationDialog } from "@/features/kelas/components/observation-dialog";
 
 export function ProgressView({ embedded = false }: { embedded?: boolean }) {
-  const { grades, students, assessments, classKeys } = usePreview();
+  const { grades, students, assessments, classKeys, classroom } = usePreview();
   const [subject, setSubject] = useState<Subject>("literasi");
+  const [pages, setPages] = useState<Record<string, number>>({});
   const levels = subject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
   function comparison(student: PreviewStudent) {
     const history = assessments.filter(
@@ -96,6 +98,10 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
         const roster = students.filter(
           (student) => student.classKey === classKey,
         );
+        const pageKey = `${classroom?.id}:${classKey}:${subject}`;
+        const pageCount = Math.max(1, Math.ceil(roster.length / 10));
+        const page = Math.min(pages[pageKey] ?? 1, pageCount);
+        const visibleStudents = roster.slice((page - 1) * 10, page * 10);
         return (
           <section key={classKey}>
             <h3 className="mb-ui-sm flex items-center gap-2 text-lg font-bold">
@@ -106,14 +112,14 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
             <div className="hidden md:block [&_.ui-table]:text-sm">
               <Table
                 emptyMessage="Tidak ada data yang ditampilkan."
-                rows={roster}
+                rows={visibleStudents}
                 columns={columns}
                 getRowId={(student) => student.id}
                 caption={`Progres ${subject} kelas ${grades[classKey]}`}
               />
             </div>
             <ul className="space-y-ui-sm md:hidden">
-              {roster.map((student) => (
+              {visibleStudents.map((student) => (
                 <li key={student.id}>
                   <Card>
                     <h4 className="font-bold">{student.name}</h4>
@@ -139,6 +145,16 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
                 </li>
               ))}
             </ul>
+            {pageCount > 1 && (
+              <div className="mt-ui-sm" role="group" aria-label={`Halaman progres kelas ${grades[classKey]}`}>
+                <Pagination
+                  locale="id"
+                  page={page}
+                  pageCount={pageCount}
+                  onPageChange={(next) => setPages((current) => ({ ...current, [pageKey]: next }))}
+                />
+              </div>
+            )}
           </section>
         );
       })}

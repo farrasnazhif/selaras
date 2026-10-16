@@ -1,8 +1,11 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
-import { EXAMPLE_CLASS_ID } from "@/features/kelas/constants/preview";
+import { requireTeacher } from "@/features/auth/api/require-teacher";
 
 export const metadata = { title: "Progres siswa" };
 
-export default function ProgressPage() {
-  redirect(`/kelas/${EXAMPLE_CLASS_ID}/progres`);
+export default async function ProgressPage() {
+  await requireTeacher("/progres");
+  redirect("/kelas");
 }

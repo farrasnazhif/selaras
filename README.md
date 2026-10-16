@@ -1,5 +1,57 @@
 # Use this starter with your team
 
+## Teacher accounts, Supabase, and optional AI (UI-24)
+
+The product area now requires a teacher account. `/` and `/sandbox` stay public. Configure
+`.env.local` from `.env.example`, then apply both SQL migrations to your **development** project
+using the Supabase SQL editor or `supabase link --project-ref YOUR_DEV_PROJECT_REF` followed by
+`supabase db push`. Never reset a shared database. Once available, regenerate database types
+using the documented Supabase command. The teacher-workspace migration and seed have now
+been applied to the user-confirmed selaras/main project; no database reset was performed.
+
+- `/register` creates an email/password teacher account; confirm the email, then use `/login`.
+  Add your development URL and `/auth/callback` to the Supabase Auth redirect allowlist.
+- `/kelas` and `/jadwal` verify the teacher on the server. The profile menu shows their account
+  and Keluar signs out. Each teacher starts with an empty workspace and can add classes.
+- Classes, students, levels/history, observations, group adjustments and saved session snapshots
+  persist in one RLS-protected `teacher_workspaces` JSON record per teacher. Writes check a
+  revision to reject stale-tab overwrites. Ordinary CRUD still uses the browser Supabase SDK.
+  `shortcut: whole-workspace writes, split records into normalized tables when independent
+  querying or larger concurrent workspaces require it.` Photos remain browser-only and are
+  excluded from the persisted snapshot; no Supabase Storage or OCR has been added.
+- In Ubah/Tambah kegiatan, Buat variasi AI sends only task text/context to a protected server
+  endpoint. It uses OpenAI `gpt-5-mini` by default with structured JSON output, validates level
+  rules and requires Gunakan variasi before updating the form. Review and save the task as usual.
+  Names/rosters/photos are not sent automatically; avoid identifiers in teacher-authored text.
+- Set server-only `OPENAI_API_KEY`, `OPENAI_MODEL`, and a positive `AI_DAILY_REQUEST_LIMIT` to
+  enable AI. The limit counts attempts per teacher per UTC day, reserved atomically before the
+  provider call, including failed provider attempts. No retries occur automatically. Without
+  configuration, on timeout, refusal, invalid output, or quota exhaustion, the original task
+  remains usable. The provider request has no storage and a bounded output; server work is
+  aborted after 14 seconds to fit the existing 15-second client timeout.
+
+Seed later, after confirming the intended development target and setting a service-role key,
+`DEMO_TEACHER_EMAIL` and a strong `DEMO_TEACHER_PASSWORD` in `.env.local`:
+
+```sh
+pnpm run seed:selaras --confirm-development
+```
+
+This creates a confirmed teacher account and twelve constituent classes (1A, 1B through 6A,
+6B), each with 32 pupils and baseline literacy/numeracy assessments. 1A and 2B are combined
+into one 64-student class; the other ten stay independent. It preserves
+existing accounts/passwords and workspace records. It does not create a public demo account,
+print credentials, apply migrations, or reset the database. Log in using the credentials you
+configured. The current seeded account uses the credentials in `.env.local`; the app does
+not show a fictional-data label, as requested by the user.
+
+For a live security check, `pnpm run test:workspace-rls --confirm-development` creates two
+throwaway accounts using the admin API, checks isolation/revisions/quota, and deletes them.
+Run only on confirmed development infrastructure. It makes no paid AI requests.
+
+OpenAI request format follows the [official structured-output documentation](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses).
+
+
 Follow this workflow:
 
 ```text
@@ -25,8 +77,8 @@ Keep one shared `main` branch and use separate branches for ticket work.
 Follow [local setup](docs/setup.md) to install and run the starter. Open `/sandbox` to see the
 existing controls before planning replacements or new components. The landing page and sandbox
 work without Supabase; authentication and project data need the setup described there.
-The Selaras landing page at `/` introduces the local preview and links to `/kelas`; its footer
-keeps `/sandbox` available. Preview data is fictional and changes disappear on reload.
+The Selaras landing page at `/` links to the authenticated `/kelas` area; its footer
+keeps `/sandbox` available. Teacher data persists after configuration; task photos remain local.
 
 **Result:** everyone can run the same starter from the shared repository.
 

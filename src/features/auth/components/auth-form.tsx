@@ -42,24 +42,23 @@ export function AuthForm({
   });
   return (
     <Card className="max-w-md w-full">
-      <p className="eyebrow">{signup ? "Let’s get started" : "Welcome back"}</p>
+      <p className="eyebrow">{signup ? "Selaras untuk guru" : "Selamat datang kembali"}</p>
       <h1 className="text-[32px] leading-[1.2] font-[750] tracking-[-0.4px] mt-2">
-        {signup ? "Make room for your ideas." : "Pick up where you left off."}
+        {signup ? "Buat akun guru" : "Masuk ke Selaras"}
       </h1>
       <p className="text-muted text-base leading-relaxed mt-2 mb-6">
         {signup
-          ? "One account. Your own private workspace."
-          : "Sign in to your private workspace and keep building."}
+          ? "Atur kelas dan kegiatan belajar dalam ruang pribadi Anda."
+          : "Lanjutkan mengelola kelas dan rencana belajar Anda."}
       </p>
       {!configured && (
         <div className="mb-6">
           <Notice tone="info">
-            Authentication needs your Supabase credentials. Follow the README,
-            or{" "}
+            Layanan masuk belum dikonfigurasi. Hubungi pengelola, atau{" "}
             <Link className="underline" href="/sandbox">
-              explore the UI sandbox
+              lihat komponen antarmuka
             </Link>{" "}
-            first.
+            terlebih dahulu.
           </Notice>
         </div>
       )}
@@ -70,11 +69,11 @@ export function AuthForm({
       )}
       {confirmation ? (
         <Notice tone="success">
-          Check your email for a confirmation link, then{" "}
+          Periksa email untuk konfirmasi akun, lalu{" "}
           <Link className="underline" href="/login">
-            sign in
+            masuk
           </Link>
-          . If it expires, request a new link below.
+          . Jika tautan kedaluwarsa, minta tautan baru di bawah.
         </Notice>
       ) : (
         <form
@@ -89,26 +88,24 @@ export function AuthForm({
                 setConfirmation(true);
                 return;
               }
-              router.replace(safeReturnPath(next ?? null));
+              router.replace(safeReturnPath(next ?? "/kelas"));
               router.refresh();
-            } catch (err) {
-              setError(
-                err instanceof Error
-                  ? err.message
-                  : "We couldn’t sign you in. Please try again.",
-              );
+            } catch {
+              setError(signup
+                ? "Akun belum dapat dibuat. Periksa isian dan koneksi, atau masuk jika sudah terdaftar."
+                : "Belum dapat masuk. Periksa email, kata sandi, konfirmasi akun, dan koneksi Anda.");
             }
           })}
           className="space-y-4"
         >
-          <fieldset disabled={!configured} className="space-y-4 min-w-0">
+          <fieldset disabled={!configured || isSubmitting} className="space-y-4 min-w-0">
             <div className="field">
-              <label htmlFor="email">Email address</label>
+              <label htmlFor="email">Alamat email</label>
               <Input
                 id="email"
                 type="email"
                 autoComplete="email"
-                placeholder="you@example.com"
+                placeholder="guru@sekolah.id"
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
                 {...register("email")}
@@ -120,12 +117,12 @@ export function AuthForm({
               )}
             </div>
             <div className="field">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Kata sandi</label>
               <Input
                 id="password"
                 type="password"
                 autoComplete={signup ? "new-password" : "current-password"}
-                placeholder={signup ? "At least 8 characters" : "Your password"}
+                placeholder={signup ? "Minimal 8 karakter" : "Kata sandi Anda"}
                 aria-invalid={!!errors.password}
                 aria-describedby={
                   errors.password ? "password-error" : undefined
@@ -148,28 +145,28 @@ export function AuthForm({
             disabled={!configured || isSubmitting}
           >
             {isSubmitting
-              ? "Please wait…"
+              ? "Mohon tunggu…"
               : signup
-                ? "Create account"
-                : "Sign in"}
+                ? "Buat akun"
+                : "Masuk"}
             <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </form>
       )}
       <p className="text-sm text-muted mt-6">
-        {signup ? "Already have an account?" : "New around here?"}{" "}
+        {signup ? "Sudah punya akun?" : "Belum punya akun?"}{" "}
         <Link
           className="font-medium text-foreground underline underline-offset-4"
           href={signup ? "/login" : "/register"}
         >
-          {signup ? "Sign in" : "Create an account"}
+          {signup ? "Masuk" : "Buat akun guru"}
         </Link>
       </p>
       <Link
         href="/auth/confirm"
         className="inline-block text-xs text-muted underline underline-offset-4 mt-4"
       >
-        Need a new confirmation email?
+        Kirim ulang email konfirmasi
       </Link>
     </Card>
   );

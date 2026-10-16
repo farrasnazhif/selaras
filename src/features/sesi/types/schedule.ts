@@ -10,6 +10,7 @@ export type TaskTemplate = {
   title: string;
   instruction: string;
   requiresReading: boolean;
+  aiGenerated?: true;
   photo?: TaskPhotoAttachment;
   content: TaskContent;
 };

@@ -17,23 +17,23 @@ export function ObservationDialog({ student, mode = "history" }: { student: Prev
   const [open, setOpen] = useState(false);
   const [writing, setWriting] = useState(mode === "create");
   const label = mode === "create" ? "Observasi" : "Riwayat observasi";
-  const { grades, observations, addObservation, assessments } = usePreview();
+  const { grades, observations, addObservation, assessments, saving } = usePreview();
   const levelHistory = assessments.filter((entry) => entry.studentId === student.id);
   const records = observations.filter((record) => record.studentId === student.id);
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ObservationInput>({ resolver: zodResolver(observationSchema), defaultValues: { note: "" } });
-  function record(input: ObservationInput) {
-    addObservation(student.id, input.note);
+  async function record(input: ObservationInput) {
+    if (!await addObservation(student.id, input.note)) return;
     reset();
     if (mode === "create") setOpen(false);
     else setWriting(false);
   }
   return (
-    <Dialog open={open} onOpenChange={(next) => { setOpen(next); if (next) setWriting(mode === "create"); }} title={writing ? "Tambah catatan" : "Riwayat observasi"} description={`${student.name} · Kelas ${grades[student.classKey]}`} trigger={<Button size="xs" variant="secondary" aria-label={`${label} ${student.name}`}>{mode === "create" ? <ClipboardPen size={15} aria-hidden="true" /> : <History size={15} aria-hidden="true" />}{label}</Button>}>
+    <Dialog busy={saving} open={open} onOpenChange={(next) => { setOpen(next); if (next) setWriting(mode === "create"); }} title={writing ? "Tambah catatan" : "Riwayat observasi"} description={`${student.name} · Kelas ${grades[student.classKey]}`} trigger={<Button size="xs" variant="secondary" aria-label={`${label} ${student.name}`}>{mode === "create" ? <ClipboardPen size={15} aria-hidden="true" /> : <History size={15} aria-hidden="true" />}{label}</Button>}>
       {writing ? (
         <form className="space-y-ui-md" onSubmit={handleSubmit(record)} noValidate>
           <div className="grid grid-cols-2 gap-ui-sm">{[{ label: "Literasi", levels: LITERACY_LEVELS, value: student.literacy }, { label: "Numerasi", levels: NUMERACY_LEVELS, value: student.numeracy }].map((subject) => <div key={subject.label}><p className="mb-2 text-xs text-muted">{subject.label}</p><Badge tone="primary">{subject.levels.find((level) => level.value === subject.value)?.label ?? "Belum dinilai"}</Badge></div>)}</div>
-          <div className="field"><label htmlFor={`note-${student.id}`}>Apa yang Anda amati?</label><Textarea autoFocus id={`note-${student.id}`} placeholder="Tuliskan perkembangan atau hal yang perlu dibantu…" aria-invalid={!!errors.note} aria-describedby={errors.note ? `note-error-${student.id}` : undefined} {...register("note")} />{errors.note && <p id={`note-error-${student.id}`} className="field-error">{errors.note.message}</p>}</div>
-          <div className="flex flex-wrap justify-end gap-ui-sm"><Button type="button" variant="secondary" onClick={() => { if (mode === "create") setOpen(false); else setWriting(false); }}>{mode === "create" ? "Batal" : "Kembali"}</Button><Button type="submit" variant="primary">Simpan catatan</Button></div>
+          <div className="field"><label htmlFor={`note-${student.id}`}>Apa yang Anda amati?</label><Textarea disabled={saving} autoFocus id={`note-${student.id}`} placeholder="Tuliskan perkembangan atau hal yang perlu dibantu…" aria-invalid={!!errors.note} aria-describedby={errors.note ? `note-error-${student.id}` : undefined} {...register("note")} />{errors.note && <p id={`note-error-${student.id}`} className="field-error">{errors.note.message}</p>}</div>
+          <div className="flex flex-wrap justify-end gap-ui-sm"><Button type="button" variant="secondary" disabled={saving} onClick={() => { if (mode === "create") setOpen(false); else setWriting(false); }}>{mode === "create" ? "Batal" : "Kembali"}</Button><Button type="submit" variant="primary" disabled={saving} loading={saving}>Simpan catatan</Button></div>
         </form>
       ) : (
         <div className="space-y-ui-md">

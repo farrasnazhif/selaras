@@ -41,7 +41,7 @@ export function JadwalView() {
                 </header>
                 <PlanStatus validation={validation} />
                 <RotationGrid plan={session.plan} grades={session.grades} lessonSubject={session.lessonSubject} topic={session.topic} />
-                <Collapsible label="Periksa tugas tiap kelompok"><SessionTaskSummary plan={session.plan} roster={session.roster} grades={session.grades} /></Collapsible>
+                <Collapsible label="Periksa tugas tiap kelompok"><SessionTaskSummary plan={session.plan} roster={session.roster} grades={session.grades} lessonSubject={session.lessonSubject} blockMinutes={Number(session.blockMinutes)} /></Collapsible>
               </article>{validation.valid && <StudentPacketView packet={getStudentPacket(session, session.plan, session.grades)} />}</Fragment>
             );
           })}

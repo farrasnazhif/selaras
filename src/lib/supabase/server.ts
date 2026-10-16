@@ -4,10 +4,10 @@ import { cookies } from "next/headers";
 import { getPublicEnv } from "@/lib/env";
 import type { Database } from "@/types/database";
 
-export async function createClient() {
+export async function createClient<Db = Database>() {
   const store = await cookies();
   const { url, key } = getPublicEnv();
-  return createServerClient<Database>(url, key, {
+  return createServerClient<Db>(url, key, {
     cookies: {
       getAll: () => store.getAll(),
       setAll(values) {

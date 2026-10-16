@@ -11,6 +11,11 @@ export const SANDBOX_COMPONENTS = [
   ...EXTENDED_COMPONENTS,
   ...META.map(({ id, title, caption }) => ({ id, title, caption })),
   {
+    id: "selaras-loading-state",
+    title: "Selaras Loading State",
+    caption: "Primary-colored loader icon with an accessible label and reduced-motion support.",
+  },
+  {
     id: "callout",
     title: "Callout",
     caption: "Highlighted messages with semantic tones and clear headings.",

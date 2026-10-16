@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
       const { error } = await supabase.auth.exchangeCodeForSession(code);
       if (!error)
         return NextResponse.redirect(
-          new URL(safeReturnPath(params.get("next")), request.url),
+          new URL(safeReturnPath(params.get("next") ?? "/kelas"), request.url),
         );
     } else if (tokenHash && params.get("type") === "email") {
       const { error } = await supabase.auth.verifyOtp({
@@ -22,13 +22,13 @@ export async function GET(request: NextRequest) {
       });
       if (!error)
         return NextResponse.redirect(
-          new URL(safeReturnPath(params.get("next")), request.url),
+          new URL(safeReturnPath(params.get("next") ?? "/kelas"), request.url),
         );
     }
   }
   return NextResponse.redirect(
     new URL(
-      "/login?message=Confirmation+failed+or+expired.+Request+a+new+link+below.",
+      "/login?message=Konfirmasi+gagal+atau+kedaluwarsa.+Minta+tautan+baru.",
       request.url,
     ),
   );

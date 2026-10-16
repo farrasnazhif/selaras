@@ -23,7 +23,7 @@ export function ResendConfirmation({ configured }: { configured: boolean }) {
         setMessage("");
         const parsed = z.email().safeParse(email.trim());
         if (!parsed.success) {
-          setError("Enter a valid email address.");
+          setError("Isi alamat email yang valid.");
           return;
         }
         setBusy(true);
@@ -32,22 +32,22 @@ export function ResendConfirmation({ configured }: { configured: boolean }) {
             type: "signup",
             email: parsed.data,
             options: {
-              emailRedirectTo: `${window.location.origin}/auth/callback`,
+              emailRedirectTo: `${window.location.origin}/auth/callback?next=/kelas`,
             },
           });
           if (error) throw error;
           setMessage(
-            "If your account needs confirmation, a new link is on its way. Check your inbox.",
+            "Jika akun membutuhkan konfirmasi, tautan baru akan dikirim. Periksa kotak masuk Anda.",
           );
         } catch {
-          setError("We couldn’t send the email. Wait a moment and try again.");
+          setError("Email belum dapat dikirim. Tunggu sebentar dan coba lagi.");
         } finally {
           setBusy(false);
         }
       }}
     >
       <div className="field">
-        <label htmlFor="confirmation-email">Email address</label>
+        <label htmlFor="confirmation-email">Alamat email</label>
         <Input
           id="confirmation-email"
           type="email"
@@ -59,7 +59,7 @@ export function ResendConfirmation({ configured }: { configured: boolean }) {
       </div>
       {!configured && (
         <Notice tone="info">
-          Configure Supabase in .env.local to send confirmation emails.
+          Layanan email belum dikonfigurasi. Hubungi pengelola.
         </Notice>
       )}
       {error && <Notice>{error}</Notice>}
@@ -68,10 +68,10 @@ export function ResendConfirmation({ configured }: { configured: boolean }) {
         variant="primary"
         type="submit"
         loading={busy}
-        disabled={!configured}
+        disabled={!configured || busy}
         className="w-full sm:w-auto"
       >
-        {busy ? "Sending…" : "Send a new link"}
+        {busy ? "Mengirim…" : "Kirim tautan baru"}
       </Button>
     </form>
   );

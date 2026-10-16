@@ -1,5 +1,54 @@
 # PRD — Selaras
 
+## UI-24 — Akun guru, penyimpanan Supabase, dan variasi AI (16 Oktober 2026)
+
+Instruksi pengguna terbaru menggantikan batas UI-only/no-backend dan profil demo untuk area
+produk. Landing dan sandbox tetap publik; `/kelas`, `/jadwal`, `/sesi`, dan `/progres`
+memerlukan guru yang terautentikasi. Gunakan auth email/password Supabase yang sudah ada.
+
+- **UI-24-AC-01:** halaman masuk/daftar berbahasa Indonesia, sesi SSR terverifikasi, profil
+  dari akun aktif, Keluar benar-benar mengakhiri sesi dan membersihkan cache privat.
+- **UI-24-AC-02:** simpan kelas, siswa, level/histori, observasi, penyesuaian kelompok, dan
+  snapshot sesi dalam `teacher_workspaces`: satu dokumen JSON per guru, dilindungi RLS,
+  revisi optimistis untuk mencegah kehilangan perubahan antartab, dan hasil simpan ditunggu
+  sebelum menutup form/navigasi. Tidak ada data fiktif otomatis untuk akun baru. Ini kontrak
+  persistensi awal, bukan implementasi tabel usulan pada bagian arsitektur. Foto tetap lokal
+  dan dikeluarkan dari dokumen tersimpan; storage lampiran belum diintegrasikan.
+- **UI-24-AC-03:** variasi tugas memakai OpenAI GPT mini (`gpt-5-mini`, dapat dikonfigurasi),
+  dari template terpilih saja; tanpa roster, identitas siswa, foto, pengelompokan, atau jadwal.
+  Validasi JSON serta aturan level; tampilkan draf berlabel Variasi AI dan minta tindakan
+  Gunakan variasi sebelum mengubah form. Kegagalan/timeout tidak menghapus tugas asli.
+  Batas harian harus dikonfigurasi sebelum endpoint menghasilkan panggilan berbayar.
+- **UI-24-AC-04:** siapkan seed development yang idempoten: satu guru demo, kelas mandiri
+  1A, 1B, 2A, 2B sampai 6A, 6B, masing-masing 32 siswa fiktif. Jangan timpa workspace
+  atau password akun yang sudah ada. Pengguna menunda penerapan migration/seed sampai
+  environment Supabase tersedia; tidak ada reset atau perubahan database langsung saat ini.
+- **UI-24-AC-05:** setelah target Supabase dikonfirmasi, pengguna mengizinkan pembaruan
+  akun seed dan penggabungan 1A + 2B. Pertahankan semua ID siswa dan histori; kelas lainnya
+  tetap mandiri. Label “Data fiktif” tidak ditampilkan pada antarmuka akun ini. Kredensial
+  yang dipilih pengguna disimpan hanya di environment lokal, bukan di source code.
+
+Q-03/Q-08 menerima auth dan rute ini; Q-09/Q-11 menerima snapshot ber-revisi untuk integrasi
+awal. Retensi/penghapusan, evaluasi materi, storage foto, dan kuota AI final tetap terbuka.
+Ketentuan UI-24 mengungguli paragraf lama yang masih menyebut preview publik/lokal saja.
+**UI-24-AC-06:** halaman daftar Kelas tidak menampilkan tombol Tambah kelas. Pencarian,
+kelas tersimpan, dan alur penggabungan tetap tersedia.
+
+## UI-25 — Paginasi progres
+
+**UI-25-AC-01:** setiap tabel kelas pada Progres menampilkan maksimal 10 siswa per halaman
+dengan navigasi halaman independen. Tampilan kartu mobile mengikuti halaman yang sama.
+Pertahankan pilihan mapel, kolom, urutan siswa, dan riwayat observasi.
+
+## UI-26 — Selaras Loading State
+
+**UI-26-AC-01:** sediakan komponen loading Selaras yang dapat digunakan ulang dan demo
+publik di sandbox. Tampilkan hanya ikon loader dengan label status aksesibel yang dapat diganti,
+tanpa persentase progres buatan. Animasi mengikuti preferensi reduced motion.
+**UI-26-AC-02:** gunakan komponen yang sama untuk fallback pemuatan halaman, data awal
+kelas, dan perpindahan ke halaman masuk saat sesi berakhir. Tampilkan ikon di tengah area
+pemuatan; pertahankan batas autentikasi serta tampilan error dan aksi coba lagi.
+
 **Versi:** 1.1 (melengkapi draf berdasarkan Product Brief v4)\
 **Tanggal:** 14 Oktober 2026\
 **Status:** Spesifikasi MVP; keputusan terbuka belum siap diimplementasikan; belum divalidasi dengan guru\
@@ -620,8 +669,10 @@ padding kartu 16 px, judul 20 px dan ikon 24 px.
 **UI-20-AC-02:** tombol Gabungkan kelas melayang kanan bawah memasuki mode pilih. Guru memilih
 tepat dua kelas mandiri, melihat batas 2 pilihan, lalu menekan tombol panah lanjut. Batal tidak
 mengubah data. Pilihan aktif berborder ungu; pilihan tak cocok/nonmandiri tidak bisa dipilih.
-Pasangan baru menerima dua tingkat kelas yang selisihnya tepat satu: 1+2, 2+3, 3+4, 4+5,
-atau 5+6; kedua urutan diterima. Kelas setingkat atau berselisih lebih dari satu tidak diterima.
+Pasangan baru menerima dua kelas mandiri berbeda dengan tingkat yang sama atau selisih satu:
+misalnya 3A+3B, 1+2, 2+3, 3+4, 4+5, atau 5+6; kedua urutan diterima. Selisih lebih dari satu
+tetap ditolak. Identitas, rombongan, dan histori masing-masing kelas dipertahankan. Penjadwalan
+kelas setingkat memakai pola satu fase. Jangan tambahkan informasi UI tentang aturan baru ini.
 **UI-20-AC-03:** setelah digabung, daftar menampilkan dua kartu sumber dengan tanda plus di
 antaranya dalam satu panel. Kartu mandiri sumber diganti pasangan itu, tanpa menggandakan siswa.
 Panel gabungan memakai dua kolom grid pada sm ke atas, dengan gap 20 px; setiap kartu sumber

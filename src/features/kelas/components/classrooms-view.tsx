@@ -20,7 +20,7 @@ const classSections = [
 ];
 
 export function ClassroomsView() {
-  const { classrooms, sessions, allStudents, combineClassrooms } = usePreview();
+  const { classrooms, sessions, allStudents, combineClassrooms, saving } = usePreview();
   const [query, setQuery] = useState("");
   const [combining, setCombining] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
@@ -49,8 +49,8 @@ export function ClassroomsView() {
           : current,
     );
   }
-  function combine() {
-    const result = combineClassrooms(selected);
+  async function combine() {
+    const result = await combineClassrooms(selected);
     if (!result.id) {
       setError(result.error ?? "Kelas belum dapat digabung.");
       return;
@@ -70,6 +70,7 @@ export function ClassroomsView() {
             Kelola kelas dan gabungkan dua kelas untuk belajar bersama.
           </p>
         </div>
+        <div className="flex w-full flex-wrap items-center gap-ui-sm sm:w-auto">
         <SearchInput
           label="Cari kelas"
           placeholder="Cari kelas"
@@ -79,12 +80,11 @@ export function ClassroomsView() {
           clearLabel="Hapus pencarian kelas"
           className="w-full sm:w-64"
         />
+        </div>
       </header>
       {combining && (
         <Notice tone="info">
-          Pilih dua kelas mandiri yang tingkatnya berbeda satu. Misalnya, Kelas 2
-          bisa digabung dengan Kelas 1 atau 3. Setelah itu, tekan panah untuk
-          menggabungkan.
+          Pilih dua kelas mandiri. Setelah itu, tekan panah untuk menggabungkan.
         </Notice>
       )}
       {error && <Notice>{error}</Notice>}
@@ -126,7 +126,7 @@ export function ClassroomsView() {
                               classroom.sourceIds?.first ??
                               `${classroom.id}-first`
                             }
-                            grade={classroom.grades.first}
+                            grade={classroom.grades.first + (classroom.sections?.first ?? "")}
                             lastSessionDate={lastSession?.date}
                             members={members.filter(
                               (student) => student.classKey === "first",
@@ -145,7 +145,7 @@ export function ClassroomsView() {
                               classroom.sourceIds?.second ??
                               `${classroom.id}-second`
                             }
-                            grade={classroom.grades.second}
+                            grade={classroom.grades.second + (classroom.sections?.second ?? "")}
                             lastSessionDate={lastSession?.date}
                             members={members.filter(
                               (student) => student.classKey === "second",
@@ -166,7 +166,7 @@ export function ClassroomsView() {
                   const card = (
                     <ClassroomCard
                       identity={classroom.id}
-                      grade={classroom.grades.first}
+                      grade={classroom.grades.first + (classroom.sections?.first ?? "")}
                       lastSessionDate={lastSession?.date}
                       members={members}
                       selected={active}
@@ -177,8 +177,8 @@ export function ClassroomsView() {
                       key={classroom.id}
                       type="button"
                       aria-pressed={active}
-                      aria-label={`${active ? "Batalkan pilihan" : "Pilih"} Kelas ${classroom.grades.first}, ${members.length} siswa`}
-                      disabled={disabled}
+                      aria-label={`${active ? "Batalkan pilihan" : "Pilih"} Kelas ${classroom.grades.first}${classroom.sections?.first ?? ""}, ${members.length} siswa`}
+                      disabled={disabled || saving}
                       onClick={() => toggle(classroom.id)}
                       className="rounded-card text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50"
                     >
@@ -217,7 +217,7 @@ export function ClassroomsView() {
       >
         {combining && (
           <>
-            <Button variant="secondary" onClick={reset}>
+            <Button variant="secondary" onClick={reset} disabled={saving}>
               Batal
             </Button>
             <span
@@ -237,7 +237,8 @@ export function ClassroomsView() {
               ? "Gabungkan dua kelas terpilih"
               : "Pilih kelas untuk digabung"
           }
-          disabled={combining && selected.length !== 2}
+          disabled={saving || (combining && selected.length !== 2)}
+          loading={saving}
           onClick={
             combining
               ? combine

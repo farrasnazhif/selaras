@@ -57,7 +57,7 @@ test("the preview uses the level-table roster, six level options, and a contiguo
   }
   assert.equal(end, 70);
   assert.deepEqual(plan.blocks.filter((block) => block.kind === "core").map((block) => block.teacherAssignments[0]), [["first"], ["second"], ["first"], ["second"]]);
-  assert.equal(classroomPreviewSchema.safeParse({ first: "2", second: "2" }).success, false);
+  assert.equal(classroomPreviewSchema.safeParse({ first: "2", second: "2" }).success, true);
 });
 
 test("session context accepts curriculum subject names while validating a separate skill focus (UI-17)", () => {

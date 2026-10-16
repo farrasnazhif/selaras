@@ -10,9 +10,9 @@ const legacy = { id: EXAMPLE_CLASS_ID, grades: { first: "2", second: "3" } };
 const classrooms = [...INDEPENDENT_CLASSROOMS, legacy];
 const students = [...PREVIEW_STUDENTS, ...INDEPENDENT_STUDENTS];
 
-test("UI-20: new combinations allow all neighboring grades in either order", () => {
+test("UI-20: new combinations allow same and neighboring grades in either order", () => {
   for (let first = 1; first <= 6; first++) for (let second = 1; second <= 6; second++) {
-    const expected = [[1, 2], [2, 1], [2, 3], [3, 2], [3, 4], [4, 3], [4, 5], [5, 4], [5, 6], [6, 5]].some(([a, b]) => a === first && b === second);
+    const expected = Math.abs(first - second) <= 1;
     assert.equal(canCombineGrades(String(first), String(second)), expected);
     assert.equal(classroomPreviewSchema.safeParse({ first: String(first), second: String(second) }).success, expected);
   }

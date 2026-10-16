@@ -83,7 +83,7 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
       <PlanStatus validation={validation} />
       <p className="text-sm text-muted">Materi tatap muka disiapkan guru. Latihan dasar ini mengikuti fokus kemampuan; periksa kesesuaiannya sebelum digunakan.</p>
       <RotationGrid plan={session.plan} grades={session.grades} lessonSubject={session.lessonSubject} topic={session.topic} />
-      <Collapsible label="Periksa tugas tiap kelompok"><SessionTaskSummary plan={session.plan} roster={session.roster} grades={session.grades} /></Collapsible>
+      <Collapsible label="Periksa tugas tiap kelompok"><SessionTaskSummary plan={session.plan} roster={session.roster} grades={session.grades} lessonSubject={session.lessonSubject} blockMinutes={Number(session.blockMinutes)} /></Collapsible>
     </div>
     {packet && <StudentPacketView packet={packet} />}
     </>

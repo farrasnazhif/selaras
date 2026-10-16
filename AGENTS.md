@@ -1,5 +1,25 @@
 # Project Overview
 
+Latest seed refinement (UI-24-AC-05): the user confirmed selaras/main for remote writes,
+requested a new seed login and combined 1A + 2B, and removed the in-app fictional-data label.
+Preserve roster IDs/history and other classes; keep chosen credentials only in `.env.local`.
+This supersedes earlier label and postponed-seeding restrictions for this confirmed target.
+
+**Latest authorization — UI-24/DES-37:** integrate teacher email/password auth and private
+Supabase workspace snapshots. This supersedes older public-preview/no-backend/demo-profile
+restrictions below. Keep landing/sandbox public, protect all product routes, and preserve starter
+projects/auth. Store teacher data in an owner-scoped `teacher_workspaces` JSON document with
+revision checks; no cross-document/student links. Use Query hooks → feature API → shared
+Supabase client, and validate records with Zod. Keep photos local, excluded from persistence.
+AI is GPT mini task variation through an authenticated server-only Route Handler; no student
+identities/photos, explicit teacher approval, level safeguards, original-template fallback,
+and configured atomic per-teacher daily limits. No paid requests without configuration.
+Prepare a non-overwriting seed for one teacher and twelve 1A–6B classes; the user explicitly
+postponed running migrations/seeding until their development environment is configured.
+Do not hand-edit generated starter database types; feature contracts remain explicit until
+types can be regenerated against the configured database. Historical architecture text below
+does not override this accepted integration scope.
+
 Selaras is a planned web application for primary-school teachers teaching two classes in one
 room. PRD.md defines the MVP: configure the class pair and students, assign observed levels,
 form and manually adjust groups within each class, produce a schedule without overlapping
@@ -167,8 +187,20 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 
 UI conventions:
 
+- Selaras branding uses the complete `/main-logo.png` wordmark (`DES-40`) in product and
+  landing headers/footer. Preserve its proportions and original colors; loaders remain icon-only.
+
+- Buat variasi AI has an explicitly accepted primary-color gradient/shine treatment (`DES-37`),
+  scoped to that Button. Preserve sizing/focus/loading and stop shine for reduced motion or
+  disabled/loading states; other buttons retain the shared palette conventions.
+
+- Progres tables and their mobile cards paginate ten students per class independently,
+  using shared Pagination in Indonesian (`UI-25`, `DES-38`).
+
 - UI-20/DES-34 seeds independent classes 1–6, each with 32 fictional students, and a floating
-  combine flow for any neighboring grades: 1+2, 2+3, 3+4, 4+5, 5+6, in either order.
+  combine flow for two distinct classes of the same or neighboring grades, in either order.
+  Same-grade sections such as 3A+3B retain their identities and use same-phase scheduling.
+  Keep larger grade gaps disabled; do not add explanatory UI copy for this extension.
   Preserve the legacy 2+3 demo. Merge rosters without changing student IDs/history;
   standalone details render only their first class and cannot schedule until paired. Combined
   cards retain both banners/identities around a plus. The floating action alone uses 64 px circle.

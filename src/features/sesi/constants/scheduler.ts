@@ -1,5 +1,6 @@
 import { CLASS_KEYS, GROUP_KEYS, phaseForGrade } from "../../kelas/constants/preview.ts";
 import { GROUP_LABELS } from "../../kelas/constants/groups.ts";
+import { canCombineGrades } from "../../kelas/constants/class-pairing.ts";
 import { sessionPreviewSchema, type SessionPreviewInput } from "../validations/session.ts";
 import { taskTemplateSchema } from "../validations/task.ts";
 import { getIndependentTasks } from "./independent-tasks.ts";
@@ -11,7 +12,7 @@ function occupiedGroups(roster: PreviewStudent[]) {
 }
 function rosterErrors(input: SessionPreviewInput, roster: PreviewStudent[], grades: Record<ClassKey, string>) {
   const errors: string[] = [];
-  if (!CLASS_KEYS.every((key) => /^[1-6]$/.test(grades[key])) || grades.first === grades.second) errors.push("Pilih dua tingkat kelas berbeda dari kelas 1–6.");
+  if (!canCombineGrades(grades.first, grades.second)) errors.push("Pasangan kelas tidak tersedia.");
   if (new Set(roster.map((student) => student.id)).size !== roster.length) errors.push("Daftar siswa memuat anggota ganda.");
   if (new Set(roster.map((student) => student.classroomId)).size > 1) errors.push("Siswa harus berasal dari pasangan kelas yang sama.");
   for (const key of CLASS_KEYS) if (!roster.some((student) => student.classKey === key)) errors.push(`Tambahkan siswa Kelas ${grades[key]}.`);

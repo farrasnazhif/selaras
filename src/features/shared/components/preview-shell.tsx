@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { Layers3 } from "lucide-react";
 import { AccountMenu } from "./account-menu";
 
 export function PreviewShell({ children }: { children: ReactNode }) {
@@ -24,13 +24,14 @@ export function PreviewShell({ children }: { children: ReactNode }) {
             className="flex w-fit items-center gap-2 text-lg font-extrabold sm:text-xl"
             aria-label="Selaras · Kelas"
           >
-            <Layers3
-              size={26}
-              className="shrink-0 text-accent"
-              strokeWidth={2.5}
-              aria-hidden="true"
+            <Image
+              src="/main-logo.png"
+              alt="Selaras"
+              width={863}
+              height={187}
+              priority
+              className="h-auto w-20 min-[480px]:w-28 sm:w-36"
             />
-            <span className="hidden min-[400px]:inline">Selaras</span>
           </Link>
           <nav
             aria-label="Navigasi utama"

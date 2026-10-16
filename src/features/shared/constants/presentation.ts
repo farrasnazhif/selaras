@@ -1,8 +1,10 @@
 import type { PreviewClassroom } from "@/features/shared/types/preview";
 
 export function classroomTitle(classroom: PreviewClassroom) {
-  if (classroom.independent) return `Kelas ${classroom.grades.first}`;
-  return `Kelas Rangkap ${classroom.grades.first}-${classroom.grades.second}`;
+  const first = classroom.grades.first + (classroom.sections?.first ?? "");
+  const second = classroom.grades.second + (classroom.sections?.second ?? "");
+  if (classroom.independent) return `Kelas ${first}`;
+  return `Kelas Rangkap ${first}-${second}`;
 }
 export function classPath(id: string) {
   return `/kelas/${encodeURIComponent(id)}`;

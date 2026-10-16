@@ -91,10 +91,10 @@ export function SessionBuilderView({ sessionId }: { sessionId?: string }) {
     setPrinting(false);
     setSaveErrors([]);
   }
-  function save() {
+  async function save() {
     if (!available || !plan || isDirty || saving) return;
     setSaving(true);
-    const result = saveSession({ ...preview, plan, roster, grades }, sessionId);
+    const result = await saveSession({ ...preview, plan, roster, grades }, sessionId);
     if (!result.id) { setSaveErrors(result.errors); setSaving(false); return; }
     router.push(`${path}/sesi/${result.id}`);
   }
@@ -108,6 +108,7 @@ export function SessionBuilderView({ sessionId }: { sessionId?: string }) {
       </header>
       <Card className="print-hidden p-ui-md">
         <form onSubmit={handleSubmit(applyForm)} noValidate className="grid items-start gap-ui-sm sm:grid-cols-2">
+          <fieldset disabled={saving} className="contents" aria-label="Pilihan sesi">
           <div className="field">
             <label htmlFor="session-lesson-subject">Mata pelajaran</label>
             <Controller control={control} name="lessonSubject" render={({ field }) => <>
@@ -162,6 +163,7 @@ export function SessionBuilderView({ sessionId }: { sessionId?: string }) {
             <p className="text-sm text-muted">Pembukaan dan penutup masing-masing 5 menit. Blok hasil susunan dapat diubah di bawah.</p>
             <Button type="submit" variant="primary"><CalendarDays size={17} aria-hidden="true" />Lihat jadwal</Button>
           </div>
+          </fieldset>
         </form>
       </Card>
       {saveErrors.length > 0 && <Notice>{saveErrors.join(" ")}</Notice>}
@@ -184,7 +186,7 @@ export function SessionBuilderView({ sessionId }: { sessionId?: string }) {
         <legend className="mb-ui-sm text-lg font-bold">Sesuaikan rencana belajar</legend>
         {isDirty && <p className="text-sm text-muted">Terapkan pilihan di atas sebelum mengubah jadwal atau tugas.</p>}
         <Collapsible label="Ubah jadwal"><ScheduleEditor plan={plan} grades={grades} blockMinutes={preview.blockMinutes} onChange={updatePlan} /></Collapsible>
-        <Collapsible label="Ubah tugas tiap kelompok"><SessionTaskSummary plan={plan} roster={roster} grades={grades} focus={preview.focus} onChange={updatePlan} /></Collapsible>
+        <Collapsible label="Ubah tugas tiap kelompok"><SessionTaskSummary plan={plan} roster={roster} grades={grades} lessonSubject={preview.lessonSubject} blockMinutes={Number(preview.blockMinutes)} focus={preview.focus} onChange={updatePlan} /></Collapsible>
       </fieldset>}
 
       <div className="print-hidden flex flex-wrap items-center justify-between gap-ui-sm border-t-2 border-line pt-ui-md">

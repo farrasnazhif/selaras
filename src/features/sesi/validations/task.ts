@@ -24,6 +24,7 @@ export const taskTemplateSchema = z.object({
   title: z.string().trim().min(1, "Isi judul kegiatan.").max(80, "Judul maksimal 80 karakter."),
   instruction: z.string().trim().min(1, "Isi petunjuk kegiatan.").max(1000, "Petunjuk maksimal 1.000 karakter."),
   requiresReading: z.boolean(),
+  aiGenerated: z.literal(true).optional(),
   photo: taskPhotoSchema.optional(),
   content: z.union([writtenContent, visualContent]),
 }).superRefine((task, context) => {

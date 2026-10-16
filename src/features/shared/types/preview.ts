@@ -3,7 +3,7 @@ import type { SessionPlan } from "@/features/sesi/types/schedule";
 export type ClassKey = "first" | "second";
 export type GroupKey = "A" | "B" | "C";
 
-// UI fixtures, not the eventual student/session database contracts.
+// Teacher-facing models; UI-24 persists these inside an owner-scoped workspace snapshot.
 export type PreviewStudent = {
   id: string;
   name: string;
@@ -20,6 +20,7 @@ export type PreviewClassroom = {
   independent?: true;
   sourceIds?: Record<ClassKey, string>;
   grades: Record<ClassKey, string>;
+  sections?: Record<ClassKey, string>;
 };
 export type PreviewSession = {
   id: string;

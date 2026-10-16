@@ -1,5 +1,41 @@
 # Product Backlog
 
+## UI-24 — Authorized teacher integration
+
+DES-40: replace the Selaras icon/text branding in PreviewShell and LandingPage with
+`/main-logo.png` using next/image, intrinsic proportions and responsive sizing.
+
+UI-24-AC-06: remove CreateClassDialog's trigger from ClassroomsView and its unused import.
+Keep the existing data, search and combine flow.
+
+UI-26/DES-39: add `src/components/ui/selaras-loading-state.tsx` using only LoaderCircle with
+a configurable accessible label and reduced-motion support. Register it in the sandbox catalog
+and SharedDemo. UI-26-AC-02 additionally uses it in root/Kelas/Jadwal loading boundaries,
+initial workspace fetch, and auth redirect loading; preserve route protection and error states.
+
+DES-37 button refinement: style only Buat variasi AI with a primary-color gradient and sweeping shine
+through a scoped CSS class. Keep shared Button behavior and disable motion for reduced-motion,
+loading and disabled states.
+
+UI-25/DES-38: add independent ten-student pagination per class in
+`src/features/progres/components/progress-view.tsx`, using shared Pagination for desktop
+tables and mobile cards. Keep subject selection, ordering, columns and observation behavior.
+
+UI-24-AC-05: remove the seeded-account fictional-data callout, update the confirmed seed
+login via the admin API, and combine existing 1A + 2B with the shared helper and revision
+check. Preserve other data, student IDs/history, and keep credentials in `.env.local` only.
+
+Implement UI-24/DES-37 using existing Supabase SSR email/password auth, Indonesian AuthForm,
+verified product layouts/proxy routes, real profile/sign-out and user-scoped query cache.
+Persist the existing workspace as one RLS-protected teacher JSON record with revision-checked
+mutations and awaited error-aware callers; validate nested session/history/group references.
+Keep photos local. Add authenticated GPT mini task variations, strict schema/level checks,
+teacher preview/approval and template fallback; configure an atomic daily request limit.
+Prepare a no-overwrite development seed for one teacher and 12 sectioned classes with fictional
+students. Do not apply migrations or seed until environment configuration, per latest user reply.
+Preserve starter auth/projects and public landing/sandbox. Verify contracts, typecheck, lint,
+build, and report live checks as unavailable until credentials exist.
+
 Status: Not generated — complete the product decisions in [PRD.md](PRD.md) and
 [DESIGN.md](DESIGN.md), then use [the planning prompt](docs/team-workflow.md#generate-the-backlog).
 
@@ -53,8 +89,8 @@ same-phase first shared block, student-safe projection, local-only storage and s
 callers, README and contract tests; tests stay unrun, typecheck/lint/build apply. Confirm destructive
 regeneration, keep cancel non-mutating, and preserve other in-memory sessions and roster history.
 
-UI-20/DES-34 adds seeded independent 1–6 class cards (32 fictional pupils each), pure neighboring-grade
-validation/merge helpers (1+2, 2+3, 3+4, 4+5, 5+6, either order),
+UI-20/DES-34 adds seeded independent 1–6 class cards (32 fictional pupils each), pure same/neighboring-grade
+validation/merge helpers (distinct classes, including 3A+3B, either order),
 floating selection/next flow and constituent-card composition. Adapt provider/single-class tabs,
 presentation and session guards; preserve existing 2+3 and identity/history. UI-21/DES-35 adds
 shared optional photo input in task editing, local data URL snapshots, content validation and

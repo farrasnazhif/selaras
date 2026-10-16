@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { PreviewShell } from "@/features/shared/components/preview-shell";
-import { PreviewProvider } from "@/features/shared/components/preview-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import "./globals.css";
 
@@ -24,7 +22,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <QueryProvider><PreviewProvider><PreviewShell>{children}</PreviewShell></PreviewProvider></QueryProvider>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

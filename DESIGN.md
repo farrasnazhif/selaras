@@ -1,5 +1,43 @@
 # DESIGN — Selaras, inspired by Classroomscreen
 
+## DES-37 — Teacher authentication and optional AI
+
+UI-24 supersedes demo-only access. Reuse AuthForm/Card/Input/Button for Indonesian login and
+registration, with the existing rounded Nunito/light palette. Keep protected teacher pages
+behind the existing header; show verified account details and working Keluar in its menu.
+Show loading/error/save feedback without fabricated data or success. Preserve forms on failed
+saves. In task editing, add Buat variasi AI, an explicit text-only-context notice, a labeled
+draft preview, and Gunakan variasi/Abaikan actions. Do not auto-replace a task. Keep the current
+task usable on failure. Photos stay in the current browser session until storage is integrated.
+UI-24-AC-05 removes the seeded-account “Data fiktif” callout; retain normal save/error feedback.
+UI-24-AC-06 removes Tambah kelas from the Kelas header; keep search and the combine action.
+The Buat variasi AI button alone uses a primary #7173FF-to-deeper-purple gradient with white
+text and a subtle sweeping shine. This accepted gradient treatment keeps shared xs sizing, corners,
+focus, loading and disabled behavior. Stop the shine for reduced motion, loading or disabled
+states; use no shadow and leave other buttons and surfaces unchanged. Repeat every 3 seconds,
+with a 0.3-second pause and a slower 2.7-second sweep.
+
+## DES-38 — Progress pagination
+
+UI-25 reuses shared Pagination in Indonesian below each class's progress table/mobile list,
+with ten students per page. Show controls when there is more than one page; preserve existing
+table columns and mobile cards. Each class has independent pagination.
+
+## DES-39 — Selaras Loading State
+
+UI-26 uses only a 32 px primary-colored Lucide LoaderCircle, spinning unless reduced motion
+is enabled. No logo, background, or visible copy. Keep a configurable accessible status label.
+The sandbox entry is “Selaras Loading State”.
+UI-26-AC-02 centers this same loader in page fallbacks and initial workspace/auth loading.
+Route fallbacks use at least 60dvh; existing product headers remain around nested loading.
+
+## DES-40 — Selaras logo asset
+
+Use `/main-logo.png` as the complete Selaras wordmark in the product header and landing
+header/footer, replacing the Layers3 icon plus text. Preserve its 863:187 aspect ratio and
+original colors. Scale it to fit narrow navigation without cropping or duplicate brand text.
+The loading component remains icon-only.
+
 **Versi:** 2.5 — extra-small and small buttons\
 **Tanggal:** 14 Oktober 2026\
 **Status:** Shared design plus an authorized UI-only Selaras preview; functional product contracts remain open
@@ -551,8 +589,9 @@ Match main's sizing and spacing: responsive 1/2/3 columns (sm/xl), 20 px grid ga
 card-grid exception to the usual 15/30/60 px product spacing. No shadows/gradients. The lower-right
 floating shared icon button is a specific 64 px circular action, an exception to normal Button
 sizing. Selection adds a purple border and pressed state; show 0/2 through 2/2, cancel, and a
-floating next arrow. Incompatible grades are disabled with an explanation. Any two neighboring
-grades may combine: 1+2, 2+3, 3+4, 4+5, 5+6, in either selection order.
+floating next arrow. Distinct independent classes of the same or neighboring grades may combine
+in either selection order, including 3A+3B. Keep both source identities and existing card layouts;
+do not add explanatory UI text about same-grade pairing. Grades more than one apart remain disabled.
 
 After combining, place two constituent cards around a noninteractive plus in one pale neutral
 panel, one link to combined details. Stack vertically on phones.

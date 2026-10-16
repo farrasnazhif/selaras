@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Notice } from "@/components/ui/notice";
 import { Callout } from "@/components/ui/callout";
 import { DataState } from "@/components/ui/data-state";
+import { SelarasLoadingState } from "@/components/ui/selaras-loading-state";
 
 export function SharedDemo({
   id,
@@ -157,6 +158,8 @@ export function SharedDemo({
         <Notice>We couldn’t save. Your input is still here.</Notice>
       </div>
     );
+
+  if (id === "selaras-loading-state") return <SelarasLoadingState />;
 
   if (id === "callout")
     return (
