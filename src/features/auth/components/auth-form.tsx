@@ -39,6 +39,9 @@ export function AuthForm({
     formState: { errors, isSubmitting },
   } = useForm<AuthInput>({
     resolver: zodResolver(signup ? registerSchema : loginSchema),
+    defaultValues: signup
+      ? { email: "", password: "" }
+      : { email: "guru@laras.com", password: "guru123" },
   });
   return (
     <Card className="max-w-md w-full">
@@ -153,6 +156,7 @@ export function AuthForm({
           </Button>
         </form>
       )}
+      {/* Previous auth footer retained while registration is hidden.
       <p className="text-center text-sm text-muted mt-6">
         {signup ? "Sudah punya akun?" : "Belum punya akun?"}{" "}
         <Link
@@ -162,6 +166,7 @@ export function AuthForm({
           {signup ? "Masuk" : "Buat akun"}
         </Link>
       </p>
+      */}
     </Card>
   );
 }
