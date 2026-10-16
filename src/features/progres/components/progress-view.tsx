@@ -72,12 +72,12 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
         <div>
           <h2 className="text-xl font-bold">Perubahan level siswa</h2>
           <p className="mt-2 max-w-xl text-sm text-muted">
-            Lihat perubahan kemampuan siswa dari penilaian pertama hingga terbaru.
-            Perbarui level pada tab Level.
+            Lihat perubahan kemampuan siswa dari penilaian pertama hingga
+            terbaru. Perbarui level pada tab Level.
           </p>
         </div>
         <div className="field min-w-48">
-          <label htmlFor="progress-subject">Mata pelajaran</label>
+          <label htmlFor="progress-subject">Kelompok berdasarkan</label>
           <Select
             value={subject}
             options={[
@@ -104,7 +104,8 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
               <Badge tone="neutral">{roster.length} siswa</Badge>
             </h3>
             <div className="hidden md:block [&_.ui-table]:text-sm">
-              <Table emptyMessage="Tidak ada data yang ditampilkan."
+              <Table
+                emptyMessage="Tidak ada data yang ditampilkan."
                 rows={roster}
                 columns={columns}
                 getRowId={(student) => student.id}
