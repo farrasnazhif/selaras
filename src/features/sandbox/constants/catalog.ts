@@ -11,6 +11,11 @@ export const SANDBOX_COMPONENTS = [
   ...EXTENDED_COMPONENTS,
   ...META.map(({ id, title, caption }) => ({ id, title, caption })),
   {
+    id: "callout",
+    title: "Callout",
+    caption: "Highlighted messages with semantic tones and clear headings.",
+  },
+  {
     id: "buttons",
     title: "Buttons",
     caption: "Variants, extra-small/small sizes, and disabled/loading states.",

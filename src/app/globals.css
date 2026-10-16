@@ -247,6 +247,31 @@
     background: var(--info-soft);
     border-color: color-mix(in srgb, var(--info) 20%, transparent);
   }
+  .callout {
+    @apply flex gap-3 border-2 px-4 py-3 text-sm leading-relaxed;
+    border-radius: var(--radius-window);
+    overflow-wrap: anywhere;
+  }
+  .callout-info {
+    color: var(--info-ink);
+    background: var(--info-tint);
+    border-color: color-mix(in srgb, var(--info-ink) 28%, white);
+  }
+  .callout-success {
+    color: var(--green);
+    background: var(--green-tint);
+    border-color: color-mix(in srgb, var(--green) 28%, white);
+  }
+  .callout-warning {
+    color: var(--orange);
+    background: var(--orange-tint);
+    border-color: color-mix(in srgb, var(--orange) 28%, white);
+  }
+  .callout-danger {
+    color: var(--red);
+    background: var(--red-tint);
+    border-color: color-mix(in srgb, var(--red) 28%, white);
+  }
   .dialog-backdrop {
     @apply fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px];
   }

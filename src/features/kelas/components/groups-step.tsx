@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ArrowLeftRight } from "lucide-react";
+import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { IconButton } from "@/components/ui/icon-button";
@@ -25,14 +26,10 @@ export function GroupsStep() {
   const [pages, setPages] = useState<Record<string, number>>({});
   return (
     <div className="space-y-ui-group">
-      <div className="flex flex-wrap items-center justify-between gap-ui-sm rounded-window border-2 border-line bg-surface p-ui-sm">
-        <div className="max-w-xl">
-          <p className="text-sm font-semibold">Susunan kelompok {groupSubject}</p>
-          <p className="mt-1 text-sm leading-relaxed text-muted">
-            Susunan awal mengikuti level {groupSubject}. Gunakan tombol panah untuk memindahkan anggota dalam kelas yang sama.
-          </p>
-        </div>
-      </div>
+      <Callout title={`Susunan kelompok ${groupSubject}`} tone="info">
+        Susunan awal mengikuti level {groupSubject}. Gunakan tombol panah untuk
+        memindahkan anggota dalam kelas yang sama.
+      </Callout>
       {classKeys.map((classKey) => (
         <section key={classKey} aria-labelledby={`groups-${classKey}`}>
           <div className="mb-ui-sm flex items-center gap-ui-sm">

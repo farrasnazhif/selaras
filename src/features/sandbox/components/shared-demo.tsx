@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Notice } from "@/components/ui/notice";
+import { Callout } from "@/components/ui/callout";
 import { DataState } from "@/components/ui/data-state";
 
 export function SharedDemo({
@@ -154,6 +155,24 @@ export function SharedDemo({
         <Notice tone="success">Your project was saved successfully.</Notice>
         <Notice tone="info">You’re viewing sample data in the sandbox.</Notice>
         <Notice>We couldn’t save. Your input is still here.</Notice>
+      </div>
+    );
+
+  if (id === "callout")
+    return (
+      <div className="w-full max-w-lg space-y-3">
+        <Callout title="Informasi" tone="info">
+          Perubahan lokal akan hilang saat halaman dimuat ulang.
+        </Callout>
+        <Callout title="Berhasil disimpan" tone="success">
+          Data kelas sudah diperbarui.
+        </Callout>
+        <Callout title="Periksa kembali" tone="warning">
+          Beberapa siswa belum memiliki level.
+        </Callout>
+        <Callout title="Tidak dapat menyimpan" tone="danger">
+          Periksa koneksi lalu coba lagi.
+        </Callout>
       </div>
     );
 
