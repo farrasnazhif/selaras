@@ -8,7 +8,11 @@ import { Select } from "@/components/ui/select";
 import { Table, type TableColumn } from "@/components/ui/table";
 import { GROUP_LABELS } from "@/features/kelas/constants/groups";
 import { getStudentPage } from "@/features/kelas/constants/student-list";
-import type { ClassKey, GroupKey, PreviewStudent } from "@/features/shared/types/preview";
+import type {
+  ClassKey,
+  GroupKey,
+  PreviewStudent,
+} from "@/features/shared/types/preview";
 import { usePreview } from "@/features/shared/components/preview-provider";
 import { AddStudentDialog } from "@/features/kelas/components/add-student-dialog";
 import { ObservationDialog } from "@/features/kelas/components/observation-dialog";
@@ -22,11 +26,24 @@ export function ClassStudentsView() {
       <div className="flex flex-wrap items-end gap-ui-sm">
         <div className="field w-64 max-w-full">
           <label htmlFor="student-group-subject">Kelompok berdasarkan</label>
-          <Select value={groupSubject} options={[{ value: "literasi", label: "Literasi" }, { value: "numerasi", label: "Numerasi" }]} onValueChange={(value) => { if (value === "literasi" || value === "numerasi") setGroupSubject(value); }} triggerProps={{ id: "student-group-subject" }} />
+          <Select
+            value={groupSubject}
+            options={[
+              { value: "literasi", label: "Literasi" },
+              { value: "numerasi", label: "Numerasi" },
+            ]}
+            onValueChange={(value) => {
+              if (value === "literasi" || value === "numerasi")
+                setGroupSubject(value);
+            }}
+            triggerProps={{ id: "student-group-subject" }}
+          />
         </div>
         <GroupGuide />
       </div>
-      <div className={`grid items-start gap-ui-md ${classKeys.length > 1 ? "xl:grid-cols-2" : ""}`}>
+      <div
+        className={`grid items-start gap-ui-md ${classKeys.length > 1 ? "xl:grid-cols-2" : ""}`}
+      >
         {classKeys.map((key) => (
           <StudentClassCard key={key} classKey={key} />
         ))}
@@ -74,7 +91,10 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
               placeholder="Cari siswa…"
               value={query}
               clearLabel="Hapus pencarian siswa"
-              onClear={() => { setQuery(""); setPage(1); }}
+              onClear={() => {
+                setQuery("");
+                setPage(1);
+              }}
               onChange={(event) => {
                 setQuery(event.target.value);
                 setPage(1);
@@ -112,7 +132,9 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
       <p role="status" className="mb-ui-sm text-xs text-muted">
         {total} siswa{query || group !== "all" ? " ditemukan" : ""}
       </p>
-      <Table minRows={5} emptyMessage="Tidak ada data yang ditampilkan."
+      <Table
+        minRows={5}
+        emptyMessage="Tidak ada data yang ditampilkan."
         rows={rows}
         columns={columns}
         getRowId={(student) => student.id}
@@ -120,11 +142,12 @@ function StudentClassCard({ classKey }: { classKey: ClassKey }) {
       />
       {pageCount > 1 && (
         <div
-          className="mt-ui-sm"
+          className="mt-8"
           role="group"
           aria-label={`Halaman siswa kelas ${grade}`}
         >
-          <Pagination locale="id"
+          <Pagination
+            locale="id"
             page={currentPage}
             pageCount={pageCount}
             onPageChange={setPage}

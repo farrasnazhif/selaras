@@ -10,7 +10,10 @@ import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { Pagination } from "@/components/ui/pagination";
 import { GROUP_KEYS } from "@/features/kelas/constants/preview";
 import { GROUP_LABELS, GROUP_LEVELS } from "@/features/kelas/constants/groups";
-import { LITERACY_LEVELS, NUMERACY_LEVELS } from "@/features/kelas/constants/reference-content";
+import {
+  LITERACY_LEVELS,
+  NUMERACY_LEVELS,
+} from "@/features/kelas/constants/reference-content";
 import { usePreview } from "@/features/shared/components/preview-provider";
 
 const groupSurfaces = {
@@ -20,8 +23,10 @@ const groupSurfaces = {
 };
 
 export function GroupsStep() {
-  const { grades, students, groupSubject, moveStudent, classKeys } = usePreview();
-  const levels = groupSubject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
+  const { grades, students, groupSubject, moveStudent, classKeys } =
+    usePreview();
+  const levels =
+    groupSubject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
   const [message, setMessage] = useState("");
   const [pages, setPages] = useState<Record<string, number>>({});
   return (
@@ -63,10 +68,16 @@ export function GroupsStep() {
                     <h3 className="text-lg font-bold">
                       Kelompok {GROUP_LABELS[group]}
                     </h3>
-                    <p className="mt-1 text-xs text-muted">
-                      {members.length} siswa
-                    </p>
-                    <p className="mt-1 text-xs font-semibold">{GROUP_LEVELS[group]}</p>
+                    <div className="flex justify-between mt-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs font-semibold">
+                          {members.length} siswa
+                        </p>
+                      </div>
+                      <p className="mt-1 text-xs font-semibold">
+                        {GROUP_LEVELS[group]}
+                      </p>
+                    </div>
                   </div>
                   <ul className="divide-y divide-line">
                     {pageMembers.map((student) => {
@@ -84,7 +95,7 @@ export function GroupsStep() {
                           key={student.id}
                           className="flex h-16 items-center gap-2 py-1"
                         >
-                          <div className="min-w-0 flex-1">
+                          <div className="w-full flex items-center justify-between">
                             <p className="break-words text-sm font-semibold">
                               {student.name}
                             </p>
@@ -94,7 +105,7 @@ export function GroupsStep() {
                             >
                               {level ? (
                                 <>
-                                  <span>Level {level.value}</span>{" "}
+                                  <span>Level {level.value}:</span>{" "}
                                   <span>{level.label}</span>
                                 </>
                               ) : (

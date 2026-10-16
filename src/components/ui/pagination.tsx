@@ -22,10 +22,12 @@ export function Pagination({
   return (
     <nav
       aria-label={locale === "id" ? "Halaman" : "Pagination"}
-      className="flex flex-wrap items-center justify-between gap-3"
+      className="flex flex-col items-center justify-center gap-3"
     >
       <span className="text-xs text-muted" role="status">
-        {locale === "id" ? `Halaman ${current} dari ${count}` : `Page ${current} of ${count}`}
+        {locale === "id"
+          ? `Halaman ${current} dari ${count}`
+          : `Page ${current} of ${count}`}
       </span>
       <div className="flex gap-1">
         <Button
