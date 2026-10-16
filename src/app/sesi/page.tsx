@@ -1,8 +1,11 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
-import { EXAMPLE_CLASS_ID } from "@/features/kelas/constants/preview";
+import { requireTeacher } from "@/features/auth/api/require-teacher";
 
 export const metadata = { title: "Rencana sesi" };
 
-export default function SessionPage() {
-  redirect(`/kelas/${EXAMPLE_CLASS_ID}/sesi/baru`);
+export default async function SessionPage() {
+  await requireTeacher("/sesi");
+  redirect("/kelas");
 }

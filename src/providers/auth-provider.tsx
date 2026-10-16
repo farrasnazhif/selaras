@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Fragment,
   createContext,
   useContext,
   useEffect,
@@ -12,6 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { SelarasLoadingState } from "@/components/ui/selaras-loading-state";
 
 const AuthContext = createContext<User | null>(null);
 
@@ -37,7 +39,7 @@ export function AuthProvider({
         }
         setUser(nextUser);
         if (!nextUser)
-          router.replace("/login?message=Your+session+ended.+Please+sign+in.");
+          router.replace("/login?message=Sesi+berakhir.+Silakan+masuk+kembali.");
       },
     );
     return () => data.subscription.unsubscribe();
@@ -45,11 +47,11 @@ export function AuthProvider({
 
   if (!user)
     return (
-      <p className="p-8" role="status">
-        Returning to sign in…
-      </p>
+      <div className="flex min-h-[60dvh] items-center justify-center">
+        <SelarasLoadingState label="Kembali ke halaman masuk…" />
+      </div>
     );
-  return <AuthContext value={user}>{children}</AuthContext>;
+  return <AuthContext value={user}><Fragment key={user.id}>{children}</Fragment></AuthContext>;
 }
 
 export function useAuth() {

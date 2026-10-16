@@ -1,5 +1,25 @@
 # Project Overview
 
+Latest seed refinement (UI-24-AC-05): the user confirmed selaras/main for remote writes,
+requested a new seed login and combined 1A + 2B, and removed the in-app fictional-data label.
+Preserve roster IDs/history and other classes; keep chosen credentials only in `.env.local`.
+This supersedes earlier label and postponed-seeding restrictions for this confirmed target.
+
+**Latest authorization — UI-24/DES-37:** integrate teacher email/password auth and private
+Supabase workspace snapshots. This supersedes older public-preview/no-backend/demo-profile
+restrictions below. Keep landing/sandbox public, protect all product routes, and preserve starter
+projects/auth. Store teacher data in an owner-scoped `teacher_workspaces` JSON document with
+revision checks; no cross-document/student links. Use Query hooks → feature API → shared
+Supabase client, and validate records with Zod. Keep photos local, excluded from persistence.
+AI is GPT mini task variation through an authenticated server-only Route Handler; no student
+identities/photos, explicit teacher approval, level safeguards, original-template fallback,
+and configured atomic per-teacher daily limits. No paid requests without configuration.
+Prepare a non-overwriting seed for one teacher and twelve 1A–6B classes; the user explicitly
+postponed running migrations/seeding until their development environment is configured.
+Do not hand-edit generated starter database types; feature contracts remain explicit until
+types can be regenerated against the configured database. Historical architecture text below
+does not override this accepted integration scope.
+
 Selaras is a planned web application for primary-school teachers teaching two classes in one
 room. PRD.md defines the MVP: configure the class pair and students, assign observed levels,
 form and manually adjust groups within each class, produce a schedule without overlapping
@@ -13,16 +33,19 @@ or removing the optional assessment tool (`Q-07`).
 Router, strict TypeScript, React, Supabase SSR authentication, TanStack Query, React Hook Form,
 Zod, Tailwind CSS, Lucide, and Beautiful UI with unstyled Base UI controls. It has email/password
 authentication, confirmation retry, a protected example dashboard, private per-user project
-CRUD, and a public sandbox with 81 demos. The landing page is one centered `/sandbox` button.
+CRUD, and a public sandbox with 81 demos. UI-22 authorizes a Selaras landing page at `/`,
+with a CTA to `/kelas` and a footer link to `/sandbox`.
 These examples remain available under `ST-01`–`ST-06`; projects are not Selaras sessions.
 
-**UI-only preview:** `/kelas`, `/sesi`, and `/progres` use existing UI controls, class-oriented
+**UI-only preview:** `/kelas`, `/jadwal`, `/sesi`, and `/progres` use existing UI controls, class-oriented
 navigation, fictional students, and local React state (`UI-01`/`UI-02`). The latest screenshots
 supply example levels/rubrics and literacy session content; production contracts remain open.
 There are no backend calls or product schemas.
 
-**Planned, not implemented:** Selaras domain logic, persisted student records, level history,
-automatic grouping/scheduling, reviewed teaching content, dedicated PDF export, and persisted progress. No Selaras schema or feature
+**Planned, not implemented:** account-backed Selaras records, persisted level history,
+reviewed curriculum content, and persisted progress. Local grouping, phase-aware scheduling,
+V1–V5 checks, and browser-based A4 output now exist under UI-18; they do not establish a
+production persistence contract. No Selaras schema or feature
 tickets exist yet. Proposed routes, tables, level names, API contracts, and owners in PRD.md are
 not accepted implementation contracts. Resolve affected `Q-*` questions before Ready tickets.
 Login/demo access and persistence are still open; preserve the existing private-access boundary.
@@ -49,7 +72,9 @@ the preview's Siswa class cards (`UI-04`); other application filtering remains o
 - `src/features/`: Auth, projects, sandbox, and the local Selaras UI preview, organized into
   purpose-specific category subfolders. The Selaras preview has no feature API/backend modules.
 - `src/features/kelas/`: Class list/details, students, levels, grouping, and class fixtures.
+- `src/features/landing/`: Public Selaras introduction and preview entry; no backend or identity.
 - `src/features/progres/`: Student progress page.
+- `src/features/jadwal/`: Overall schedule across classes, served directly at `/jadwal`.
 - `src/features/sesi/`: Session list, builder, saved session, schedule, and task fixtures.
 - `src/features/shared/`: Preview state, shell, and types shared between page features.
 - `src/components/ui/`: One flat reusable component library, CSS tokens, catalog, and MIT notice.
@@ -162,15 +187,73 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 
 UI conventions:
 
+- Selaras branding uses the complete `/main-logo.png` wordmark (`DES-40`) in product and
+  landing headers/footer. Preserve its proportions and original colors; loaders remain icon-only.
+
+- Buat variasi AI has an explicitly accepted primary-color gradient/shine treatment (`DES-37`),
+  scoped to that Button. Preserve sizing/focus/loading and stop shine for reduced motion or
+  disabled/loading states; other buttons retain the shared palette conventions.
+
+- Progres tables and their mobile cards paginate ten students per class independently,
+  using shared Pagination in Indonesian (`UI-25`, `DES-38`).
+
+- UI-20/DES-34 seeds independent classes 1–6, each with 32 fictional students, and a floating
+  combine flow for two distinct classes of the same or neighboring grades, in either order.
+  Same-grade sections such as 3A+3B retain their identities and use same-phase scheduling.
+  Keep larger grade gaps disabled; do not add explanatory UI copy for this extension.
+  Preserve the legacy 2+3 demo. Merge rosters without changing student IDs/history;
+  standalone details render only their first class and cannot schedule until paired. Combined
+  cards retain both banners/identities around a plus. The floating action alone uses 64 px circle.
+  Cards follow main's banner/title/separated metadata-footer layout; keep AvatarGroup and count
+  in the footer instead of a user icon, alongside the last-session date or Belum ada sesi.
+  Match main's 1/2/3-column grid (sm/xl), 20 px gaps and 16 px card-body/footer spacing; these
+  card-specific measurements override the general 15/30/60 px spacing convention.
+  Combined wrappers span two columns at sm with a two-column internal grid and the same 20 px
+  gap; center the plus absolutely so constituent cards retain independent-card widths.
+  List Kelas gabungan above Kelas mandiri in separate titled sections with independent empty
+  states; shared search covers both. Combine selection continues to show only independent classes.
+- UI-21/DES-35 permits optional memory-only task photos (JPG/PNG/WebP, 5 MB), with decoding,
+  cancel cleanup and shared upload UI. No storage service. Keep photos in saved task snapshots;
+  V5 requires teacher declaration for low-level non-reading suitability. Do not claim OCR checks.
+
+- UI-19/DES-33 permits local draft/saved-session editing and a mapel Select with custom Lainnya.
+  Save edited snapshots, preserving saved roster and session ID. Revalidate content and V1–V5;
+  allow mixed 10/15/20-minute core blocks and multiple tasks per student, with full coverage.
+  Confirm regeneration before replacing manual edits. Keep 1–2 non-reading and student output safe.
+
+- UI-18/DES-32 adds pure local phase-aware scheduling and independent V1–V5 checks. Save/print
+  validated snapshots only. Draft exercises serve literacy/numeracy 1–5; teachers provide level-six
+  tasks. Board/A4 sheets use a separate projection without roster identifiers, names, levels or
+  phase labels. No AI/backend/persistence. Longer group sheets may continue without clipping.
+
+- UI-17/DES-31 separates session lessonSubject/topic from literacy/numeracy focus. Accept
+  teacher-entered subject names; grouping and saved roster snapshots use focus. Use the existing
+  phase-aware structure from UI-18 for all subjects with neutral teaching prompts; do not
+  substitute literacy material or claim curriculum content/other-subject assessments are available.
+  Carry mapel/topic/focus through session lists, detail, Jadwal, board and print. No backend.
+
+- Siswa tables, group filters/cards, and member-level labels share the selected subject (`UI-15`, `DES-29`). Save session rosters with that session’s subject grouping; preserve saved snapshots. Missing levels keep their current group and show Belum dinilai in the preview. Keep the Panduan kelompok dialog beside the subject selector (`UI-15-AC-06`).
+- UI-23 keeps Siswa tables at five 52 px rows and group-member tables at five 64 px slots, filling
+  unused space with same-height blank rows (plus one empty message row for empty lists). Group cards paginate five
+  actual members per page, independently by class/group/subject. Always show shared Pagination, disabled at five or fewer, reduce
+  member-row padding, hide its decorative level Badge dot, and do not fix card height.
+
+- Use the six accepted literacy/numeracy levels and criteria in `UI-14`/`DES-28`, while keeping three groups A/B/C per class. Level changes append history; UI-15 maps unadjusted students to Biru 1–2 / Hijau 3–5 / Oranye 6 per subject, preserving manual moves for that subject.
+- Independent-task guidance uses each student’s focus level: 1–2 non-reading only, 3–5 matching practice, 6 class-phase content. Mixed groups need differentiated guidance; no invented phase objectives. UI-17 permits a neutral timing structure for numeracy and other subjects, with teacher-prepared lesson content.
+
+- Product spacing uses 15 px small, 30 px medium, and 60 px between content groups (`UI-11`, `DES-25`); preserve icon micro-gaps and control heights.
+- Level uses direct Observasi entry; history-first dialogs elsewhere remain. Overall Jadwal combines complete saved schedules by date, using saved rosters/grades without inventing start times.
+
 - Keep reusable controls together in `src/components/ui/`; do not create a separate library folder.
 - Keep Beautiful UI components, Base UI behavior, and Lucide icons; apply the user-supplied Classroomscreen styling without adding shadcn.
 - Apply accepted product layouts and styling from DESIGN.md through the existing UI and token files.
   An intentional change to a documented visual convention must be explicit and aligned here first.
-- The user explicitly accepted Nunito Sans, indigo actions, pastel surfaces, and larger pill
+- The user explicitly accepted Nunito, indigo actions, pastel surfaces, and larger pill
   buttons for existing UI. The latest user update makes the app light-only, primary #7173FF,
   controls with 10 px corners, and a white sandbox preview with a read-only five-color palette. These replace the earlier Inter/neutral/compact-button rules.
   Apply DES-02–DES-05 while leaving unresolved product screens and contracts untouched.
-- Use Nunito Sans with system font fallbacks. Tokens and catalog CSS live in `src/components/ui/globals.css`;
+- Use Nunito with system font fallbacks (`UI-10`, `DES-24`); minimum visible text is 12 px.
+  Tokens and catalog CSS live in `src/components/ui/globals.css`;
   app aliases and matching styles live in `src/app/globals.css`.
 - Use the shared Button: 10 px corners, #7173FF default primary, 8 px gap,
   default size sm (40 px), optional xs (32 px) for every variant, and 0.98 press scale.
@@ -187,10 +270,17 @@ UI conventions:
 - For button-like navigation, use Button with `nativeButton={false}`, `role="link"`, and
   `render={<Link href="…" />}`; do not nest buttons and anchors.
 - Keep inline text links, navigation rows, and linked cards in their own link presentation.
-- The Selaras preview uses the shared SidebarNav for desktop and mobile navigation. Use
-  `listLabel={null}` when there is no secondary list; retain its native collapse behavior.
+- The product uses a header with logo, centered Kelas/Jadwal links, moving purple active
+  underline, and profile menu. SidebarNav remains available to the sandbox and starter.
+- RootLayout keeps the public preview provider and shell mounted across product navigation;
+  the shell renders its header only on `/kelas` and `/jadwal`, preserving other starter pages.
+- Product cards, fields, and table surfaces use consistent 2 px outlines. Selects and menus
+  use pastel fills with dark matching text; retain semantic danger and keyboard/focus behavior.
+- Level tables omit the redundant Kelas column and paginate ten rows per class. Observation
+  history opens before adding a note. Product copy avoids “contoh”, phase labels, and jargon;
+  keep a concise, truthful notice that local changes disappear on reload.
 - Selaras app cards and table surfaces use borders with no resting or hover shadows. Its
-  sidebar footer uses shared Avatar/DropdownMenu with a labeled demo profile and only the
+  header profile uses shared Avatar/DropdownMenu with a labeled demo profile and only the
   disabled Settings/Sign out options; do not connect its demo identity to starter auth (`Q-03`).
 - Toasts use neutral surfaces, status icons, and subtle type tints without colored borders.
 - Preserve accessible labels, errors, focus, keyboard navigation, and reduced-motion behavior.
@@ -327,7 +417,7 @@ It does not run live RLS or browser tests.
   private records. Printed group names are neutral and must not expose ability labels (`FR-03`).
 - Downloaded PDFs may be opened offline; this does not authorize public export URLs or promise
   offline app operation. Real-student data, retention, deletion, and export storage await `Q-09`.
-- Google Fonts is requested by the Nunito Sans CSS import.
+- Nunito uses the SIL Open Font License; preserve its license with the bundled font.
 
 Review dependency advisories with:
 
@@ -354,13 +444,13 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
   selecting a rule. Preserve stable PRD requirement/acceptance IDs in tickets and validation.
 - The user authorized the UI-only Selaras preview (`UI-01`). The latest four screenshots (`UI-02`, `DES-18`) supersede the guided-flow placeholders with
   class tabs and nested session routes. Use their supplied fixture content and breadcrumb hierarchy;
-  derive counts from the level screenshot's 7+8 roster and preserve shared SidebarNav.
+  derive counts from the level screenshot's 7+8 roster; `UI-10` supersedes the earlier sidebar with the product header.
   Memory-only saves and browser print must be identified accurately. This does not settle
   production auth/routes, pedagogical content, scheduling, persistence, or PDF contracts.
 - Templates/TODOs are not product decisions. Do not implement an unresolved requirement or
   invent missing behavior to mark a ticket Ready; continue independent authorized work.
 - PRD labels `[USULAN]`/`[ASUMSI]` and its `Q-*` table identify unresolved choices. Proposed
-  schemas, three level names, routes, endpoints, and Dev 1–4 assignments are not approved.
+  schemas, routes, endpoints, and Dev 1–4 assignments are not approved. Six subject-level names/criteria are accepted in UI-14.
   BACKLOG.md has no product tickets; the PRD's `B*` planning table is not a Ready backlog.
 - Keep complete, specific implementation prompts inside each Ready BACKLOG.md ticket.
   Use one owner, branch, and PR per ticket; do not merge or expand scope without authorization.
@@ -379,15 +469,17 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
 - Keep auth/dashboard/projects unless their removal is explicitly requested (`ST-01`–`ST-03`).
   Product adaptation and the entry screen are unresolved (`Q-03`, `Q-08`); do not convert example
   records or dashboard statistics into student sessions or progress.
-- Preserve the centered `/sandbox` landing button and pages without shared branded headers
-  (`ST-04`). The planned session CTA does not authorize changing `/`; resolve its location first.
+- UI-22/DES-36 replaces the centered landing buttons with the public Selaras introduction at
+  `/`, linking to `/kelas` and retaining `/sandbox` in its footer. Scope its marketing header
+  to that page; preserve other starter routes, auth and product navigation. Describe preview
+  features truthfully, including fictional data and memory-only changes; no invented impact claims.
 - Keep all remaining sandbox demos public and available. The read-only palette belongs only in
   the Colors demo; the sidebar palette, Theme Toggle, and accent picker were removed by request. Do not add radius controls,
   customization pages, workspace previews, instructional design panels, or private connections.
 - Preserve upload queue capacity checks and object-URL cleanup; DataTable processes supplied
   rows locally while application filters belong in the feature data layer.
 - Keep Selaras scope teacher-only: no attendance, parent messaging, school integrations,
-  automatic cross-class grouping, other subjects, full offline PWA, or extra analytics. A
+  automatic cross-class grouping, new assessment scales/content banks for other subjects, full offline PWA, or extra analytics. UI-17 allows teacher-entered subject context in local session plans. A
   Classroomscreen reference does not authorize a draggable widget canvas or customization UI.
 - Preserve level history on reassessment and never present progress as causal learning impact.
   Do not infer unapproved draft recovery, regeneration, deletion, or baseline rules.
@@ -402,7 +494,7 @@ Product decisions still required (PRD.md section 17 owns the full questions and 
 | TODO / PRD question IDs        | Boundary to preserve until decided                                                                                                                                                                                             |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Q-01`, `Q-04`, `Q-12`         | Session/block duration, tie-breaking, class/group edge cases, capacity, and final grade-input limits are not fixed contracts (`FR-01`–`FR-04`).                                                                                |
-| `Q-02`, `Q-10`, `Q-13`         | Level indicators/names/order, assessment scoring, baseline/correction rules, subject selection, and curriculum/template review remain open (`FR-02`–`FR-06`).                                                                  |
+| `Q-02`, `Q-10`, `Q-13`         | Six level names/order/criteria per subject are accepted (UI-14); assessment scoring, baseline/correction rules, session subject selection, and curriculum/template review remain open (`FR-02`–`FR-06`).                                                                  |
 | `Q-03`, `Q-08`, `Q-09`, `Q-11` | Login/demo identity, product entry/routes, example adaptation, persistence/retention/deletion, and draft/regeneration semantics remain open (`FR-07`–`FR-08`, `ST-01`–`ST-04`).                                                |
 | `Q-05`, `Q-06`, `Q-14`         | PDF/board layout, fictional-demo permission, and device/network/performance acceptance need decisions (`FR-05`, `NFR-01`–`NFR-03`, `NFR-08`).                                                                                  |
 | `Q-07`                         | P0/P1 planning is proposed; the six MVP modules remain in scope until a cut is explicitly accepted.                                                                                                                            |

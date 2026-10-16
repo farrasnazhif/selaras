@@ -19,7 +19,15 @@ export async function proxy(request: NextRequest) {
       },
     },
   });
-  await supabase.auth.getClaims();
+  const { data, error } = await supabase.auth.getClaims();
+  if (/^\/(kelas|jadwal|sesi|progres)(\/|$)/.test(request.nextUrl.pathname) && (error || !data?.claims)) {
+    const login = new URL("/login", request.url);
+    login.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
+    const redirect = NextResponse.redirect(login);
+    response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+    redirect.headers.set("Cache-Control", "private, no-store");
+    return redirect;
+  }
   return response;
 }
 
@@ -27,6 +35,10 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/projects/:path*",
+    "/kelas/:path*",
+    "/jadwal/:path*",
+    "/sesi/:path*",
+    "/progres/:path*",
     "/login",
     "/register",
     "/auth/:path*",

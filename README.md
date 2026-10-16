@@ -1,5 +1,57 @@
 # Use this starter with your team
 
+## Teacher accounts, Supabase, and optional AI (UI-24)
+
+The product area now requires a teacher account. `/` and `/sandbox` stay public. Configure
+`.env.local` from `.env.example`, then apply both SQL migrations to your **development** project
+using the Supabase SQL editor or `supabase link --project-ref YOUR_DEV_PROJECT_REF` followed by
+`supabase db push`. Never reset a shared database. Once available, regenerate database types
+using the documented Supabase command. The teacher-workspace migration and seed have now
+been applied to the user-confirmed selaras/main project; no database reset was performed.
+
+- `/register` creates an email/password teacher account; confirm the email, then use `/login`.
+  Add your development URL and `/auth/callback` to the Supabase Auth redirect allowlist.
+- `/kelas` and `/jadwal` verify the teacher on the server. The profile menu shows their account
+  and Keluar signs out. Each teacher starts with an empty workspace and can add classes.
+- Classes, students, levels/history, observations, group adjustments and saved session snapshots
+  persist in one RLS-protected `teacher_workspaces` JSON record per teacher. Writes check a
+  revision to reject stale-tab overwrites. Ordinary CRUD still uses the browser Supabase SDK.
+  `shortcut: whole-workspace writes, split records into normalized tables when independent
+  querying or larger concurrent workspaces require it.` Photos remain browser-only and are
+  excluded from the persisted snapshot; no Supabase Storage or OCR has been added.
+- In Ubah/Tambah kegiatan, Buat variasi AI sends only task text/context to a protected server
+  endpoint. It uses OpenAI `gpt-5-mini` by default with structured JSON output, validates level
+  rules and requires Gunakan variasi before updating the form. Review and save the task as usual.
+  Names/rosters/photos are not sent automatically; avoid identifiers in teacher-authored text.
+- Set server-only `OPENAI_API_KEY`, `OPENAI_MODEL`, and a positive `AI_DAILY_REQUEST_LIMIT` to
+  enable AI. The limit counts attempts per teacher per UTC day, reserved atomically before the
+  provider call, including failed provider attempts. No retries occur automatically. Without
+  configuration, on timeout, refusal, invalid output, or quota exhaustion, the original task
+  remains usable. The provider request has no storage and a bounded output; server work is
+  aborted after 14 seconds to fit the existing 15-second client timeout.
+
+Seed later, after confirming the intended development target and setting a service-role key,
+`DEMO_TEACHER_EMAIL` and a strong `DEMO_TEACHER_PASSWORD` in `.env.local`:
+
+```sh
+pnpm run seed:selaras --confirm-development
+```
+
+This creates a confirmed teacher account and twelve constituent classes (1A, 1B through 6A,
+6B), each with 32 pupils and baseline literacy/numeracy assessments. 1A and 2B are combined
+into one 64-student class; the other ten stay independent. It preserves
+existing accounts/passwords and workspace records. It does not create a public demo account,
+print credentials, apply migrations, or reset the database. Log in using the credentials you
+configured. The current seeded account uses the credentials in `.env.local`; the app does
+not show a fictional-data label, as requested by the user.
+
+For a live security check, `pnpm run test:workspace-rls --confirm-development` creates two
+throwaway accounts using the admin API, checks isolation/revisions/quota, and deletes them.
+Run only on confirmed development infrastructure. It makes no paid AI requests.
+
+OpenAI request format follows the [official structured-output documentation](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses).
+
+
 Follow this workflow:
 
 ```text
@@ -25,6 +77,8 @@ Keep one shared `main` branch and use separate branches for ticket work.
 Follow [local setup](docs/setup.md) to install and run the starter. Open `/sandbox` to see the
 existing controls before planning replacements or new components. The landing page and sandbox
 work without Supabase; authentication and project data need the setup described there.
+The Selaras landing page at `/` links to the authenticated `/kelas` area; its footer
+keeps `/sandbox` available. Teacher data persists after configuration; task photos remain local.
 
 **Result:** everyone can run the same starter from the shared repository.
 
@@ -232,12 +286,67 @@ Installation, Supabase, commands, UI files, and deployment: [setup guide](docs/s
 
 ## Selaras UI preview
 
-Open `/kelas` (or **Open app** in the sandbox). A class has Siswa, Level, Progres,
+Open `/kelas` (or **Open app** in the sandbox). The header links to Kelas and `/jadwal`, which lists sessions from every class. A class has Siswa, Level, Progres,
 and Sesi tabs. The example class is `/kelas/kelas-rangkap-2-3`; create its session at
 `/kelas/kelas-rangkap-2-3/sesi/baru` and view the supplied example at
 `/kelas/kelas-rangkap-2-3/sesi/literasi-2026-10-14`.
 
-The four supplied screenshots provide the roster, five-level rubrics, and 70-minute literacy
-session fixture. Edits and saved snapshots are local and reset on reload. No backend,
-scheduler engine, AI, or persistent storage is integrated. Print/Save PDF uses the browser's
-print dialog. Numeracy activities and other unspecified teaching content remain unavailable.
+The original screenshots supply the 15 fictional students. Current level rubrics contain six
+literacy/numeracy levels. Groups follow Biru 1–2, Hijau 3–5 and Oranye 6 within each class,
+with subject-specific manual adjustments. All edits, history and saved sessions remain in memory
+and reset on reload; no Selaras backend, storage or AI is integrated.
+
+The local session planner accepts a subject/topic, skill focus, date, whole-minute duration
+(up to 240 minutes as a preview guard) and 10/15/20-minute blocks. Opening and closing take
+five minutes each; the remaining duration must divide exactly. Same-phase classes share the
+first core block; cross-phase classes alternate. The lower minimum level determines the initial
+class, with the first class breaking ties. An independent validator checks V1 teacher assignment,
+V2 group/task coverage, V3 timing, V4 guidance for each class, and V5 non-reading tasks at levels
+1–2. Invalid plans cannot be saved or printed. Saved plans/tasks/rosters are snapshots.
+
+Original draft exercises cover literacy/numeracy levels 1–5, including black-and-white visual
+matching and counting. Teachers must review them; curriculum/ASER alignment is not certified.
+For level 6, enter a task from the class learning materials, separately per class and skill focus.
+Missing levels, empty classes or missing class tasks block readiness. These exercises support the
+chosen foundational focus; they are not a curriculum bank for every entered subject. Teachers
+prepare face-to-face material and explain visual tasks orally during the opening.
+
+Teacher previews show member/level allocation. Board and print output use a separate projection
+without student names, IDs or ability/phase labels. Group activity numbers let the teacher assign
+mixed-group work orally. Print/Save PDF uses the browser dialog with named A4 print styles;
+each group starts a new page and long content can continue. Teacher-entered task text prints
+verbatim, so keep names and ability labels out of it. Browser paper settings and headers/footers
+remain user-controlled. Offline opening of a downloaded PDF still needs manual verification.
+
+
+Session editing: use **Ubah jadwal** and **Ubah tugas tiap kelompok** in the builder, or **Ubah
+sesi** on a saved session. Core blocks can be added, deleted, moved, assigned to a class and
+changed to 10/15/20 minutes; times and total duration recalculate. Opening/closing stay at five
+minutes. Group activities can be added/edited/deleted for each existing level cohort, with
+custom reading passages/questions or visual shapes/counts. Low levels have no written option.
+Removing the last activity for any member blocks saving until a replacement is provided.
+
+Mata pelajaran uses a shared Select with Bahasa Indonesia, Matematika, PPKn/Pendidikan
+Pancasila, SBdP/Seni, PJOK, IPAS and Lainnya. Custom names are retained as entered (trimmed).
+Manual plans allow mixed block lengths; only automatic generation needs evenly divisible time.
+Changing topic/date/subject preserves manual edits. Changes that regenerate a manually edited
+or saved plan ask for confirmation. Saved-session editing retains its roster snapshot and ID;
+other sessions and assessment history remain unchanged. Cancel leaves the saved session intact.
+All edits still disappear on reload; custom text needs teacher review before printing.
+
+
+Independent classes: `/kelas` starts with Kelas 1 through Kelas 6, each with 32 fictional pupils,
+and retains the original 2+3 demo. Open an independent card for its single-class Siswa/Level/
+Progres tabs. The floating Gabungkan kelas action selects exactly two independent classes;
+grades must differ by exactly one: 1+2, 2+3, 3+4, 4+5 or 5+6, in either order. Press the next arrow to replace their two
+independent entries with one linked pair of cards joined by a plus. Student IDs, levels,
+observations and manual group choices remain. The pair can then create sessions. Canceling
+selection changes nothing. The old demo's 2+3 pair is retained as a legacy fixture.
+
+Task photos: Ubah/Tambah kegiatan supports one optional JPG/PNG/WebP up to 5 MB. Files are
+read/decoded locally as data URLs, with bounded dimensions, preview, description, replacement
+and removal; pending reads are aborted on dialog close. There are no backend upload or object
+URLs. Saved task photos appear in the teacher view, board and print. Low-level tasks require
+teacher confirmation that the photo needs no reading. This is a declaration, not OCR or image
+content verification. Remove personal names/ability labels from user-supplied photos/text.
+Photos and class combinations reset on reload with the rest of the preview state.

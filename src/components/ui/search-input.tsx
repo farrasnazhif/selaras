@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import type { ComponentProps } from "react";
+import { useRef, type ComponentProps } from "react";
 import { Input } from "./input";
 import { IconButton } from "./icon-button";
 
@@ -9,22 +9,27 @@ export function SearchInput({
   label,
   onClear,
   onFilterClick,
+  clearLabel = "Clear search",
   className = "",
   ...props
 }: ComponentProps<typeof Input> & {
   label: string;
   onClear?: () => void;
   onFilterClick?: () => void;
+  clearLabel?: string;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   return (
     <div
-      className={`relative flex h-[40px] w-full items-center rounded-[10px] bg-[#F2F0F6] px-4 ${className}`}
+      ref={containerRef}
+      className={`ui-search-input relative flex h-10 min-w-0 items-center gap-2 rounded-control border-2 border-line bg-inset pl-3 pr-0.5 text-muted ${props.disabled ? "opacity-50" : ""} ${className}`}
+      data-invalid={props["aria-invalid"] === true || props["aria-invalid"] === "true" || undefined}
     >
       <Search
         size={16}
         strokeWidth={2.2}
         aria-hidden="true"
-        className="shrink-0 text-[#858096]"
+        className="shrink-0"
       />
 
       <Input
@@ -32,18 +37,18 @@ export function SearchInput({
         type="search"
         aria-label={label}
         placeholder={props.placeholder ?? label}
-        className={`h-full min-w-0 flex-1 border-none bg-transparent px-3 text-xs text-[#25232D] shadow-none outline-none ring-0 placeholder:text-[#858096] focus-visible:ring-0 focus-visible:ring-offset-0 [&::-webkit-search-cancel-button]:hidden`}
+        className={`ui-search-field min-w-0 flex-1 text-sm placeholder:text-muted ${onClear ? "[&::-webkit-search-cancel-button]:hidden" : ""}`}
       />
 
       <div className="flex shrink-0 items-center gap-1">
         {onClear && Boolean(props.value) && (
           <IconButton
-            label="Clear search"
+            label={clearLabel}
             variant="quiet"
-            size="sm"
+            size="xs"
             disabled={props.disabled}
-            onClick={onClear}
-            className="rounded-full text-[#858096] hover:bg-black/5"
+            onClick={() => { onClear(); containerRef.current?.querySelector("input")?.focus(); }}
+            className="text-muted"
           >
             <X size={16} />
           </IconButton>
@@ -53,10 +58,10 @@ export function SearchInput({
           <IconButton
             label="Filter kelas"
             variant="quiet"
-            size="sm"
+            size="xs"
             disabled={props.disabled}
             onClick={onFilterClick}
-            className="rounded-full text-[#858096] hover:bg-black/5"
+            className="text-muted"
           >
             <SlidersHorizontal size={19} strokeWidth={2.2} />
           </IconButton>

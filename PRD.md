@@ -1,5 +1,54 @@
 # PRD — Selaras
 
+## UI-24 — Akun guru, penyimpanan Supabase, dan variasi AI (16 Oktober 2026)
+
+Instruksi pengguna terbaru menggantikan batas UI-only/no-backend dan profil demo untuk area
+produk. Landing dan sandbox tetap publik; `/kelas`, `/jadwal`, `/sesi`, dan `/progres`
+memerlukan guru yang terautentikasi. Gunakan auth email/password Supabase yang sudah ada.
+
+- **UI-24-AC-01:** halaman masuk/daftar berbahasa Indonesia, sesi SSR terverifikasi, profil
+  dari akun aktif, Keluar benar-benar mengakhiri sesi dan membersihkan cache privat.
+- **UI-24-AC-02:** simpan kelas, siswa, level/histori, observasi, penyesuaian kelompok, dan
+  snapshot sesi dalam `teacher_workspaces`: satu dokumen JSON per guru, dilindungi RLS,
+  revisi optimistis untuk mencegah kehilangan perubahan antartab, dan hasil simpan ditunggu
+  sebelum menutup form/navigasi. Tidak ada data fiktif otomatis untuk akun baru. Ini kontrak
+  persistensi awal, bukan implementasi tabel usulan pada bagian arsitektur. Foto tetap lokal
+  dan dikeluarkan dari dokumen tersimpan; storage lampiran belum diintegrasikan.
+- **UI-24-AC-03:** variasi tugas memakai OpenAI GPT mini (`gpt-5-mini`, dapat dikonfigurasi),
+  dari template terpilih saja; tanpa roster, identitas siswa, foto, pengelompokan, atau jadwal.
+  Validasi JSON serta aturan level; tampilkan draf berlabel Variasi AI dan minta tindakan
+  Gunakan variasi sebelum mengubah form. Kegagalan/timeout tidak menghapus tugas asli.
+  Batas harian harus dikonfigurasi sebelum endpoint menghasilkan panggilan berbayar.
+- **UI-24-AC-04:** siapkan seed development yang idempoten: satu guru demo, kelas mandiri
+  1A, 1B, 2A, 2B sampai 6A, 6B, masing-masing 32 siswa fiktif. Jangan timpa workspace
+  atau password akun yang sudah ada. Pengguna menunda penerapan migration/seed sampai
+  environment Supabase tersedia; tidak ada reset atau perubahan database langsung saat ini.
+- **UI-24-AC-05:** setelah target Supabase dikonfirmasi, pengguna mengizinkan pembaruan
+  akun seed dan penggabungan 1A + 2B. Pertahankan semua ID siswa dan histori; kelas lainnya
+  tetap mandiri. Label “Data fiktif” tidak ditampilkan pada antarmuka akun ini. Kredensial
+  yang dipilih pengguna disimpan hanya di environment lokal, bukan di source code.
+
+Q-03/Q-08 menerima auth dan rute ini; Q-09/Q-11 menerima snapshot ber-revisi untuk integrasi
+awal. Retensi/penghapusan, evaluasi materi, storage foto, dan kuota AI final tetap terbuka.
+Ketentuan UI-24 mengungguli paragraf lama yang masih menyebut preview publik/lokal saja.
+**UI-24-AC-06:** halaman daftar Kelas tidak menampilkan tombol Tambah kelas. Pencarian,
+kelas tersimpan, dan alur penggabungan tetap tersedia.
+
+## UI-25 — Paginasi progres
+
+**UI-25-AC-01:** setiap tabel kelas pada Progres menampilkan maksimal 10 siswa per halaman
+dengan navigasi halaman independen. Tampilan kartu mobile mengikuti halaman yang sama.
+Pertahankan pilihan mapel, kolom, urutan siswa, dan riwayat observasi.
+
+## UI-26 — Selaras Loading State
+
+**UI-26-AC-01:** sediakan komponen loading Selaras yang dapat digunakan ulang dan demo
+publik di sandbox. Tampilkan hanya ikon loader dengan label status aksesibel yang dapat diganti,
+tanpa persentase progres buatan. Animasi mengikuti preferensi reduced motion.
+**UI-26-AC-02:** gunakan komponen yang sama untuk fallback pemuatan halaman, data awal
+kelas, dan perpindahan ke halaman masuk saat sesi berakhir. Tampilkan ikon di tengah area
+pemuatan; pertahankan batas autentikasi serta tampilan error dan aksi coba lagi.
+
 **Versi:** 1.1 (melengkapi draf berdasarkan Product Brief v4)\
 **Tanggal:** 14 Oktober 2026\
 **Status:** Spesifikasi MVP; keputusan terbuka belum siap diimplementasikan; belum divalidasi dengan guru\
@@ -34,7 +83,9 @@ Selaras adalah aplikasi web untuk guru SD yang mengajar dua kelas dalam satu rua
 
 ### 1.3 Non-goals MVP
 
-Tidak membangun aplikasi siswa/orang tua, absensi, pesan orang tua, pengelompokan lintas kelas otomatis, integrasi sistem sekolah, mata pelajaran selain literasi dan numerasi, maupun PWA offline penuh. Tes level tidak wajib bagi guru. [BRIEF]
+Tidak membangun aplikasi siswa/orang tua, absensi, pesan orang tua, pengelompokan lintas kelas otomatis, integrasi sistem sekolah, maupun PWA offline penuh. Tes level tidak wajib bagi guru. [BRIEF]
+Penilaian tetap terbatas pada literasi/numerasi. UI-17 memperluas konteks rencana sesi ke
+mata pelajaran lain yang diisi guru; bank materi dan penilaian mapel lain belum termasuk.
 
 AI pembuat variasi bukan syarat keberhasilan MVP. Penyimpanan lampiran, pencarian/filter data aplikasi, realtime, kolaborasi multi-guru, dan dashboard analitik tambahan tidak masuk lingkup yang diberikan. Keputusan penyimpanan PDF tidak otomatis berarti fitur upload. Penghapusan fitur contoh starter, penggantian UI library, serta deployment bukan bagian dari pekerjaan dokumentasi ini.
 
@@ -67,7 +118,8 @@ AI pembuat variasi bukan syarat keberhasilan MVP. Penyimpanan lampiran, pencaria
 
 ### J-01 — Menyiapkan satu sesi (`FR-01`–`FR-05`)
 
-Alur produk yang direncanakan; titik masuknya belum diputuskan (`Q-08`), dan bukan perilaku beranda starter saat ini.
+Alur produk yang direncanakan; UI-22 menetapkan beranda `/` dengan CTA pratinjau `/kelas`.
+Identitas dan integrasi produksi masih menunggu `Q-08`.
 
 1. Guru membuka aplikasi dan memilih **Buat sesi**.
 2. Guru memilih dua tingkat kelas yang berbeda; sistem menampilkan fase masing-masing.
@@ -120,15 +172,15 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 **Persyaratan:**
 
 - Guru memilih level setiap siswa secara manual.
-- Level disimpan terpisah per mata pelajaran [USULAN].
+- Level ditetapkan terpisah untuk literasi dan numerasi sesuai spesifikasi enam level pengguna (`UI-14`).
 - Tes singkat bersifat opsional; hasilnya menjadi saran, bukan penggantian otomatis observasi guru [USULAN].
-- Gunakan tiga level kerja untuk prototipe: **Dasar, Berkembang, Mandiri** [USULAN; definisi dan indikator harus disepakati sebelum implementasi].
+- Gunakan enam level per mata pelajaran pada tabel `UI-14`; usulan tiga level Dasar/Berkembang/Mandiri digantikan. Jumlah kelompok tetap tiga per kelas.
 
 **Acceptance criteria:**
 
 - **FR-02-AC-01:** 15 siswa fiktif dapat diberi level dari observasi tanpa menjalankan tes.
 - **FR-02-AC-02:** guru dapat mengubah level; tes tidak menjadi prasyarat menuju pengelompokan.
-- **FR-02-AC-03 [tertunda]:** isi tes, indikator, dan pemetaan hasil ke level dapat diuji setelah `Q-02` dijawab. Nama tiga level di atas belum menjadi kontrak final.
+- **FR-02-AC-03 [sebagian tertunda]:** nama, urutan, dan indikator enam level mengikuti `UI-14`; isi/skor tes serta pemetaan hasil tes masih menunggu `Q-02`.
 
 ### FR-03 — Pengelompokan [P0]
 
@@ -137,7 +189,7 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 **Persyaratan:**
 
 - Pengelompokan hanya dalam kelas yang sama, maksimal tiga kelompok per kelas.
-- Kelompok awal dibentuk berdasarkan level siswa.
+- Kelompok awal dibentuk dari level mata pelajaran sesi: Biru untuk 1–2, Hijau untuk 3–5, Oranye untuk 6 (`UI-15`).
 - Guru dapat memindahkan siswa secara manual antar kelompok dalam kelas yang sama.
 - Nama kelompok netral (misalnya Kelompok A/B/C), terutama pada keluaran cetak.
 - Perubahan keanggotaan disimpan untuk sesi yang sedang direncanakan [USULAN].
@@ -192,7 +244,7 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 **Persyaratan:**
 
 - Buat satu lembar tugas per kelompok berdasarkan mata pelajaran dan level.
-- Untuk level terendah, utamakan gambar, benda konkret, atau tutor sebaya, bukan instruksi yang mengharuskan membaca.
+- Level 1–2 pada kedua mapel hanya mendapat tugas tanpa membaca; level 3–5 latihan sesuai level (boleh tertulis); level 6 memakai capaian fase kelas (`UI-14`).
 - Tersedia tampilan tugas per kelompok, PDF yang bisa diunduh, dan versi papan tulis.
 - PDF yang telah diunduh dapat dibuka tanpa koneksi internet; ini **bukan** klaim bahwa seluruh aplikasi offline.
 - Konten dari bank template harus tetap tersedia ketika API AI gagal.
@@ -200,7 +252,7 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 
 **Acceptance criteria:**
 
-- **FR-05-AC-01:** setiap kelompok mendapatkan tugas sesuai mata pelajaran dan level, termasuk aktivitas nonteks pada level terendah.
+- **FR-05-AC-01:** setiap kelompok mendapatkan tugas sesuai mata pelajaran dan level, termasuk tugas tanpa membaca pada level 1–2 dan tugas fase pada level 6 (`UI-14`).
 - **FR-05-AC-02:** PDF yang berhasil diunduh dapat dibuka setelah koneksi diputus; aplikasi web tidak diwajibkan berjalan offline.
 - **FR-05-AC-03:** versi papan tulis tersedia; waktu salin kurang dari lima menit tetap target uji, belum hasil terverifikasi.
 - **FR-05-AC-04:** tanpa API AI, tugas template tetap tersedia dan penjadwalan tetap berfungsi.
@@ -215,14 +267,14 @@ Guru melihat kesalahan pada langkah yang gagal, memperbaiki input atau mencoba l
 
 - Simpan histori penilaian level bertanggal.
 - Guru dapat melakukan penilaian ulang setelah sekitar dua minggu; tidak perlu memblokir pembaruan lebih awal [USULAN].
-- Bandingkan level terbaru dengan baseline; pemisahan per mata pelajaran masih [USULAN, Q-02].
+- Bandingkan level terbaru dengan baseline secara terpisah per mata pelajaran (UI-14); aturan baseline menunggu Q-10.
 - Tampilkan status **naik, tetap, turun** per siswa.
 - Jangan menyimpulkan kausalitas bahwa perubahan terjadi karena aplikasi.
 
 **Acceptance criteria:**
 
 - **FR-06-AC-01:** pembaruan menambahkan histori bertanggal tanpa menimpa penilaian sebelumnya.
-- **FR-06-AC-02:** pada urutan level yang disepakati, perubahan ke level lebih tinggi ditampilkan naik, level sama tetap, dan lebih rendah turun. Dasar → Berkembang adalah contoh berdasarkan nama level usulan.
+- **FR-06-AC-02:** pada urutan level yang disepakati, perubahan ke level lebih tinggi ditampilkan naik, level sama tetap, dan lebih rendah turun. Contoh: literasi Kata (3) → Paragraf (4) ditampilkan naik; urutan mengikuti UI-14.
 - **FR-06-AC-03:** perbandingan tidak dinyatakan sebagai bukti dampak kausal aplikasi.
 
 **Belum diputuskan:** baseline, mata pelajaran, penilaian pertama/tanpa pembanding, koreksi histori, dan waktu pembaruan (`Q-02`, `Q-10`).
@@ -335,7 +387,7 @@ Breadcrumb: Kelas → Kelas Rangkap 2-3 → Sesi → Susun Sesi Baru atau Litera
 
 **UI-02-AC-01:** daftar rombel, detail kelas dengan empat tab, matriks level literasi/numerasi,
 rubrik pada screenshot, pembuat sesi, dan detail sesi tersedia memakai shared UI/SidebarNav.
-**UI-02-AC-02:** lima label level dan rubrik screenshot adalah konten contoh yang disetujui
+**UI-02-AC-02:** lima label level dan rubrik screenshot adalah konten historis, digantikan UI-14; sebelumnya disetujui
 untuk UI; perubahan level, catatan, rombel, dan sesi hanya disimpan dalam state lokal.
 **UI-02-AC-03:** contoh Literasi memakai 70 menit, blok 15 menit, pembukaan/penutup 5 menit,
 dan kegiatan yang diberikan screenshot. Susun jadwal menampilkan template contoh, bukan
@@ -402,6 +454,264 @@ Status; tombol membuka form observasi untuk siswa pada baris terkait.
 **UI-09-AC-02:** tab Progres tidak memiliki tombol tambah Observasi pada desktop maupun mobile.
 Tindakan Riwayat tetap tersedia untuk membaca penilaian dan catatan yang sudah ada.
 
+### UI-10 — Tampilan sederhana untuk guru [instruksi pengguna]
+
+**UI-10-AC-01:** navigasi aplikasi berupa header dengan logo kiri, Kelas dan Jadwal di tengah,
+serta profil kanan. Teks navigasi hitam dan garis ungu bergerak mengikuti halaman aktif,
+dengan dukungan reduced motion. `/jadwal` menampilkan sesi dari seluruh kelas berdasarkan
+tanggal yang tersedia; jangan mengarang jam pelajaran yang belum disimpan.
+**UI-10-AC-02:** gunakan Nunito, alternatif rounded bebas lisensi SF Pro Rounded, dengan
+fallback sistem untuk Android. Ukuran teks minimum 12 px, border utama 2 px, kartu putih
+tanpa shadow. Setiap Select/menu memakai pastel dan teks gelap yang sesuai; status destruktif
+tetap semantik dan fokus/keyboard tetap tersedia.
+**UI-10-AC-03:** kartu kelas menampilkan maksimum tiga avatar inisial siswa yang tumpang tindih
+dan jumlah anggota berupa angka. Detail kelas tidak menampilkan fase atau pemilih kelas.
+**UI-10-AC-04:** Level tetap dikelompokkan per kelas, tanpa kolom Kelas, maksimum sepuluh siswa
+per halaman per kelas. Riwayat observasi berada di antara Numerasi dan Status; riwayat dapat
+dibaca lalu catatan baru ditambahkan. Tabel lain mempertahankan susunannya dengan gaya bersama.
+**UI-10-AC-05:** hilangkan label “contoh” dan jargon teknis pada aplikasi. Gunakan bahasa
+Indonesia langsung, serta satu pemberitahuan jelas bahwa perubahan hilang saat halaman dimuat
+ulang. Tidak mengklaim penyimpanan backend atau identitas autentikasi.
+**UI-10-AC-06:** sederhanakan sesi menjadi pilih mata pelajaran/tanggal → lihat jadwal →
+simpan/cetak. Waktu yang hanya punya satu nilai ditampilkan sebagai ringkasan. Hilangkan
+panel aturan teknis; tugas kelompok tetap dapat dibuka saat diperlukan. Jadwal dan kegiatan
+yang belum disediakan tetap menyatakan belum tersedia. Tidak menetapkan level baru atau
+mengubah alur penilaian/pengelompokan yang belum disepakati.
+
+Ini menggantikan sidebar, pemilih kelas `UI-05`, dan copy teknis terdahulu untuk tampilan produk.
+
+### UI-11 — Spasi, pencarian, Observasi, dan gabungan jadwal [instruksi pengguna]
+
+**UI-11-AC-01:** gunakan spasi kecil 15 px, sedang 30 px, dan 60 px antar kelompok
+konten pada tampilan produk. Jarak mikro ikon/label dan ukuran kontrol tetap.
+**UI-11-AC-02:** SearchInput memiliki satu permukaan/border, ikon dan teks sejajar,
+serta fokus terlihat. Pencarian kelas/siswa tetap berfungsi, dapat dikosongkan, dan tidak
+terpotong pada layar sempit; perubahan pencarian siswa kembali ke halaman pertama.
+**UI-11-AC-03:** di tab Level, pulihkan tombol Observasi yang langsung membuka formulir
+catatan. Tetap di antara Numerasi dan Status; kolom, pilihan level, dan pagination tidak berubah.
+Riwayat observasi di tempat lain tetap tersedia. Ini menggantikan aksi history-first Level pada
+`UI-10-AC-04`.
+**UI-11-AC-04:** `/jadwal` menggabungkan jadwal lengkap yang disimpan dari seluruh kelas,
+dikelompokkan per tanggal, dengan kegiatan/rotasi tiap sesi, bukan hanya tabel tautan.
+Gunakan daftar siswa dan kelas yang disimpan bersama sesi. Pertahankan tautan detail,
+keadaan kosong, dan pemberitahuan materi yang belum tersedia. Jangan mengarang jam mulai,
+urutan pelajaran dalam satu hari, atau aturan bentrok antar sesi yang belum ditetapkan.
+
+### UI-14 — Enam level dan tugas mandiri, tetap tiga kelompok [instruksi pengguna]
+
+**UI-14-AC-01:** dropdown, panduan, observasi, dan progres memakai enam level per mapel berikut.
+
+| Level | Literasi | Kriteria literasi | Numerasi | Kriteria numerasi |
+| --- | --- | --- | --- | --- |
+| 1 | Pemula | Belum mengenal huruf | Pemula | Belum mengenal angka 1-9 |
+| 2 | Huruf | Mengenal huruf, tetapi belum bisa membaca kata | Angka 1-9 | Mengenal angka 1-9, tetapi belum mengenal angka 11-99 |
+| 3 | Kata | Membaca kata sederhana, tetapi belum bisa membaca paragraf | Angka 11-99 | Mengenal angka 11-99, tetapi belum bisa pengurangan |
+| 4 | Paragraf | Membaca paragraf pendek, tetapi belum bisa membaca cerita | Pengurangan | Bisa pengurangan dua angka dengan meminjam, tetapi belum bisa pembagian |
+| 5 | Cerita | Membaca cerita pendek dengan lancar | Pembagian | Bisa membagi bilangan tiga angka dengan satu angka |
+| 6 | Sesuai fase | Sudah melampaui level dasar; tugas mengikuti capaian fase kelasnya | Sesuai fase | Sudah melampaui level dasar; tugas mengikuti capaian fase kelasnya |
+
+**UI-14-AC-02:** simpan level 1–6 dalam state preview dan tambah histori saat penilaian berubah;
+jangan menimpa histori. UI-15 memperbarui pengelompokan otomatis menurut level; perpindahan manual tetap berlaku per mapel.
+**UI-14-AC-03:** pertahankan tepat tiga pilihan kelompok netral A/B/C per kelas serta pemindahan
+manual dalam kelas. Enam level bukan enam kelompok. Dalam kelompok campuran, bedakan panduan
+tugas menurut level tiap siswa pada mata pelajaran sesi; jangan menetapkan satu tugas tertulis
+untuk semua anggota berdasarkan kelompoknya saja.
+**UI-14-AC-04:** level 1–2 hanya tugas tanpa membaca pada kedua mapel (gambar/benda konkret);
+level 3–5 latihan sesuai level, boleh tertulis; level 6 diarahkan ke fase kelas A/B/C, tanpa
+fallback ke latihan level dasar. Siswa tanpa level tetap ditandai belum dinilai.
+**UI-14-AC-05:** preview tugas, rotasi mandiri, papan tulis, dan cetak memakai aturan yang sama
+serta roster/kelas/mapel sesi tersimpan. Konten fase yang belum dipilih dinyatakan belum tersedia;
+jangan mengarang capaian kurikulum. Template latihan di UI merupakan panduan, bukan worksheet
+visual yang telah ditinjau. Jadwal numerasi belum tersedia tidak boleh memakai rotasi literasi.
+
+Keputusan ini menyelesaikan nama/urutan/indikator level dalam `Q-02`. Isi/skor tes, koreksi dan
+baseline (`Q-02`, `Q-10`) serta konten/capaian fase dan bank visual (`Q-13`) masih terbuka. Pemetaan enam level ke tiga kelompok kemudian diterima pada UI-15; aturan penyimpanan produksi tetap belum diputuskan.
+
+### UI-15 — Pengelompokan menurut mapel dan level anggota [instruksi pengguna]
+
+**UI-15-AC-01:** setiap kelas tetap memiliki tiga kelompok: Biru (level 1–2), Hijau
+(level 3–5), dan Oranye (level 6). Gunakan level literasi pada sesi literasi dan numerasi
+pada sesi numerasi; jangan mencampur kelas atau memaksa jumlah anggota seimbang.
+**UI-15-AC-02:** pada tab Siswa tersedia Select mata pelajaran untuk melihat kelompok.
+Tabel siswa, filter kelompok, jumlah anggota, dan kartu kelompok memakai mapel yang sama.
+Setiap nama anggota di kartu menampilkan nomor serta nama level mapel terpilih.
+**UI-15-AC-03:** guru tetap dapat memindahkan anggota dalam kelas. Penyesuaian manual
+berlaku hanya untuk mapel yang dipilih dan dipertahankan saat mengganti tampilan/mapel atau
+memperbarui level. Anggota tanpa penyesuaian manual mengikuti pemetaan otomatis terbaru;
+riwayat penilaian tidak dihapus atau diganti.
+**UI-15-AC-04:** preview mempertahankan kelompok yang sudah dimiliki siswa tanpa level
+(default Biru pada alur tambah siswa yang ada), dengan label Belum dinilai. Jangan menyamakan
+belum dinilai dengan level 1 atau memberi tugas sebelum penilaian. Aturan produksi untuk
+siswa tanpa level tetap menunggu Q-04. Kelompok kosong tetap dapat ditampilkan.
+**UI-15-AC-05:** penyimpanan sesi lokal mengambil kelompok sesuai mapel sesi beserta salinan
+roster/levelnya. Sesi yang sudah tersimpan tidak berubah ketika kelompok, mapel tampilan,
+atau penilaian berikutnya berubah. Ringkasan tugas memakai kelompok mapel yang sama dan tetap
+membedakan kebutuhan anggota yang dipindah manual.
+
+**UI-15-AC-06:** tombol Panduan kelompok berada di samping Select Kelompok berdasarkan.
+Dialog mengikuti pola Panduan level dan menjelaskan tiga rentang level, jenis tugas,
+pemisahan per kelas/mapel, perpindahan manual, dan siswa yang belum dinilai.
+
+### UI-23 — Pagination anggota pada kartu kelompok [instruksi pengguna]
+
+**UI-23-AC-01:** tabel Siswa selalu menampilkan lima baris per halaman; isi baris kosong dengan
+placeholder, termasuk satu pesan baris kosong bila tidak ada hasil. Tabel anggota di setiap kartu
+kelompok selalu menyediakan lima slot dengan baris tetap 64 px. Tabel Siswa memakai baris tetap
+52 px untuk data dan placeholder. Setiap halaman kartu kelompok menampilkan lima siswa;
+pagination selalu terlihat dan dinonaktifkan bila anggota lima atau kurang. Isi slot yang tersisa
+dengan baris kosong. Halaman terpisah menurut kelas, kelompok, dan mata pelajaran. Pendekkan tinggi baris anggota dan hilangkan
+titik dekoratif level. Jangan mengubah tinggi keseluruhan kartu atau jumlah siswa/kelompok.
+
+Keputusan ini menerima pemetaan yang sebelumnya terbuka pada Q-04 dan menggantikan aturan
+keanggotaan tetap untuk semua perubahan level pada UI-14. Tidak menambahkan backend, batas
+kapasitas, algoritme balancing, atau kebijakan generate ulang sesi produksi.
+
+### UI-17 — Mata pelajaran, topik, dan fokus kemampuan sesi [instruksi pengguna]
+
+**UI-17-AC-01:** Susun jadwal memisahkan Mata pelajaran, Tema/topik (opsional), Fokus
+kemampuan (Literasi/Numerasi), dan tanggal. Nama mapel diisi guru agar dapat memakai Bahasa
+Indonesia, Matematika, PPKn/Pendidikan Pancasila, SBdP/Seni, PJOK, atau nama dalam kurikulumnya.
+Nama wajib, dipangkas, maksimal 80 karakter; topik maksimal 160 karakter. Ini bukan daftar
+mapel nasional yang dibakukan dan tidak menambahkan pemilih kurikulum.
+**UI-17-AC-02:** fokus kemampuan menentukan pengelompokan, penyesuaian manual, level, dan
+panduan tugas yang sudah diterima pada UI-14/UI-15. Tidak membuat level PPKn, PJOK, atau
+mapel lain dari hasil literasi/numerasi. Riwayat penilaian tetap terpisah untuk dua kemampuan.
+**UI-17-AC-03:** semua mapel/fokus dapat ditinjau dan disimpan lokal memakai struktur waktu
+preview 70 menit yang sudah ada: pembuka 5 menit, empat blok bergantian 15 menit, penutup
+5 menit. Struktur ini bersifat netral-mapel dan tidak mengisi kegiatan fonik/paragraf untuk
+mapel lain. Guru menyiapkan materi sesuai tujuan mapel/topik; belum ada generator materi,
+bank kurikulum, atau algoritme penjadwalan produksi. Keadaan tanpa siswa tetap menghalangi simpan.
+**UI-17-AC-04:** daftar sesi, detail, Jadwal, papan tulis, dan cetak mempertahankan mapel,
+topik, fokus, serta roster/kelas/kelompok snapshot yang sama. Perubahan form perlu diterapkan
+melalui Lihat jadwal sebelum simpan/cetak; perubahan roster/level berikutnya tidak mengubah sesi lama.
+**UI-17-AC-05:** keluaran menjelaskan bahwa tugas merupakan panduan berdasarkan fokus
+kemampuan yang perlu disesuaikan guru ke mapel/topik. Aturan tanpa membaca pada level 1–2,
+latihan pada 3–5, dan capaian fase pada 6 tetap berlaku. Materi fase yang belum dipilih tidak
+diklaim tersedia. Tidak menambah backend, persistensi browser, atau PDF khusus.
+
+Ini menggantikan batas preview dua pilihan mapel dan rotasi literasi saja pada UI-14-AC-05;
+dua pilihan tersebut kini adalah fokus kemampuan. Kurikulum sekolah, tujuan/materi tiap mapel,
+dan validasi pedagogisnya tetap Q-13. Parameter produksi/tie-breaker tetap Q-01.
+
+### UI-18 — Penyusun sesi lokal, V1–V5, dan lembar aman [proposal pengguna]
+
+**UI-18-AC-01:** fungsi TypeScript murni menghasilkan jadwal deterministik dengan pembuka/
+penutup 5 menit dan blok inti 10/15/20 menit. Durasi menit bulat harus habis dibagi setelah
+pengurangan 10 menit; maksimal 240 menit merupakan batas teknis preview. Lintas fase perlu
+minimal dua blok inti. Satu fase memiliki blok inti pertama bersama. Berikutnya bergantian;
+kelas dengan level minimum lebih rendah didahulukan, seri memakai kelas pertama. Parameter
+pedagogis produksi tetap Q-01.
+**UI-18-AC-02:** pemeriksa independen memeriksa V1 tepat satu penugasan guru (boleh kedua
+kelas bersama), V2 tepat satu kegiatan per kelompok beranggota dan cakupan tugas, V3 waktu
+berurutan/durasi tepat, V4 tiap kelas mendapat blok inti bersama guru, V5 tugas mandiri level
+1–2 tanpa membaca. Periksa ulang sebelum simpan/cetak; invalid menampilkan sebab dan diblokir.
+**UI-18-AC-03:** template draf asli literasi/numerasi 1–5 berisi latihan nyata dan gambar
+hitam-putih untuk kegiatan tanpa membaca. Guru memeriksa kesesuaian sebelum digunakan; ini
+bukan konten kurikulum/ASER tervalidasi. Level 6 perlu isian tugas guru per kelas, sesuai
+capaian kelas; tidak diganti latihan dasar. Kelas kosong/siswa tanpa level menghalangi susun.
+**UI-18-AC-04:** simpan snapshot roster/kelompok/tugas/blok dalam memori; perubahan berikutnya
+tidak mengubah sesi lama. Builder, detail, Jadwal, papan tulis dan cetak memakai snapshot sama.
+Mapel/topik UI-17 tetap tersedia; latihan mengikuti fokus kemampuan. Guru menyiapkan tatap muka.
+**UI-18-AC-05:** guru melihat anggota/level/petunjuk. Papan tulis/lembar A4 memakai proyeksi
+terpisah: kelas, nama kelompok netral, nomor kegiatan dan isi latihan; tanpa nama/ID siswa,
+nomor/nama level, atau label fase. Setiap kelompok mulai halaman baru; kegiatan kelompok
+campuran dibagikan secara lisan saat pembukaan. Konten panjang boleh berlanjut, tidak dipotong.
+Petunjuk 1–2 diberikan lisan saat pembukaan; lembar tidak memerlukan membaca. Cetak browser.
+**UI-18-AC-06:** tulis kontrak fase sama/lintas, V1–V5, parameter invalid, kelompok campuran,
+snapshot dan proyeksi tanpa identitas. Tes tidak dijalankan sesuai instruksi pengguna.
+Typecheck/lint/build tetap berlaku; tidak ada AI/backend/persistensi baru.
+
+Tugas isian guru dipisahkan per kelas dan fokus; mengganti fokus tidak memakai tugas fokus lain.
+Ini menggantikan rotasi konstan/panduan saja UI-17. Konten fase diisi guru sementara;
+peninjauan pedagogis/kurikulum tetap Q-13. Aturan warna kelompok tetap UI-15.
+
+### UI-19 — Penyunting sesi dan pilihan mapel [instruksi pengguna]
+
+**UI-19-AC-01:** Mata pelajaran memakai Select Bahasa Indonesia, Matematika, PPKn/Pendidikan
+Pancasila, SBdP/Seni, PJOK, IPAS, dan Lainnya. Lainnya menampilkan Input wajib; nama tersimpan
+sebagai nama mapel sebenarnya, bukan label Lainnya. Pilihan ini bukan daftar kurikulum nasional.
+**UI-19-AC-02:** guru dapat mengubah, menambah, menghapus, dan mengurutkan blok inti dengan
+kontrol keyboard. Setiap blok inti boleh 10/15/20 menit dan memilih kelas bersama guru serta
+catatan kegiatan. Pembuka/penutup tetap 5 menit. Rentang waktu dan durasi total dihitung ulang;
+blok pertama satu fase tetap harus bersama. V1–V5 diperiksa pada hasil suntingan.
+**UI-19-AC-03:** guru dapat mengubah judul, petunjuk, bacaan, soal, dan jenis aktivitas; menambah
+atau menghapus kegiatan per kelompok/level anggotanya. Kegiatan visual memakai pola gambar
+atau jumlah benda yang dapat disunting. Siswa 1–2 tidak mendapat pilihan tertulis; level 6
+memakai tugas kelas dari guru. Siswa boleh menerima beberapa kegiatan, tetapi harus memiliki
+minimal satu tugas. Setiap blok mandiri mengacu daftar kegiatan kelompok terbaru.
+**UI-19-AC-04:** sesi tersimpan memiliki aksi Ubah sesi pada route lokal Bahasa Indonesia
+`/kelas/[classId]/sesi/[sessionId]/ubah`. Simpan mempertahankan ID dan memperbarui snapshot
+sesi itu saja. Batal/kembali tidak mengubah sesi lama. Roster tersimpan tetap menjadi dasar
+suntingan; bukan otomatis mengambil level/kelompok terbaru.
+**UI-19-AC-05:** perubahan metadata perlu diterapkan sebelum menyunting blok/tugas atau
+mencetak. Perubahan mapel/topik/tanggal saja mempertahankan suntingan. Perubahan fokus,
+durasi, panjang blok, atau tugas awal yang memerlukan penyusunan ulang meminta konfirmasi
+sebelum mengganti suntingan. Pembatalan mempertahankan isian form dan draf saat ini.
+**UI-19-AC-06:** simpan memakai rencana hasil suntingan, bukan menghasilkan ulang diam-diam.
+Validasi konten dan V1–V5 berlaku sebelum simpan/cetak; proyeksi A4/papan tetap tanpa identitas
+atau label level. Konten bebas dicetak apa adanya dan diperiksa guru. Semua perubahan tetap
+memori saja, tanpa backend/AI. Tes kontrak ditulis tanpa dijalankan sesuai instruksi pengguna.
+
+Ini memperluas UI-18: pemeriksaan V2 mengizinkan rangkaian tugas per siswa, V3 mengizinkan
+campuran blok 10/15/20 menit. Durasi yang tidak habis dibagi hanya menghalangi generator awal,
+bukan rencana manual yang seluruh bloknya valid dan jumlah menitnya tepat.
+
+### UI-20 — Kelas mandiri dan alur gabung [instruksi pengguna dan tiga referensi UI]
+
+**UI-20-AC-01:** daftar Kelas menyediakan kartu mandiri Kelas 1 sampai Kelas 6, masing-masing
+32 siswa fiktif. Kartu membuka detail Siswa/Level/Progres satu kelas; penjadwalan menunggu
+kelas digabung. Kartu memakai banner yang sudah tersedia, ikon, maksimal tiga avatar dan jumlah.
+Penyempurnaan pengguna: ikuti tata letak kartu pada branch `main` (banner, ikon dan judul,
+lalu footer berseparator dengan jumlah siswa dan sesi terakhir). Jumlah siswa tetap memakai
+AvatarGroup branch ini, bukan ikon pengguna; pertahankan alur pilih/gabung yang sudah tersedia.
+Lebar dan jarak juga mengikuti `main`: grid 1/2/3 kolom (sm/xl), gap 20 px, banner 72 px,
+padding kartu 16 px, judul 20 px dan ikon 24 px.
+**UI-20-AC-02:** tombol Gabungkan kelas melayang kanan bawah memasuki mode pilih. Guru memilih
+tepat dua kelas mandiri, melihat batas 2 pilihan, lalu menekan tombol panah lanjut. Batal tidak
+mengubah data. Pilihan aktif berborder ungu; pilihan tak cocok/nonmandiri tidak bisa dipilih.
+Pasangan baru menerima dua kelas mandiri berbeda dengan tingkat yang sama atau selisih satu:
+misalnya 3A+3B, 1+2, 2+3, 3+4, 4+5, atau 5+6; kedua urutan diterima. Selisih lebih dari satu
+tetap ditolak. Identitas, rombongan, dan histori masing-masing kelas dipertahankan. Penjadwalan
+kelas setingkat memakai pola satu fase. Jangan tambahkan informasi UI tentang aturan baru ini.
+**UI-20-AC-03:** setelah digabung, daftar menampilkan dua kartu sumber dengan tanda plus di
+antaranya dalam satu panel. Kartu mandiri sumber diganti pasangan itu, tanpa menggandakan siswa.
+Panel gabungan memakai dua kolom grid pada sm ke atas, dengan gap 20 px; setiap kartu sumber
+selebar kartu mandiri. Tanda plus diposisikan di tengah gap tanpa mengambil lebar kartu.
+Detail pasangan mempertahankan kelas asal, ID siswa, histori dan penyesuaian kelompok. Pasangan
+lama 2+3 dan sesi demonya dipertahankan; aturan baru tidak menghapus fixture lama.
+**UI-20-AC-04:** penyimpanan tetap memori; aksi/provider memvalidasi pasangan, dua ID berbeda,
+status mandiri, dan keberadaan kelas sebelum perubahan. Pasangan tidak sah tidak mengubah state.
+Tampilan responsif menumpuk dua kartu pada layar sempit; aksi melayang memiliki label keyboard.
+**UI-20-AC-05:** pisahkan daftar menjadi bagian Kelas gabungan di atas dan Kelas mandiri di
+bawah, dengan judul dan pesan kosong masing-masing. Pencarian berlaku pada keduanya. Mode
+pilih gabung tetap hanya menampilkan kelas mandiri; hasil gabung berpindah ke bagian atas.
+
+### UI-21 — Foto opsional pada tugas kelompok [instruksi pengguna]
+
+**UI-21-AC-01:** dialog tugas menyediakan pilihan foto JPG/PNG/WebP opsional, maksimal 5 MB,
+pratinjau, keterangan aksesibel, ganti dan hapus. Gunakan shared Dropzone; jangan upload ke
+layanan/server. Baca file sebagai data URL dalam memori, periksa format/ukuran dan decoding;
+batalkan pembacaan saat dialog ditutup. Kesalahan mempertahankan isian dan foto sebelumnya.
+**UI-21-AC-02:** foto yang disimpan tampil pada preview tugas guru, detail, papan tulis dan
+lembar cetak dari snapshot yang sama. Membatalkan dialog tidak mengganti foto tugas lama.
+Tidak menyimpan nama file atau identitas roster ke keluaran siswa. Teks/foto bebas tetap
+perlu diperiksa guru agar tidak berisi identitas dan label kemampuan.
+**UI-21-AC-03:** pada level 1–2, guru harus menyatakan bahwa foto tidak memerlukan membaca;
+foto pengganti perlu konfirmasi ulang. V5 memeriksa pernyataan itu serta struktur kegiatan,
+bukan melakukan OCR atau mengklaim isi gambar diaudit otomatis. Tanpa foto alur tetap bekerja.
+Tidak menambah backend, penyimpanan lampiran permanen, AI/OCR atau persistensi browser.
+
+### UI-22 — Beranda publik Selaras [instruksi pengguna]
+
+**UI-22-AC-01:** `/` menjadi landing page berbahasa Indonesia untuk guru kelas rangkap,
+menjelaskan kelas, kelompok, penyusunan sesi dan keluaran cetak/papan tulis. CTA membuka
+pratinjau `/kelas`; `/sandbox` tetap tersedia melalui footer. Ini mengganti keputusan beranda
+tombol tunggal pada ST-04, tanpa mengubah autentikasi, dashboard atau proyek starter.
+**UI-22-AC-02:** gunakan desain bersama, navigasi bagian halaman dan ilustrasi sesi tanpa
+identitas siswa. Jelaskan data fiktif dan perubahan hilang saat reload sebelum mencoba.
+Tidak mengklaim penyimpanan permanen, AI aktif, dampak terukur atau dukungan offline aplikasi.
+Tidak menambah backend, pendaftaran, harga atau testimoni rekaan.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |
@@ -456,7 +766,7 @@ Untuk hackathon, satu database dan satu aplikasi web sudah cukup. Pilihan penyim
 ```ts
 type Grade = 1 | 2 | 3 | 4 | 5 | 6;
 type Phase = "A" | "B" | "C";
-type Level = "basic" | "developing" | "independent";
+type Level = "1" | "2" | "3" | "4" | "5" | "6";
 
 type PhaseMode = "same_phase" | "cross_phase";
 
@@ -476,17 +786,17 @@ function compareLevels(previous: Level, current: Level): "up" | "same" | "down";
 | `GET`  | `/api/sessions/[id]/export`   | Hasil PDF jadwal dan lembar tugas                     |
 | `POST` | `/api/worksheets/variation`   | Variasi tugas berbasis AI, opsional                   |
 
-CRUD mengikuti jalur Supabase SDK starter dengan RLS dan constraints yang benar sebelum data privat disimpan. Route Handler tidak otomatis menggantikan kontrol kepemilikan. Endpoint di atas adalah alternatif rancangan, bukan API yang tersedia atau persyaratan untuk MVP; scheduling deterministik tidak otomatis membutuhkan endpoint server. Kontrak level, durasi, dan penyimpanan menunggu `Q-01`/`Q-02`/`Q-09`.
+CRUD mengikuti jalur Supabase SDK starter dengan RLS dan constraints yang benar sebelum data privat disimpan. Route Handler tidak otomatis menggantikan kontrol kepemilikan. Endpoint di atas adalah alternatif rancangan, bukan API yang tersedia atau persyaratan untuk MVP; scheduling deterministik tidak otomatis membutuhkan endpoint server. Enam level mengikuti UI-14; kontrak tes, durasi, dan penyimpanan menunggu `Q-01`/`Q-02`/`Q-09`.
 
-## 11. Aturan konten tugas [USULAN]
+## 11. Aturan konten tugas [aturan dasar diterima; bank konten belum ditetapkan]
 
 | Level      | Literasi dasar                                                         | Numerasi dasar                        | Format                         |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------------- | ------------------------------ |
-| Dasar      | Cocokkan gambar dengan bunyi atau huruf menggunakan bantuan guru/tutor | Kelompokkan atau hitung benda konkret | Instruksi visual, sedikit teks |
-| Berkembang | Susun suku kata/kata sederhana                                         | Hitung dan bandingkan jumlah          | Teks pendek dan contoh         |
-| Mandiri    | Baca paragraf singkat dan jawab pertanyaan                             | Latihan soal kontekstual sederhana    | Instruksi tertulis mandiri     |
+| Level 1–2 | Mencocokkan gambar tanpa membaca | Berhitung dengan benda konkret tanpa membaca | Tidak membutuhkan membaca, termasuk petunjuk tertulis |
+| Level 3–5 | Latihan kata, paragraf, atau cerita sesuai level | Latihan angka, pengurangan, atau pembagian sesuai level | Boleh tertulis; sesuai kriteria UI-14 |
+| Level 6 | Tugas sesuai capaian fase kelas | Tugas sesuai capaian fase kelas | Bank/capaian fase menunggu Q-13; tanpa fallback level dasar |
 
-Contoh ini merupakan ide template, **bukan** kurikulum atau validasi pedagogis. Guru harus bisa meninjau kesesuaian tugas. Hindari penggunaan label level pada lembar siswa jika berpotensi menstigma.
+Batas tugas pada tabel mengikuti UI-14; worksheet dan capaian fase final masih menunggu Q-13. Ini **bukan** klaim kurikulum atau validasi pedagogis. Guru harus bisa meninjau kesesuaian tugas. Hindari penggunaan label level pada lembar siswa jika berpotensi menstigma.
 
 ## 12. Strategi pengujian
 
@@ -502,8 +812,8 @@ Contoh ini merupakan ide template, **bukan** kurikulum atau validasi pedagogis. 
 | T08 | Prioritas level dasar            | Kelompok level terendah dibimbing lebih awal           | FR-04-AC-03                    |
 | T09 | AI tidak tersedia                | Jadwal dan template tugas tetap tersedia               | FR-05-AC-04, NFR-06            |
 | T10 | PDF diunduh lalu koneksi diputus | File tetap dapat dibuka                                | FR-05-AC-02, NFR-02            |
-| T11 | Level Dasar → Berkembang         | Status `up`                                            | FR-06-AC-02 (level final Q-02) |
-| T12 | Level Mandiri → Berkembang       | Status `down`                                          | FR-06-AC-02 (level final Q-02) |
+| T11 | Literasi Kata (3) → Paragraf (4)         | Status `up`                                            | FR-06-AC-02, UI-14 |
+| T12 | Literasi Cerita (5) → Kata (3)       | Status `down`                                          | FR-06-AC-02, UI-14 |
 | T13 | Siswa fiktif                     | Label demo jelas dan data tidak diklaim nyata          | NFR-08, Q-06                   |
 
 ## 13. Urutan kerja dari draf [USULAN; bukan backlog Ready]
@@ -576,18 +886,18 @@ Jawaban berikut tidak boleh ditebak saat membuat tiket Ready. Bila suatu kebutuh
 | ID   | Keputusan yang dibutuhkan                                                                                                                                                                                               | Persyaratan / layar terdampak                                 |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | Q-01 | Berapa durasi sesi/blok dan minimum bimbingan? Bagaimana pembagian menit, prioritas jika level sama, kegiatan bersama satu fase, dan sesi terlalu singkat?                                                              | FR-04, SCR-02, SCR-05, T06–T08                                |
-| Q-02 | Apa indikator, jumlah/urutan/nama level final dan isi/skor tes? Apakah level per mapel? Apakah hasil tes hanya saran, dan bagaimana guru mengoreksinya?                                                                 | FR-02–FR-06, SCR-03–SCR-07, T03–T08, T11–T12                  |
+| Q-02 | Nama/urutan/indikator enam level per mapel disetujui pada UI-14. Apa isi/skor tes, pemetaan hasil, status saran, dan koreksi guru?                                                                 | FR-02–FR-06, SCR-03–SCR-07, T03–T08, T11–T12                  |
 | Q-03 | Apakah Selaras memakai registrasi/login guru starter? Bagaimana demo diakses: akun fiktif individual atau alur fiktif publik terpisah? Apakah profil guru diperlukan?                                                   | FR-07, J-03, ST-01, SCR-01, NFR-04–NFR-05                     |
-| Q-04 | Bagaimana menangani kelas kosong, siswa tanpa level, siswa sangat sedikit, kelompok kosong/ukuran timpang, serta batas jumlah siswa?                                                                                    | FR-01–FR-04, SCR-03–SCR-05, T03–T06                           |
+| Q-04 | Bagaimana menangani kelas kosong, siswa sangat sedikit, kelompok kosong/ukuran timpang, batas jumlah siswa, serta kebijakan produksi untuk siswa tanpa level? Pemetaan level ke tiga kelompok diterima pada UI-15.                                                                                    | FR-01–FR-04, SCR-03–SCR-05, T03–T06                           |
 | Q-05 | Bagaimana format tugas visual hitam-putih, ukuran/orientasi halaman, isi paket PDF (jadwal/tugas/nama siswa), dan versi papan tulis ditentukan?                                                                         | FR-05, SCR-06, T10, NFR-04                                    |
 | Q-06 | Apakah penyelenggara sudah mengonfirmasi tertulis penggunaan siswa fiktif? Siapa memeriksa label dan izin demo?                                                                                                         | NFR-08, T13, J-01, ST-05                                      |
 | Q-07 | Apakah urutan P0/P1 diterima? Bila tidak sempat, apakah tim mengizinkan penundaan progres atau penyediaan tes? Tanpa keputusan, enam modul tetap lingkup MVP brief.                                                     | FR-02, FR-06, bagian 3/13/16, T11–T12                         |
-| Q-08 | Apa titik masuk Selaras jika `/` tetap tombol sandbox? Apa fungsi `/dashboard` dan `/projects` untuk produk; tetap contoh, diadaptasi, atau diganti dengan izin eksplisit? Wizard satu layar atau beberapa route?       | ST-02–ST-04, J-01, SCR-01–SCR-07                              |
+| Q-08 | UI-22 menetapkan `/` sebagai landing page dengan CTA ke `/kelas`. Adaptasi `/dashboard` dan `/projects`, identitas produksi dan alur produk persisten masih terbuka. | ST-02–ST-04, J-01, SCR-01–SCR-07 |
 | Q-09 | Apakah kelas/roster digunakan lintas sesi dan disimpan di Supabase? Data identitas minimum, izin data nyata, retensi, edit/hapus, penghapusan berantai, dan penyimpanan PDF apa yang diperlukan?                        | FR-01, FR-05–FR-07, model data bagian 8, ST-03, NFR-04–NFR-05 |
 | Q-10 | Apa baseline progres, aturan tanpa pembanding, koreksi histori, dan kebijakan pembaruan sebelum dua minggu?                                                                                                             | FR-06, J-02, SCR-07, T11–T12                                  |
 | Q-11 | Apakah draft bertahan saat reload/keluar? Apakah edit siswa/level membatalkan hasil? Apakah generate ulang mempertahankan edit kelompok; roster snapshot atau data hidup?                                               | FR-03–FR-06, FR-08, J-04, SCR-03–SCR-06                       |
 | Q-12 | Apakah tepat dua tingkat berbeda kelas 1–6 menjadi batas input final? Apa yang dilakukan untuk pasangan yang tidak didukung?                                                                                            | FR-01, SCR-02, FR-01-AC-03                                    |
-| Q-13 | Siapa menyusun/meninjau template dan capaian pembelajaran fase A/B/C untuk literasi/numerasi? Mapel dipilih per sesi atau dapat digabung?                                                                               | FR-02, FR-04–FR-05, SCR-02, SCR-05–SCR-06, bagian 11          |
+| Q-13 | Kurikulum apa yang digunakan sekolah dan siapa meninjau tujuan/materi tiap mapel serta tugas fase A/B/C? UI-17 menerima satu mapel bebas per sesi dengan fokus literasi/numerasi; penggabungan mapel dan bank konten belum diputuskan. | FR-02, FR-04–FR-05, UI-17, SCR-02, SCR-05–SCR-06, bagian 11 |
 | Q-14 | Apa perangkat, browser, jaringan, dan ambang performa untuk acceptance mobile?                                                                                                                                          | NFR-01, NFR-03, SCR-01–SCR-07                                 |
 | Q-15 | Fondasi Nunito/#7173FF/pastel/10 px/light-only diterima lewat instruksi pengguna untuk restyle UI yang sudah ada. Apakah komposisi layar produk yang direncanakan diterima? Restyle tidak menambahkan classroom canvas. | ST-06, NFR-09, semua layar                                    |
 
@@ -600,7 +910,7 @@ Status **pertahankan** di bawah mengikuti batas repositori saat ini; status **be
 | ST-01 | Email/password, konfirmasi/ulang kirim, callback, logout (`src/features/auth/`, route auth, proxy)                                                                 | **Pertahankan fondasi dan kontrol sesi.** Kebutuhan login/registrasi dalam perjalanan Selaras belum diputuskan (`Q-03`); tidak menambah peran siswa/admin.                                                                                                                                    |
 | ST-02 | Dashboard terlindungi menampilkan `ProjectsView`; `AppShell` bernavigasi Overview/Projects/sandbox                                                                 | **Pertahankan contoh; adaptasi produk belum diputuskan (`Q-08`).** Tidak menyebut statistik proyek sebagai progres belajar.                                                                                                                                                                   |
 | ST-03 | CRUD `projects` dengan `name`, `description`, `status`, `user_id`, RLS, constraints, dan query keys per pengguna                                                   | **Pertahankan contoh dan batas kepemilikan.** Bukan model sesi Selaras; tidak mengganti nama tabel atau mengonversi data menjadi siswa/sesi tanpa keputusan `Q-08`/`Q-09`.                                                                                                                    |
-| ST-04 | `/` berisi satu tombol terpusat menuju `/sandbox`                                                                                                                  | **Pertahankan**, termasuk halaman tanpa shared branded header. Usulan CTA buat sesi/sesi terakhir pada beranda sebelumnya bertentangan dengan guardrail; lokasi entry produk menunggu `Q-08`.                                                                                                 |
+| ST-04 | `/` semula berisi tombol terpusat menuju `/sandbox` | **Diganti atas instruksi pengguna (UI-22):** landing page Selaras, CTA `/kelas`, tautan `/sandbox` di footer. Starter auth/dashboard/projects tetap tersedia. |
 | ST-05 | Sandbox publik dengan 81 demo, katalog pencarian, dan state contoh (`src/features/sandbox/`)                                                                       | **Pertahankan seluruh demo publik selain Theme Toggle yang dihapus atas instruksi pengguna.** Colors demo dengan palet statis tersedia, tanpa palet sidebar; pencarian katalog bukan pencarian data aplikasi; tidak menghubungkan demo ke siswa privat atau mengubahnya menjadi layar produk. |
 | ST-06 | Beautiful UI/Base UI/Lucide, shared Button, Nunito/#7173FF/pastel, mode terang tunggal                                                                             | **Gunakan ulang dan pertahankan aksesibilitas.** Restyle Nunito/#7173FF/pastel/10 px/light-only disetujui pengguna untuk UI yang ada; tidak menambah shadcn atau library kedua. Komposisi layar produk tetap `Q-15`.                                                                          |
 | ST-07 | Shared Axios dan controls AI/upload tersedia sebagai fondasi/demonstrasi; integrasi AI, storage lampiran, search/filter aplikasi, realtime belum diimplementasikan | **Tidak masuk MVP wajib.** AI hanya variasi opsional dengan fallback template, tidak menentukan alokasi guru. Upload/storage, search aplikasi, dan realtime memerlukan lingkup eksplisit terpisah.                                                                                            |

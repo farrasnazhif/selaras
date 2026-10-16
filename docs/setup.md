@@ -19,7 +19,7 @@ Dependencies and `pnpm-lock.yaml` are installed. Use `pnpm install --frozen-lock
 ## Selaras UI preview
 
 Open [Kelas](http://localhost:3000/kelas), or use **Open app** in the sandbox. The public
-preview follows the supplied screenshot hierarchy: class list, Siswa/Level/Progres/Sesi tabs,
+preview uses a Kelas/Jadwal header with an overall schedule at `/jadwal`, and follows the supplied hierarchy: class list, Siswa/Level/Progres/Sesi tabs,
 a session builder, and a read-only saved session. The example class is
 [kelas-rangkap-2-3](http://localhost:3000/kelas/kelas-rangkap-2-3).
 

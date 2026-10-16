@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeftRight, Sparkles, Users } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
+import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
-import { EmptyState } from "@/components/ui/empty-state";
-import { CLASS_KEYS, GROUP_KEYS } from "@/features/kelas/constants/preview";
-import { GROUP_LABELS } from "@/features/kelas/constants/groups";
+import { Pagination } from "@/components/ui/pagination";
+import { GROUP_KEYS } from "@/features/kelas/constants/preview";
+import { GROUP_LABELS, GROUP_LEVELS } from "@/features/kelas/constants/groups";
+import {
+  LITERACY_LEVELS,
+  NUMERACY_LEVELS,
+} from "@/features/kelas/constants/reference-content";
 import { usePreview } from "@/features/shared/components/preview-provider";
 
 const groupSurfaces = {
@@ -19,32 +23,22 @@ const groupSurfaces = {
 };
 
 export function GroupsStep() {
-  const { grades, students, moveStudent } = usePreview();
+  const { grades, students, groupSubject, moveStudent, classKeys, saving } =
+    usePreview();
+  const levels =
+    groupSubject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
   const [message, setMessage] = useState("");
+  const [pages, setPages] = useState<Record<string, number>>({});
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-window border border-line bg-surface p-4">
-        <div className="max-w-xl">
-          <p className="text-sm font-semibold">Susunan kelompok contoh</p>
-          <p className="mt-1 text-sm leading-relaxed text-muted">
-            Pembagian ini untuk menjelajahi antarmuka, bukan hasil pengelompokan
-            berdasarkan level. Coba pindahkan siswa dalam kelas yang sama.
-          </p>
-        </div>
-        <div>
-          <Button variant="secondary" disabled aria-describedby="grouping-hint">
-            <Sparkles size={16} aria-hidden="true" />
-            Kelompokkan otomatis
-          </Button>
-          {/* <p id="grouping-hint" className="mt-2 max-w-52 text-xs text-muted">
-            Aturan pengelompokan otomatis belum ditetapkan.
-          </p> */}
-        </div>
-      </div>
-      {CLASS_KEYS.map((classKey) => (
+    <div className="space-y-ui-group">
+      <Callout title={`Susunan kelompok ${groupSubject}`} tone="info">
+        Susunan awal mengikuti level {groupSubject}. Gunakan tombol panah untuk
+        memindahkan anggota dalam kelas yang sama.
+      </Callout>
+      {classKeys.map((classKey) => (
         <section key={classKey} aria-labelledby={`groups-${classKey}`}>
-          <div className="mb-4 flex items-center gap-3">
-            <h2 id={`groups-${classKey}`} className="text-2xl font-bold">
+          <div className="mb-ui-sm flex items-center gap-ui-sm">
+            <h2 id={`groups-${classKey}`} className="text-xl font-extrabold">
               Kelas {grades[classKey]}
             </h2>
             <Badge tone="neutral">
@@ -55,34 +49,70 @@ export function GroupsStep() {
               siswa
             </Badge>
           </div>
-          <div className="grid items-start gap-4 sm:grid-cols-3">
+          <div className="grid items-start gap-ui-sm md:grid-cols-3">
             {GROUP_KEYS.map((group) => {
               const members = students.filter(
                 (student) =>
                   student.classKey === classKey && student.group === group,
               );
+              const pageKey = `${groupSubject}-${classKey}-${group}`;
+              const pageCount = Math.max(1, Math.ceil(members.length / 5));
+              const page = Math.min(pages[pageKey] ?? 1, pageCount);
+              const pageMembers = members.slice((page - 1) * 5, page * 5);
+              const emptyRows = 5 - Math.max(pageMembers.length, 1);
               return (
-                <Card key={group} className="min-w-0 p-4">
+                <Card key={group} className="min-w-0 p-ui-sm">
                   <div
-                    className={`mb-4 rounded-control p-3 ${groupSurfaces[group]}`}
+                    className={`mb-2 rounded-control border-2 border-line p-ui-sm ${groupSurfaces[group]}`}
                   >
                     <h3 className="text-lg font-bold">
                       Kelompok {GROUP_LABELS[group]}
                     </h3>
-                    <p className="mt-1 text-xs text-muted">
-                      {members.length} siswa · level bervariasi
-                    </p>
+                    <div className="flex justify-between mt-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs font-semibold">
+                          {members.length} siswa
+                        </p>
+                      </div>
+                      <p className="mt-1 text-xs font-semibold">
+                        {GROUP_LEVELS[group]}
+                      </p>
+                    </div>
                   </div>
-                  {members.length ? (
-                    <ul className="divide-y divide-line">
-                      {members.map((student) => (
+                  <ul className="divide-y divide-line">
+                    {pageMembers.map((student) => {
+                      const level = levels.find(
+                        (option) =>
+                          option.value ===
+                          student[
+                            groupSubject === "literasi"
+                              ? "literacy"
+                              : "numeracy"
+                          ],
+                      );
+                      return (
                         <li
                           key={student.id}
-                          className="flex items-center gap-2 py-3"
+                          className="flex h-16 items-center gap-2 py-1"
                         >
-                          <span className="min-w-0 flex-1 break-words text-sm font-semibold">
-                            {student.name}
-                          </span>
+                          <div className="w-full flex items-center justify-between">
+                            <p className="break-words text-sm font-semibold">
+                              {student.name}
+                            </p>
+                            <Badge
+                              tone={level ? "primary" : "warning"}
+                              className="mt-1 max-w-full flex-wrap whitespace-normal before:hidden"
+                            >
+                              {level ? (
+                                <>
+                                  <span>Level {level.value}:</span>{" "}
+                                  <span>{level.label}</span>
+                                </>
+                              ) : (
+                                "Belum dinilai"
+                              )}
+                            </Badge>
+                          </div>
                           <DropdownMenu
                             trigger={
                               <IconButton
@@ -96,24 +126,45 @@ export function GroupsStep() {
                             items={GROUP_KEYS.map((target) => ({
                               id: target,
                               label: `Ke Kelompok ${GROUP_LABELS[target]}`,
-                              disabled: target === group,
-                              onSelect: () => {
-                                moveStudent(student.id, target);
+                              disabled: saving || target === group,
+                              onSelect: async () => {
+                                if (!await moveStudent(student.id, target)) return;
                                 setMessage(
-                                  `${student.name} dipindahkan ke Kelompok ${GROUP_LABELS[target]}, Kelas ${grades[classKey]}.`,
+                                  `${student.name} dipindahkan ke Kelompok ${GROUP_LABELS[target]} untuk ${groupSubject}, Kelas ${grades[classKey]}.`,
                                 );
                               },
                             }))}
                           />
                         </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <EmptyState
-                      title="Kelompok kosong"
-                      icon={<Users size={22} />}
+                      );
+                    })}
+                    {!pageMembers.length && (
+                      <li className="flex h-16 items-center text-xs text-muted">
+                        Belum ada siswa di kelompok ini.
+                      </li>
+                    )}
+                    {Array.from({ length: emptyRows }, (_, index) => (
+                      <li
+                        key={`empty-${index}`}
+                        aria-hidden="true"
+                        className="h-16"
+                      />
+                    ))}
+                  </ul>
+                  <div className="mt-ui-sm">
+                    <Pagination
+                      locale="id"
+                      page={page}
+                      pageCount={pageCount}
+                      disabled={members.length <= 5}
+                      onPageChange={(nextPage) =>
+                        setPages((current) => ({
+                          ...current,
+                          [pageKey]: nextPage,
+                        }))
+                      }
                     />
-                  )}
+                  </div>
                 </Card>
               );
             })}

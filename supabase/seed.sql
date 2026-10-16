@@ -1,1 +1,4 @@
--- No users or passwords are seeded. Use registration and create sample projects through the app.
+-- Login-capable demo data is created through the Auth admin API, not raw auth table inserts.
+-- After configuring the intended development project and applying migrations, run:
+-- pnpm run seed:selaras --confirm-development
+-- This preserves existing users/passwords/workspaces and does not reset the database.

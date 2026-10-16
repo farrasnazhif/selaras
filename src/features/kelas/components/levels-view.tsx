@@ -1,23 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import { Check } from "lucide-react";
 import { Select } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Pagination } from "@/components/ui/pagination";
 import { Table, type TableColumn } from "@/components/ui/table";
-import { CLASS_KEYS } from "@/features/kelas/constants/preview";
 import {
-  CLASS_FOCUS,
   LITERACY_LEVELS,
   NUMERACY_LEVELS,
 } from "@/features/kelas/constants/reference-content";
 import type { PreviewStudent } from "@/features/shared/types/preview";
 import { usePreview } from "@/features/shared/components/preview-provider";
-import { DiagnosticGuide, LevelRubrics } from "@/features/kelas/components/level-rubrics";
-import { ObservationDialog } from "@/features/kelas/components/observation-dialog";
+import { DiagnosticGuide, LevelRubrics } from "./level-rubrics";
+import { ObservationDialog } from "./observation-dialog";
 
 export function LevelsView() {
-  const { students, grades, setLevel } = usePreview();
+  const { students, grades, setLevel, classKeys, saving } = usePreview();
   const columns: TableColumn<PreviewStudent>[] = [
     {
       id: "no",
@@ -29,17 +28,7 @@ export function LevelsView() {
       id: "name",
       label: "Nama siswa",
       value: (student) => student.name,
-      render: (student) => (
-        <span className="font-semibold">{student.name}</span>
-      ),
-    },
-    {
-      id: "grade",
-      label: "Kelas",
-      value: (student) => grades[student.classKey],
-      render: (student) => (
-        <Badge tone="neutral">Kelas {grades[student.classKey]}</Badge>
-      ),
+      render: (student) => <span className="font-bold">{student.name}</span>,
     },
     {
       id: "literacy",
@@ -47,6 +36,7 @@ export function LevelsView() {
       value: (student) => student.literacy ?? "",
       render: (student) => (
         <Select
+          disabled={saving}
           value={student.literacy}
           options={LITERACY_LEVELS}
           placeholder="Pilih level"
@@ -63,6 +53,7 @@ export function LevelsView() {
       value: (student) => student.numeracy ?? "",
       render: (student) => (
         <Select
+          disabled={saving}
           value={student.numeracy}
           options={NUMERACY_LEVELS}
           placeholder="Pilih level"
@@ -77,60 +68,83 @@ export function LevelsView() {
       id: "observation",
       label: "Observasi",
       value: () => "",
-      render: (student) => <ObservationDialog student={student} />,
+      render: (student) => (
+        <ObservationDialog student={student} mode="create" />
+      ),
     },
     {
       id: "status",
       label: "Status",
-      value: () => "Tersimpan sementara",
+      value: () => "Tercatat",
       render: () => (
-        <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-xs text-green">
-          <Check size={14} aria-hidden="true" />
-          Tersimpan sementara
+        <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-semibold text-green">
+          <Check size={15} aria-hidden="true" />
+          Tercatat
         </span>
       ),
     },
   ];
   return (
-    <div className="space-y-5 text-ink">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <DiagnosticGuide />
-      </div>
+    <div className="space-y-ui-group text-ink">
+      <DiagnosticGuide />
       {students.length ? (
-        <div className="space-y-4 [&_.ui-table]:text-sm [&_.ui-select-trigger]:min-w-44">
-          {CLASS_KEYS.map((key) => {
-            const roster = students.filter(
-              (student) => student.classKey === key,
-            );
-            return (
-              <section key={key}>
-                <div
-                  className={`rounded-t-window px-4 py-3 text-xs ${key === "first" ? "bg-accent-tint" : "bg-[var(--pastel-blue)]"}`}
-                >
-                  <span className="font-bold">
-                    Kelas {grades[key]} ({roster.length} siswa)
-                  </span>
-                  <span className="ml-3 text-muted">
-                    Fokus contoh: {CLASS_FOCUS[key]}
-                  </span>
-                </div>
-                <Table
-                  rows={roster}
-                  columns={columns}
-                  getRowId={(student) => student.id}
-                  caption={`Level siswa fiktif kelas ${grades[key]}`}
-                />
-              </section>
-            );
-          })}
-        </div>
+        classKeys.map((key) => (
+          <ClassLevels
+            key={key}
+            grade={grades[key]}
+            rows={students.filter((student) => student.classKey === key)}
+            columns={columns}
+          />
+        ))
       ) : (
         <EmptyState
           title="Belum ada siswa"
-          description="Tambahkan siswa contoh pada tab Siswa untuk mencoba penetapan level."
+          description="Tambahkan siswa pada tab Siswa untuk mulai mencatat level."
         />
       )}
       <LevelRubrics />
     </div>
+  );
+}
+
+function ClassLevels({
+  grade,
+  rows,
+  columns,
+}: {
+  grade: string;
+  rows: PreviewStudent[];
+  columns: TableColumn<PreviewStudent>[];
+}) {
+  const [page, setPage] = useState(1);
+  const pageCount = Math.max(1, Math.ceil(rows.length / 10));
+  const current = Math.min(page, pageCount);
+  return (
+    <section
+      className="space-y-ui-sm [&_.ui-select-trigger]:min-w-40"
+      aria-label={`Level kelas ${grade}`}
+    >
+      <div className="flex items-center gap-ui-sm">
+        <h2 className="text-lg font-extrabold">Kelas {grade}</h2>
+        <span className="text-sm text-muted">{rows.length} siswa</span>
+      </div>
+      <Table
+        emptyMessage="Tidak ada data yang ditampilkan."
+        rows={rows.slice((current - 1) * 10, current * 10)}
+        columns={columns}
+        getRowId={(student) => student.id}
+        caption={`Level siswa kelas ${grade}`}
+      />
+      {pageCount > 1 && (
+        <div role="group" aria-label={`Halaman level kelas ${grade}`}>
+          <Pagination
+            locale="id"
+            page={current}
+            pageCount={pageCount}
+            onPageChange={setPage}
+          />
+        </div>
+      )}
+    </section>
   );
 }

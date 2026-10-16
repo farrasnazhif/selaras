@@ -12,7 +12,7 @@ export async function login(input: AuthInput) {
 export async function register(input: AuthInput) {
   const { data, error } = await createClient().auth.signUp({
     ...registerSchema.parse(input),
-    options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/kelas` },
   });
   if (error) throw error;
   return data;

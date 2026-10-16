@@ -1,20 +1,34 @@
 "use client";
 
-import { BookOpen, FolderOpen, LayoutPanelTop } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TaskEditor } from "./task-editor";
+import { reflowPlan } from "@/features/sesi/constants/plan-editing";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { CLASS_KEYS, GROUP_KEYS, phaseForGrade } from "@/features/kelas/constants/preview";
-import { GROUP_COLORS, GROUP_LABELS } from "@/features/kelas/constants/groups";
-import { GROUP_TASKS } from "@/features/sesi/constants/reference-content";
-import { usePreview } from "@/features/shared/components/preview-provider";
-import type { ClassKey, PreviewStudent } from "@/features/shared/types/preview";
+import { CLASS_KEYS, GROUP_KEYS } from "@/features/kelas/constants/preview";
+import { GROUP_LABELS } from "@/features/kelas/constants/groups";
+import type { ClassKey, PreviewStudent, Subject } from "@/features/shared/types/preview";
+import type { SessionPlan } from "@/features/sesi/types/schedule";
+import { TaskPhoto } from "./task-photo";
+import { TaskExercise } from "./task-exercise";
 
-export function SessionTaskSummary({ board = false, roster, gradePair }: { board?: boolean; roster?: PreviewStudent[]; gradePair?: Record<ClassKey, string> }) {
-  const preview = usePreview();
-  const grades = gradePair ?? preview.grades;
-  const students = roster ?? preview.students;
-  return <section><div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h2 className="flex items-center gap-2 text-lg font-bold"><LayoutPanelTop size={20} aria-hidden="true" />{board ? "Tugas mandiri" : "Ringkasan kelompok & penugasan mandiri"}</h2><span className="text-xs text-muted">Konten contoh dari referensi</span></div><div className={`grid gap-5 ${board ? "" : "xl:grid-cols-2"}`}>{CLASS_KEYS.map((key) => <Card key={key} className="flex flex-col p-4"><div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3"><h3 className="text-sm font-bold">Daftar tugas Kelas {grades[key]} (Fase {phaseForGrade(grades[key])})</h3><span className="rounded-chip bg-inset px-2 py-1 text-xs font-semibold">{students.filter((student) => student.classKey === key).length} siswa</span></div><div className="flex-1 space-y-3">{GROUP_KEYS.filter((group) => students.some((student) => student.classKey === key && student.group === group)).map((group) => {
-    const task = GROUP_TASKS[key].find((item) => item.group === group);
-    const count = students.filter((student) => student.classKey === key && student.group === group).length;
-    return <div key={group} className="border-l-[3px] bg-inset p-3" style={{ borderLeftColor: GROUP_COLORS[group] }}><div className="flex flex-wrap items-center justify-between gap-2"><h4 className="text-sm font-bold">Kelompok {GROUP_LABELS[group]} <span className="text-xs font-normal text-muted">({count} siswa)</span></h4>{task && <span className="rounded-chip bg-surface px-2 py-1 text-[11px] font-semibold">{task.title}</span>}</div><p className={`mt-2 font-semibold ${board ? "text-xl" : "text-xs"}`}>{task?.material ?? "Kegiatan belum ditetapkan"}</p><p className={`mt-2 leading-relaxed ${board ? "text-[28px] font-bold" : "text-xs text-muted"}`}>{task?.instruction ?? "Konten kelompok ini belum tersedia dalam referensi."}</p></div>;
-  })}</div><p className="mt-4 flex items-center gap-2 border-t border-line pt-3 text-xs text-muted">{key === "first" ? <FolderOpen size={14} aria-hidden="true" /> : <BookOpen size={14} aria-hidden="true" />}Media: {key === "first" ? "Amplop tugas warna-warni" : "Buku bergaris & kartu domino kata"}</p></Card>)}</div></section>;
+export function SessionTaskSummary({ plan, roster, grades, focus, lessonSubject, blockMinutes, onChange }: { plan: SessionPlan; roster: PreviewStudent[]; grades: Record<ClassKey, string>; focus?: Subject; lessonSubject: string; blockMinutes: number; onChange?: (plan: SessionPlan) => void }) {
+  return <section className="space-y-ui-md">
+    <div><h2 className="text-lg font-bold">Tugas tiap kelompok</h2><p className="mt-2 text-sm text-muted">Draf latihan dasar. Periksa kesesuaiannya sebelum mengajar. Nama dan level hanya ada di tampilan guru ini; bagikan nomor kegiatan secara lisan saat pembukaan.</p></div>
+    {CLASS_KEYS.flatMap((classKey) => GROUP_KEYS.map((group) => {
+      const tasks = plan.tasks.filter((task) => task.classKey === classKey && task.group === group);
+      const members = roster.filter((student) => student.classKey === classKey && student.group === group);
+      return members.length ? <Card key={`${classKey}-${group}`} className="space-y-ui-md">
+        <div className="flex flex-wrap items-center justify-between gap-ui-sm"><h3 className="text-base font-bold">Kelas {grades[classKey]}, Kelompok {GROUP_LABELS[group]}</h3>{onChange && focus && <TaskEditor classKey={classKey} group={group} grade={grades[classKey]} focus={focus} lessonSubject={lessonSubject} blockMinutes={blockMinutes} members={members} onSave={(task) => onChange(reflowPlan({ ...plan, tasks: [...plan.tasks, task] }))} />}</div>
+        {!tasks.length && <p className="text-sm text-muted">Belum ada kegiatan. Tambahkan tugas untuk setiap anggota sebelum menyimpan.</p>}
+        {tasks.map((task, index) => <section key={task.id} className="space-y-ui-sm border-t border-line pt-ui-sm">
+          <div className="flex flex-wrap items-center gap-2"><h4 className="font-bold">Kegiatan {index + 1}: {task.template?.title ?? "Tugas sesuai kelas belum diisi"}</h4><Badge tone="neutral">Level {task.level}</Badge>{task.template?.aiGenerated && <Badge tone="primary">Variasi AI</Badge>}{task.template && !task.template.requiresReading && <Badge tone="primary">Tanpa membaca</Badge>}</div>
+          {onChange && focus && <div className="flex flex-wrap gap-2"><TaskEditor task={task} classKey={classKey} group={group} grade={grades[classKey]} focus={focus} lessonSubject={lessonSubject} blockMinutes={blockMinutes} members={members} onSave={(updated) => onChange(reflowPlan({ ...plan, tasks: plan.tasks.map((item) => item.id === task.id ? updated : item) }))} /><Button size="xs" variant="danger" aria-label={`Hapus kegiatan ${index + 1} Kelompok ${GROUP_LABELS[group]} Kelas ${grades[classKey]}`} onClick={() => onChange(reflowPlan({ ...plan, tasks: plan.tasks.filter((item) => item.id !== task.id) }))}><Trash2 size={14} aria-hidden="true" />Hapus</Button></div>}
+          <p className="text-sm text-muted">{task.memberIds.map((id) => roster.find((student) => student.id === id)?.name).join(", ")}</p>
+          {task.template ? <><p className="text-sm">{task.template.instruction}</p><TaskExercise content={task.template.content} />{task.template.photo && <TaskPhoto photo={task.template.photo} />}</> : <p className="text-sm text-muted">Isi tugas sesuai capaian Kelas {grades[classKey]} di formulir. Tugas dasar tidak digunakan sebagai pengganti.</p>}
+        </section>)}
+      </Card> : null;
+    }))}
+  </section>;
 }

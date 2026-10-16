@@ -14,6 +14,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "seed:selaras": "node --env-file=.env.local --experimental-strip-types scripts/seed-selaras.mjs",
+    "test:workspace-rls": "node --env-file=.env.local scripts/check-workspace-rls.mjs",
     "test:rls": "node --env-file=.env.local scripts/check-rls.mjs",
     "db:types": "supabase gen types typescript --local > src/types/database.ts"
   },

@@ -10,6 +10,11 @@ import ts from "typescript";
 import { EXTENDED_COMPONENTS } from "../src/features/sandbox/constants/extended-catalog.ts";
 import { SANDBOX_COMPONENTS } from "../src/features/sandbox/constants/catalog.ts";
 import { Toast } from "@base-ui/react/toast";
+import { SESSION_DEFAULTS } from "../src/features/sesi/constants/reference-content.ts";
+import { buildSessionPlan, getStudentPacket } from "../src/features/sesi/constants/scheduler.ts";
+import { PREVIEW_STUDENTS } from "../src/features/kelas/constants/preview.ts";
+import { groupStudentsBySubject } from "../src/features/kelas/constants/groups.ts";
+import type { StudentPacket } from "../src/features/sesi/types/schedule.ts";
 
 // Compile the real JSX modules in memory for Node's strip-types test runner.
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -339,4 +344,26 @@ test("loading icon buttons show one indicator and retain their accessible label"
   assert.match(markup, /button-primary button-sm/);
   assert.equal((markup.match(/<svg/g) ?? []).length, 1);
   assert.ok(!markup.includes('data-icon="plus"'));
+});
+
+
+test("student board and print markup excludes roster identity and ability labels (UI-18)", () => {
+  const grades = { first: "2", second: "3" };
+  const roster = groupStudentsBySubject(PREVIEW_STUDENTS, "literasi");
+  const { plan, validation } = buildSessionPlan(SESSION_DEFAULTS, roster, grades);
+  assert.equal(validation.valid, true);
+  assert.ok(plan);
+  const packet = getStudentPacket(SESSION_DEFAULTS, plan, grades);
+  const StudentPacketView = load(resolve(root, "src/features/sesi/components/student-packet")).StudentPacketView as ComponentType<{ packet: StudentPacket; board?: boolean; preview?: boolean }>;
+  for (const board of [false, true]) {
+    const markup = render(createElement(StudentPacketView, { packet, board, preview: true }));
+    for (const student of roster) {
+      assert.ok(!markup.includes(student.name), `Printed student name: ${student.name}`);
+      assert.ok(!markup.includes(student.id), `Printed student ID: ${student.id}`);
+    }
+    assert.doesNotMatch(markup, /Level [1-6]|Fase [ABC]|Pemula|Sesuai fase|memberIds/);
+    assert.match(markup, /Kelompok Biru/);
+    assert.match(markup, /<svg/);
+    assert.match(markup, /Kegiatan 1/);
+  }
 });

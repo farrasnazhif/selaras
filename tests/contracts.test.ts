@@ -73,6 +73,8 @@ test("return destinations stay on the application origin", () => {
     " /projects",
   ])
     assert.equal(safeReturnPath(unsafe), "/dashboard");
+  assert.equal(safeReturnPath("/login?next=/login"), "/kelas");
+  assert.equal(safeReturnPath("/auth/callback"), "/kelas");
   assert.equal(safeReturnPath("/projects?created=1"), "/projects?created=1");
   assert.equal(safeReturnPath("/projects/../dashboard"), "/dashboard");
 });

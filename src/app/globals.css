@@ -1,6 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;750;800&display=swap");
 @import "tailwindcss";
 @import "../components/ui/globals.css";
+
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/nunito-variable.ttf") format("truetype");
+}
 
 :root {
   color-scheme: light;
@@ -19,10 +26,13 @@
   --radius: 20px;
   --font-mono-face: "SFMono-Regular";
   --font-ui:
-    "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 }
 @theme inline {
+  --spacing-ui-sm: 15px;
+  --spacing-ui-md: 30px;
+  --spacing-ui-group: 60px;
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-foreground: var(--foreground);
@@ -76,7 +86,6 @@
 }
 
 @layer components {
-  .landing-page,
   .auth-layout {
     background: radial-gradient(
       circle at 75% 25%,
@@ -94,12 +103,12 @@
     top: 1rem;
   }
   .eyebrow {
-    @apply text-[10px] font-semibold uppercase tracking-[0.16em] text-muted;
+    @apply text-xs font-semibold uppercase tracking-[0.16em] text-muted;
   }
   .button {
     @apply inline-flex h-10 items-center justify-center gap-2 text-[14px] leading-5 px-4 shrink-0 rounded-control select-none;
     font-weight: 750;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
     transition:
       background-color 150ms,
       transform 150ms,
@@ -142,6 +151,48 @@
   }
   .button-secondary[aria-expanded="true"] {
     background: var(--hover);
+  }
+  .button.button-ai-variation {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      110deg,
+      var(--primary),
+      color-mix(in srgb, var(--primary) 75%, var(--ink))
+    );
+    border-color: transparent;
+    color: var(--primary-foreground);
+  }
+  .button.button-ai-variation:hover:not(:disabled):not([data-disabled]) {
+    background: linear-gradient(
+      110deg,
+      var(--primary-hover),
+      color-mix(in srgb, var(--primary) 65%, var(--ink))
+    );
+  }
+  .button-ai-variation::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgb(255 255 255 / 16%) 50%,
+      transparent 70%
+    );
+    transform: translateX(-160%);
+    animation: ai-button-shine 3s ease-in-out infinite;
+  }
+  .button-ai-variation:is(:disabled, [data-disabled], [data-loading])::after {
+    animation: none;
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .button-ai-variation::after {
+      animation: none;
+      opacity: 0;
+    }
   }
   .button-ghost {
     @apply text-foreground bg-inset;
@@ -186,7 +237,7 @@
     @apply text-xs font-normal text-muted ml-2;
   }
   .badge {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-medium capitalize rounded-chip whitespace-nowrap;
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium capitalize rounded-chip whitespace-nowrap;
   }
   .badge::before {
     content: "";
@@ -238,13 +289,38 @@
     background: var(--info-soft);
     border-color: color-mix(in srgb, var(--info) 20%, transparent);
   }
+  .callout {
+    @apply flex gap-3 border-2 px-4 py-3 text-sm leading-relaxed;
+    border-radius: var(--radius-window);
+    overflow-wrap: anywhere;
+  }
+  .callout-info {
+    color: var(--info-ink);
+    background: var(--info-tint);
+    border-color: color-mix(in srgb, var(--info-ink) 28%, white);
+  }
+  .callout-success {
+    color: var(--green);
+    background: var(--green-tint);
+    border-color: color-mix(in srgb, var(--green) 28%, white);
+  }
+  .callout-warning {
+    color: var(--orange);
+    background: var(--orange-tint);
+    border-color: color-mix(in srgb, var(--orange) 28%, white);
+  }
+  .callout-danger {
+    color: var(--red);
+    background: var(--red-tint);
+    border-color: color-mix(in srgb, var(--red) 28%, white);
+  }
   .dialog-backdrop {
     @apply fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px];
   }
   .dialog-popup {
     @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-surface p-6 sm:p-7;
     box-shadow: var(--shadow-overlay);
-    width: min(520px, calc(100vw - 32px));
+    width: min(1080px, calc(100vw - 32px));
     max-height: calc(100dvh - 48px);
     overflow-y: auto;
     border-radius: var(--radius);
@@ -342,7 +418,7 @@
     @apply px-4 md:px-8 lg:px-12 xl:px-16 py-8 lg:py-12 min-w-0 max-w-[1200px] w-full mx-auto;
   }
   .sandbox-version {
-    @apply text-[9px] font-mono tracking-widest border border-line rounded-md px-2.5 py-2 text-muted;
+    @apply text-xs font-mono tracking-widest border border-line rounded-md px-2.5 py-2 text-muted;
   }
   .switch {
     @apply relative inline-flex h-4.5 w-7.5 shrink-0 items-center rounded-full p-0.5 align-middle;
@@ -386,6 +462,16 @@
     background: var(--surface);
     box-shadow: var(--shadow-btn);
     font-weight: 500;
+  }
+}
+
+@keyframes ai-button-shine {
+  0%,
+  10% {
+    transform: translateX(-160%);
+  }
+  100% {
+    transform: translateX(160%);
   }
 }
 
@@ -438,6 +524,15 @@
     @apply bg-surface p-6;
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
+  }
+  .selaras-shell .ui-card {
+    @apply p-ui-md;
+  }
+  .selaras-shell .field {
+    @apply gap-ui-sm;
+  }
+  .selaras-shell [role="tabpanel"] {
+    @apply pt-ui-md;
   }
   .ui-positioner {
     z-index: 60;
@@ -591,7 +686,7 @@
     border-bottom-right-radius: 0;
   }
   .ui-tooltip {
-    @apply px-2.5 py-1.5 text-[11.5px];
+    @apply px-2.5 py-1.5 text-xs;
     color: var(--tooltip-fg);
     background: var(--tooltip-bg);
     border-radius: var(--radius-control);
@@ -675,7 +770,7 @@
     @apply flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent-tint text-xs font-medium text-accent-ink;
   }
   .ui-avatar-sm {
-    @apply size-6 text-[10px];
+    @apply size-6 text-xs;
   }
   .ui-avatar-lg {
     @apply size-12 text-base;
@@ -760,7 +855,7 @@
     @apply flex items-center gap-2 text-xs text-muted;
   }
   .ui-step-number {
-    @apply flex size-6 items-center justify-center rounded-control border border-line-strong bg-surface text-[11px];
+    @apply flex size-6 items-center justify-center rounded-control border border-line-strong bg-surface text-xs;
   }
   .ui-stepper > li[aria-current] {
     color: var(--accent-ink);
@@ -856,11 +951,17 @@
 .selaras-shell .ui-card,
 .selaras-shell .ui-table-scroll {
   box-shadow: none;
-  border: 1px solid var(--line);
+  border: 2px solid var(--line);
 }
 
-[data-sidebar-collapsed="true"] .sidebar-account-copy {
-  display: none;
+.selaras-landing .ui-card {
+  padding: 30px;
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.selaras-landing section[id] {
+  scroll-margin-top: 30px;
 }
 
 @media print {
@@ -874,8 +975,7 @@
     --primary: #000000;
     --primary-tint: #f2f2f2;
   }
-  .selaras-sidebar,
-  .selaras-mobile-nav,
+  .product-header,
   .selaras-shell .print-hidden,
   .skip-link {
     display: none !important;
@@ -892,5 +992,200 @@
   }
   .selaras-shell li {
     break-inside: avoid;
+  }
+}
+
+/* Shared rounded controls and pastel option colors. */
+.input,
+.ui-popup,
+.dialog-popup {
+  border: 2px solid var(--line);
+}
+.button-primary {
+  border-color: var(--primary-hover);
+}
+.button-danger {
+  border-color: var(--destructive-hover);
+}
+.ui-tone-purple {
+  --control-fill: var(--primary-tint);
+  --control-ink: var(--accent-ink);
+}
+.ui-tone-pink {
+  --control-fill: var(--red-tint);
+  --control-ink: var(--red);
+}
+.ui-tone-green {
+  --control-fill: var(--green-tint);
+  --control-ink: var(--green);
+}
+.ui-tone-cyan {
+  --control-fill: var(--info-tint);
+  --control-ink: var(--info-ink);
+}
+.ui-tone-yellow {
+  --control-fill: var(--orange-tint);
+  --control-ink: var(--orange);
+}
+.ui-select-trigger,
+.ui-coded-option {
+  background: var(--control-fill);
+  color: var(--control-ink);
+  border-color: color-mix(in srgb, var(--control-ink) 30%, white);
+  font-weight: 700;
+}
+.ui-select-popup .ui-coded-option {
+  margin-block: 3px;
+}
+.ui-coded-option[data-highlighted],
+.ui-coded-option:hover:not([data-disabled]) {
+  background: color-mix(in srgb, var(--control-fill) 85%, var(--control-ink));
+  outline: 2px solid var(--control-ink);
+  outline-offset: -2px;
+}
+.ui-coded-option[data-selected],
+.ui-select-trigger[data-placeholder] {
+  color: var(--control-ink);
+}
+.input:focus {
+  border-color: var(--focus);
+}
+.input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.ui-search-input:focus-within {
+  border-color: var(--focus);
+  outline: 3px solid var(--accent-tint);
+  outline-offset: 2px;
+}
+.ui-search-input[data-invalid] {
+  border-color: var(--danger);
+}
+.ui-search-input .ui-search-field {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+  box-shadow: none;
+}
+.product-nav-line {
+  transition: transform 180ms ease-out;
+}
+.selaras-shell .ui-table {
+  font-size: 14px;
+}
+.selaras-shell .ui-table th {
+  min-height: 48px;
+  padding: var(--spacing-ui-sm);
+  background: var(--primary-tint);
+  color: var(--ink);
+  border-bottom-width: 2px;
+  font-weight: 800;
+}
+.selaras-shell .ui-table td {
+  height: 52px;
+  padding: 8px var(--spacing-ui-sm);
+}
+.selaras-shell .tabs-list {
+  border-bottom-width: 2px;
+}
+.selaras-shell .tab {
+  color: var(--ink);
+}
+.selaras-shell .tab[data-active] {
+  background: var(--primary-tint);
+  color: var(--accent-ink);
+  box-shadow: none;
+  font-weight: 800;
+}
+.selaras-shell .ui-avatar-group .ui-avatar:nth-child(2) {
+  background: var(--pastel-mint);
+  color: var(--green);
+}
+.selaras-shell .ui-avatar-group .ui-avatar:nth-child(3) {
+  background: var(--pastel-yellow);
+  color: var(--orange);
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-nav-line {
+    transition: none;
+  }
+}
+@media print {
+  .selaras-shell .ui-table th {
+    background: white;
+    color: black;
+  }
+  .selaras-shell .ui-table-scroll {
+    border-color: #dddddd;
+  }
+}
+
+/* Student output is constructed without identities; print never includes teacher previews. */
+@page selaras {
+  size: A4 portrait;
+  margin: 12mm;
+}
+@media print {
+  .student-packet {
+    display: block !important;
+    page: selaras;
+    color: #000;
+    background: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+    margin: 0;
+  }
+  .student-packet .student-schedule,
+  .student-packet .student-group-sheet {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+  .student-packet .student-schedule {
+    break-before: page;
+  }
+  .student-packet .student-group-sheet {
+    break-before: page;
+  }
+  .student-packet .student-activity,
+  .student-packet tr {
+    break-inside: avoid;
+  }
+  .student-packet table,
+  .student-packet td,
+  .student-packet th {
+    border-color: #555;
+    color: #000;
+  }
+  .student-packet .text-base {
+    font-size: 14px;
+  }
+  body:has(.student-packet) [role="dialog"],
+  body:has(.student-packet) [data-base-ui-portal] {
+    display: none !important;
+  }
+}
+
+@media print {
+  .student-packet .task-photo img {
+    width: 100%;
+    height: auto;
+    max-height: 150mm;
+    object-fit: contain;
+  }
+  .student-packet .task-photo {
+    break-inside: avoid;
+  }
+}
+
+@media print {
+  .student-packet .student-activity:has(.task-photo) {
+    break-inside: auto;
   }
 }
