@@ -60,6 +60,14 @@ shared optional photo input in task editing, local data URL snapshots, content v
 teacher/student/print rendering. Reuse Dropzone/file validation; abort pending reads and keep
 old content on errors/cancel. Write affected contracts without running tests; typecheck/lint/build
 apply. No backend, permanent upload, AI/OCR or browser persistence.
+The card refinement restores main's banner/title/metadata-footer layout while retaining this
+branch's AvatarGroup/count, passing each classroom's last-session date to both constituent cards.
+Match main's responsive 1/2/3-column card widths and 20 px gaps, plus its card typography,
+banner height and body/footer spacing; keep the current combined-card interaction.
+UI-20-AC-05 separates the class list into combined first and independent below, with headings,
+empty messages and shared search; preserve the independent-only combine selection mode.
+Combined pairs use a two-column span and equal inner columns with 20 px gaps at sm and above;
+the plus is absolutely centered, preserving individual widths without squeezing either card.
 
 UI-22/DES-36 authorizes the public Selaras landing page at `/`, implemented under
 `src/features/landing/components` with a thin route and page-specific metadata. Reuse Button,

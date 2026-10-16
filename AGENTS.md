@@ -171,6 +171,14 @@ UI conventions:
   3+4, 5+6. Preserve the legacy 2+3 demo. Merge rosters without changing student IDs/history;
   standalone details render only their first class and cannot schedule until paired. Combined
   cards retain both banners/identities around a plus. The floating action alone uses 64 px circle.
+  Cards follow main's banner/title/separated metadata-footer layout; keep AvatarGroup and count
+  in the footer instead of a user icon, alongside the last-session date or Belum ada sesi.
+  Match main's 1/2/3-column grid (sm/xl), 20 px gaps and 16 px card-body/footer spacing; these
+  card-specific measurements override the general 15/30/60 px spacing convention.
+  Combined wrappers span two columns at sm with a two-column internal grid and the same 20 px
+  gap; center the plus absolutely so constituent cards retain independent-card widths.
+  List Kelas gabungan above Kelas mandiri in separate titled sections with independent empty
+  states; shared search covers both. Combine selection continues to show only independent classes.
 - UI-21/DES-35 permits optional memory-only task photos (JPG/PNG/WebP, 5 MB), with decoding,
   cancel cleanup and shared upload UI. No storage service. Keep photos in saved task snapshots;
   V5 requires teacher declaration for low-level non-reading suitability. Do not claim OCR checks.

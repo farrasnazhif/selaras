@@ -602,17 +602,27 @@ bukan rencana manual yang seluruh bloknya valid dan jumlah menitnya tepat.
 **UI-20-AC-01:** daftar Kelas menyediakan kartu mandiri Kelas 1 dan Kelas 2, masing-masing
 32 siswa fiktif. Kartu membuka detail Siswa/Level/Progres satu kelas; penjadwalan menunggu
 kelas digabung. Kartu memakai banner yang sudah tersedia, ikon, maksimal tiga avatar dan jumlah.
+Penyempurnaan pengguna: ikuti tata letak kartu pada branch `main` (banner, ikon dan judul,
+lalu footer berseparator dengan jumlah siswa dan sesi terakhir). Jumlah siswa tetap memakai
+AvatarGroup branch ini, bukan ikon pengguna; pertahankan alur pilih/gabung yang sudah tersedia.
+Lebar dan jarak juga mengikuti `main`: grid 1/2/3 kolom (sm/xl), gap 20 px, banner 72 px,
+padding kartu 16 px, judul 20 px dan ikon 24 px.
 **UI-20-AC-02:** tombol Gabungkan kelas melayang kanan bawah memasuki mode pilih. Guru memilih
 tepat dua kelas mandiri, melihat batas 2 pilihan, lalu menekan tombol panah lanjut. Batal tidak
 mengubah data. Pilihan aktif berborder ungu; pilihan tak cocok/nonmandiri tidak bisa dipilih.
 Pasangan baru dibatasi 1+2, 3+4, 5+6 (kedua urutan diterima), bukan 2+3 atau 4+5.
 **UI-20-AC-03:** setelah digabung, daftar menampilkan dua kartu sumber dengan tanda plus di
 antaranya dalam satu panel. Kartu mandiri sumber diganti pasangan itu, tanpa menggandakan siswa.
+Panel gabungan memakai dua kolom grid pada sm ke atas, dengan gap 20 px; setiap kartu sumber
+selebar kartu mandiri. Tanda plus diposisikan di tengah gap tanpa mengambil lebar kartu.
 Detail pasangan mempertahankan kelas asal, ID siswa, histori dan penyesuaian kelompok. Pasangan
 lama 2+3 dan sesi demonya dipertahankan; aturan baru tidak menghapus fixture lama.
 **UI-20-AC-04:** penyimpanan tetap memori; aksi/provider memvalidasi pasangan, dua ID berbeda,
 status mandiri, dan keberadaan kelas sebelum perubahan. Pasangan tidak sah tidak mengubah state.
 Tampilan responsif menumpuk dua kartu pada layar sempit; aksi melayang memiliki label keyboard.
+**UI-20-AC-05:** pisahkan daftar menjadi bagian Kelas gabungan di atas dan Kelas mandiri di
+bawah, dengan judul dan pesan kosong masing-masing. Pencarian berlaku pada keduanya. Mode
+pilih gabung tetap hanya menampilkan kelas mandiri; hasil gabung berpindah ke bagian atas.
 
 ### UI-21 — Foto opsional pada tugas kelompok [instruksi pengguna]
 
