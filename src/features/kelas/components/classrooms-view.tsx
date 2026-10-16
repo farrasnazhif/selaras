@@ -82,8 +82,8 @@ export function ClassroomsView() {
       </header>
       {combining && (
         <Notice tone="info">
-          Pilih dua kelas mandiri. Pasangan yang tersedia: Kelas 1 dengan 2, 3
-          dengan 4, atau 5 dengan 6. Setelah itu, tekan panah untuk
+          Pilih dua kelas mandiri yang tingkatnya berbeda satu. Misalnya, Kelas 2
+          bisa digabung dengan Kelas 1 atau 3. Setelah itu, tekan panah untuk
           menggabungkan.
         </Notice>
       )}
@@ -104,7 +104,7 @@ export function ClassroomsView() {
               <h2 id={section.id} className="text-xl font-bold">
                 {section.title}
               </h2>
-              <div className="grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
                 {sectionClassrooms.map((classroom) => {
                   const members = allStudents.filter(
                     (student) => student.classroomId === classroom.id,
@@ -118,7 +118,7 @@ export function ClassroomsView() {
                         key={classroom.id}
                         href={classPath(classroom.id)}
                         aria-label={`Buka ${classroomTitle(classroom)}`}
-                        className="relative grid items-stretch gap-5 rounded-window bg-primary/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:col-span-2 sm:grid-cols-2"
+                        className="relative grid items-stretch rounded-4xl gap-5 bg-[#e3e3e3] border-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:col-span-2 sm:grid-cols-2"
                       >
                         <div className="min-w-0">
                           <ClassroomCard

@@ -1,6 +1,6 @@
 import type { PreviewClassroom, PreviewStudent } from "@/features/shared/types/preview";
 
-export const INDEPENDENT_CLASSROOMS: PreviewClassroom[] = [1, 2].map((grade) => ({
+export const INDEPENDENT_CLASSROOMS: PreviewClassroom[] = [1, 2, 3, 4, 5, 6].map((grade) => ({
   id: `kelas-${grade}`, independent: true, grades: { first: String(grade), second: "" },
 }));
 const NAMES = ["Adi", "Alya", "Bagas", "Bella", "Cahya", "Dara", "Deni", "Dewi", "Evan", "Farah", "Fikri", "Gilang", "Hasna", "Ilham", "Intan", "Jihan", "Kevin", "Laila", "Lutfi", "Mila", "Nabil", "Nadia", "Putra", "Putri", "Rafi", "Rara", "Rizki", "Salma", "Sinta", "Tegar", "Wulan", "Yusuf"];

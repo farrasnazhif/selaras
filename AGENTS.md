@@ -167,8 +167,9 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 
 UI conventions:
 
-- UI-20/DES-34 adds independent classes and a floating combine flow for fixed new pairs 1+2,
-  3+4, 5+6. Preserve the legacy 2+3 demo. Merge rosters without changing student IDs/history;
+- UI-20/DES-34 seeds independent classes 1–6, each with 32 fictional students, and a floating
+  combine flow for any neighboring grades: 1+2, 2+3, 3+4, 4+5, 5+6, in either order.
+  Preserve the legacy 2+3 demo. Merge rosters without changing student IDs/history;
   standalone details render only their first class and cannot schedule until paired. Combined
   cards retain both banners/identities around a plus. The floating action alone uses 64 px circle.
   Cards follow main's banner/title/separated metadata-footer layout; keep AvatarGroup and count

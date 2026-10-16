@@ -534,7 +534,8 @@ invalid changes show existing five checks and disable save/print. Keep student o
 
 ## DES-34 — Independent class cards and floating combine flow
 
-UI-20 follows the supplied three references: white cards with existing photographic banners,
+UI-20 seeds independent classes 1–6 with 32 fictional pupils each, preserving the 2+3 demo.
+It follows the supplied three references: white cards with existing photographic banners,
 colored Lucide icon, class name, up to three overlapping initial avatars and numeric count.
 The latest refinement restores main's card layout: 72 px banner, 24 px icon, 20 px bold title,
 16 px body padding, and a separated footer with member avatars/count and last-session date (or
@@ -544,7 +545,8 @@ Match main's sizing and spacing: responsive 1/2/3 columns (sm/xl), 20 px grid ga
 card-grid exception to the usual 15/30/60 px product spacing. No shadows/gradients. The lower-right
 floating shared icon button is a specific 64 px circular action, an exception to normal Button
 sizing. Selection adds a purple border and pressed state; show 0/2 through 2/2, cancel, and a
-floating next arrow. Incompatible grades are disabled with an explanation. Only 1+2, 3+4, 5+6.
+floating next arrow. Incompatible grades are disabled with an explanation. Any two neighboring
+grades may combine: 1+2, 2+3, 3+4, 4+5, 5+6, in either selection order.
 
 After combining, place two constituent cards around a noninteractive plus in one pale neutral
 panel, one link to combined details. Stack vertically on phones.

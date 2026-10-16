@@ -53,7 +53,8 @@ same-phase first shared block, student-safe projection, local-only storage and s
 callers, README and contract tests; tests stay unrun, typecheck/lint/build apply. Confirm destructive
 regeneration, keep cancel non-mutating, and preserve other in-memory sessions and roster history.
 
-UI-20/DES-34 adds seeded independent 1/2 class cards, pure fixed-pair validation/merge helpers,
+UI-20/DES-34 adds seeded independent 1–6 class cards (32 fictional pupils each), pure neighboring-grade
+validation/merge helpers (1+2, 2+3, 3+4, 4+5, 5+6, either order),
 floating selection/next flow and constituent-card composition. Adapt provider/single-class tabs,
 presentation and session guards; preserve existing 2+3 and identity/history. UI-21/DES-35 adds
 shared optional photo input in task editing, local data URL snapshots, content validation and

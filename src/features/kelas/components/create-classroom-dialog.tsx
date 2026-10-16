@@ -22,7 +22,7 @@ export function CreateClassroomDialog() {
   const { control, handleSubmit, formState: { errors } } = useForm<ClassroomPreviewInput>({ resolver: zodResolver(classroomPreviewSchema), defaultValues: { first: "1", second: "2" } });
   function create(input: ClassroomPreviewInput) {
     const id = createClassroom(input);
-    if (!id) { setError("Pasangan kelas tidak tersedia. Pilih 1+2, 3+4, atau 5+6."); return; }
+    if (!id) { setError("Pasangan kelas tidak tersedia. Pilih dua tingkat kelas yang berbeda satu."); return; }
     setError("");
     setOpen(false);
     router.push(`${classPath(id)}/siswa`);

@@ -283,10 +283,10 @@ other sessions and assessment history remain unchanged. Cancel leaves the saved 
 All edits still disappear on reload; custom text needs teacher review before printing.
 
 
-Independent classes: `/kelas` starts with Kelas 1 and Kelas 2, each with 32 fictional pupils,
+Independent classes: `/kelas` starts with Kelas 1 through Kelas 6, each with 32 fictional pupils,
 and retains the original 2+3 demo. Open an independent card for its single-class Siswa/Level/
 Progres tabs. The floating Gabungkan kelas action selects exactly two independent classes;
-only 1+2, 3+4 and 5+6 are allowed for new pairs. Press the next arrow to replace their two
+grades must differ by exactly one: 1+2, 2+3, 3+4, 4+5 or 5+6, in either order. Press the next arrow to replace their two
 independent entries with one linked pair of cards joined by a plus. Student IDs, levels,
 observations and manual group choices remain. The pair can then create sessions. Canceling
 selection changes nothing. The old demo's 2+3 pair is retained as a legacy fixture.

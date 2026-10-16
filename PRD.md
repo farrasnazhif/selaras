@@ -599,7 +599,7 @@ bukan rencana manual yang seluruh bloknya valid dan jumlah menitnya tepat.
 
 ### UI-20 — Kelas mandiri dan alur gabung [instruksi pengguna dan tiga referensi UI]
 
-**UI-20-AC-01:** daftar Kelas menyediakan kartu mandiri Kelas 1 dan Kelas 2, masing-masing
+**UI-20-AC-01:** daftar Kelas menyediakan kartu mandiri Kelas 1 sampai Kelas 6, masing-masing
 32 siswa fiktif. Kartu membuka detail Siswa/Level/Progres satu kelas; penjadwalan menunggu
 kelas digabung. Kartu memakai banner yang sudah tersedia, ikon, maksimal tiga avatar dan jumlah.
 Penyempurnaan pengguna: ikuti tata letak kartu pada branch `main` (banner, ikon dan judul,
@@ -610,7 +610,8 @@ padding kartu 16 px, judul 20 px dan ikon 24 px.
 **UI-20-AC-02:** tombol Gabungkan kelas melayang kanan bawah memasuki mode pilih. Guru memilih
 tepat dua kelas mandiri, melihat batas 2 pilihan, lalu menekan tombol panah lanjut. Batal tidak
 mengubah data. Pilihan aktif berborder ungu; pilihan tak cocok/nonmandiri tidak bisa dipilih.
-Pasangan baru dibatasi 1+2, 3+4, 5+6 (kedua urutan diterima), bukan 2+3 atau 4+5.
+Pasangan baru menerima dua tingkat kelas yang selisihnya tepat satu: 1+2, 2+3, 3+4, 4+5,
+atau 5+6; kedua urutan diterima. Kelas setingkat atau berselisih lebih dari satu tidak diterima.
 **UI-20-AC-03:** setelah digabung, daftar menampilkan dua kartu sumber dengan tanda plus di
 antaranya dalam satu panel. Kartu mandiri sumber diganti pasangan itu, tanpa menggandakan siswa.
 Panel gabungan memakai dua kolom grid pada sm ke atas, dengan gap 20 px; setiap kartu sumber

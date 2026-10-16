@@ -35,21 +35,17 @@ export function ClassroomCard({
         />
       </div>
       <div className="flex flex-1 flex-col p-4">
-        <div className="flex min-w-0 items-center gap-2">
-          <Icon
-            size={24}
-            strokeWidth={2.5}
-            className={`shrink-0 ${variant.iconColor}`}
-            aria-hidden="true"
-          />
-          <h3 className="text-xl font-bold">Kelas {grade}</h3>
-        </div>
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4 text-xs text-muted">
-          <span
-            role="img"
-            aria-label={`${members.length} siswa`}
-            className="flex shrink-0 items-center gap-2"
-          >
+        <div className="flex justify-between">
+          <div className="flex min-w-0 items-center gap-2">
+            <Icon
+              size={16}
+              strokeWidth={2.5}
+              className={`shrink-0 ${variant.iconColor}`}
+              aria-hidden="true"
+            />
+            <h3 className="text-md font-bold">Kelas {grade}</h3>
+          </div>
+          <div className="flex gap-0">
             <span
               aria-hidden="true"
               className="[&_.ui-avatar]:!h-6 [&_.ui-avatar]:!w-6 [&_.ui-avatar]:!text-xs"
@@ -61,10 +57,19 @@ export function ClassroomCard({
                 max={3}
               />
             </span>
-            <span aria-hidden="true" className="text-xs font-bold">
-              {members.length}
+            <span
+              role="img"
+              aria-label={`${members.length} siswa`}
+              className="flex shrink-0 items-center gap-2"
+            >
+              <span aria-hidden="true" className="text-[8px] mt-2">
+                +{members.length}
+              </span>
             </span>
-          </span>
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-col items-start justify-between gap-3 border-t border-line pt-4 text-xs text-muted">
           <span className="flex items-center gap-1.5">
             <CalendarDays size={15} className="shrink-0" aria-hidden="true" />
             {lastSessionDate
