@@ -499,3 +499,57 @@ follow the selected skill focus; do not present skill levels as assessment of an
 Session cards, overall Jadwal, saved detail, board dialog, and printed task summaries carry the
 same context and saved roster. Keep task details collapsible and preserve dirty-form save/print
 guards. No curriculum selector, backend, new navigation, or automatic curriculum content.
+
+
+## DES-32 — Validated local schedules and safe group sheets
+
+UI-18 adds duration and a compact 10/15/20-minute Select to the builder. Use plain-language
+errors and five named validation checks. Render assignments/group activities from the generated
+snapshot. Reveal per-class task Textareas for level-six students; the teacher supplies learning
+content. Keep current white bordered surfaces, shared controls, typography and spacing.
+
+Teacher previews include member allocation and draft exercises. Use black-and-white code-native
+pictures for non-reading tasks, explained orally at the opening. Board/print use a separate
+identity-free projection with neutral group names and activity numbers, never CSS-only hiding.
+Print a safe schedule followed by A4 sheets, each group beginning a new page; allow long content
+to continue, keep at least 12 px text and monochrome borders. Invalid plans have no printable
+packet. Browser paper/header/footer settings remain user-controlled; content needs teacher review.
+
+
+## DES-33 — Session editing and subject Select
+
+UI-19 uses the existing pastel Select for mapel, with an adjacent required name Input only for
+Lainnya. Keep the focus Select separate. Add keyboard-accessible block cards inside Ubah jadwal:
+class Select, 10/15/20-minute Select, optional teaching note, labeled xs move/delete controls and
+Tambah blok. Preserve the current schedule grid as the applied preview, with plain validation.
+
+Group task cards gain shared xs Ubah/Hapus actions and Tambah kegiatan, using Dialog + RHF/Zod
+for recipients (one existing level cohort), title, type, instructions, passage/questions or visual
+pattern. Do not expose written work for low levels. Keep accessible error labels, danger states,
+white surfaces and current spacing. Read-only views remain compact; saved detail links to Ubah
+sesi. Confirm regeneration before replacing manual edits. Block editing while metadata is dirty;
+invalid changes show existing five checks and disable save/print. Keep student output separate.
+
+
+## DES-34 — Independent class cards and floating combine flow
+
+UI-20 follows the supplied three references: white cards with existing photographic banners,
+small colored Lucide icon, class name, up to three overlapping initial avatars and numeric count.
+Use responsive 1/2/4-column layout with existing spacing and no shadows/gradients. The lower-right
+floating shared icon button is a specific 64 px circular action, an exception to normal Button
+sizing. Selection adds a purple border and pressed state; show 0/2 through 2/2, cancel, and a
+floating next arrow. Incompatible grades are disabled with an explanation. Only 1+2, 3+4, 5+6.
+
+After combining, place two constituent cards around a noninteractive plus in one pale neutral
+panel, one link to combined details. Stack vertically on phones. Independent details show one
+class in existing tabs and explain how to combine before scheduling. Preserve the old 2+3 demo.
+
+## DES-35 — Optional task photo
+
+UI-21 reuses Dropzone with Indonesian labels in the task dialog, followed by a bounded image
+preview, editable description and remove action. Keep upload failures inline and disable save
+while reading. Use existing image rendering with contain sizing in teacher preview/board/print;
+no crop or stretch. Require an explicit non-reading declaration when a photo serves levels 1–2.
+Photos are local memory only and contents require teacher review. Student output copies only the
+image/description/dimensions, no file name, roster metadata or ability declaration. Keep print
+images within the A4 content area and allow page continuation instead of clipping.

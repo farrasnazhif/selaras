@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Select } from "@/components/ui/select";
 import { Table, type TableColumn } from "@/components/ui/table";
-import { CLASS_KEYS } from "@/features/kelas/constants/preview";
 import {
   LITERACY_LEVELS,
   NUMERACY_LEVELS,
@@ -16,7 +15,7 @@ import { usePreview } from "@/features/shared/components/preview-provider";
 import { ObservationDialog } from "@/features/kelas/components/observation-dialog";
 
 export function ProgressView({ embedded = false }: { embedded?: boolean }) {
-  const { grades, students, assessments } = usePreview();
+  const { grades, students, assessments, classKeys } = usePreview();
   const [subject, setSubject] = useState<Subject>("literasi");
   const levels = subject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
   function comparison(student: PreviewStudent) {
@@ -93,7 +92,7 @@ export function ProgressView({ embedded = false }: { embedded?: boolean }) {
           />
         </div>
       </div>
-      {CLASS_KEYS.map((classKey) => {
+      {classKeys.map((classKey) => {
         const roster = students.filter(
           (student) => student.classKey === classKey,
         );

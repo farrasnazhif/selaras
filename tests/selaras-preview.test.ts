@@ -4,7 +4,8 @@ import { GROUP_KEYS, PREVIEW_STUDENTS, phaseForGrade } from "../src/features/kel
 import { observationSchema, previewStudentSchema } from "../src/features/kelas/validations/observation.ts";
 import { groupStudentsBySubject } from "../src/features/kelas/constants/groups.ts";
 import { getIndependentTasks } from "../src/features/sesi/constants/independent-tasks.ts";
-import { SESSION_ROTATION } from "../src/features/sesi/constants/reference-content.ts";
+import { SESSION_DEFAULTS } from "../src/features/sesi/constants/reference-content.ts";
+import { buildSessionPlan } from "../src/features/sesi/constants/scheduler.ts";
 import { LITERACY_LEVELS, NUMERACY_LEVELS } from "../src/features/kelas/constants/reference-content.ts";
 import { classroomPreviewSchema } from "../src/features/kelas/validations/classroom.ts";
 import { sessionPreviewSchema } from "../src/features/sesi/validations/session.ts";
@@ -45,20 +46,22 @@ test("the preview uses the level-table roster, six level options, and a contiguo
   assert.equal(PREVIEW_STUDENTS.filter((student) => student.classKey === "second").length, 8);
   assert.equal(LITERACY_LEVELS.length, 6);
   assert.equal(NUMERACY_LEVELS.length, 6);
+  const { plan } = buildSessionPlan(SESSION_DEFAULTS, groupStudentsBySubject(PREVIEW_STUDENTS, "literasi"), { first: "2", second: "3" });
+  assert.ok(plan);
   let end = 0;
-  for (const block of SESSION_ROTATION) {
+  for (const block of plan.blocks) {
     assert.equal(block.start, end);
     assert.ok(block.end > block.start);
-    assert.ok(block.shared ? !block.teacher : ["first", "second"].includes(block.teacher ?? ""));
+    assert.equal(block.teacherAssignments.length, 1);
     end = block.end;
   }
   assert.equal(end, 70);
-  assert.deepEqual(SESSION_ROTATION.filter((block) => !block.shared).map((block) => block.teacher), ["first", "second", "first", "second"]);
+  assert.deepEqual(plan.blocks.filter((block) => block.kind === "core").map((block) => block.teacherAssignments[0]), [["first"], ["second"], ["first"], ["second"]]);
   assert.equal(classroomPreviewSchema.safeParse({ first: "2", second: "2" }).success, false);
 });
 
 test("session context accepts curriculum subject names while validating a separate skill focus (UI-17)", () => {
-  const input = { lessonSubject: "Bahasa Indonesia", topic: "", focus: "literasi", duration: "70", blockMinutes: "15", date: "2026-10-14" };
+  const input = { ...SESSION_DEFAULTS };
   for (const lessonSubject of ["Bahasa Indonesia", "Matematika", "PPKn", "SBdP", "PJOK", "IPAS", "Muatan lokal"]) {
     for (const focus of ["literasi", "numerasi"]) {
       const parsed = sessionPreviewSchema.parse({ ...input, lessonSubject: `  ${lessonSubject}  `, topic: "  Lingkungan sekolah  ", focus });
@@ -73,7 +76,7 @@ test("session context accepts curriculum subject names while validating a separa
   assert.equal(sessionPreviewSchema.safeParse({ ...input, topic: "a".repeat(161) }).success, false);
   assert.equal(sessionPreviewSchema.safeParse({ ...input, focus: "PJOK" }).success, false);
   assert.equal(sessionPreviewSchema.safeParse({ ...input, date: "2026-02-31" }).success, false);
-  assert.equal(sessionPreviewSchema.safeParse({ ...input, duration: "90" }).success, false);
+  assert.equal(sessionPreviewSchema.safeParse({ ...input, duration: "241" }).success, false);
 });
 
 test("preview entry rejects blank names/observations and retains trimmed content", () => {

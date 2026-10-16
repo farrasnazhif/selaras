@@ -31,7 +31,7 @@ export function ClassDetailView({ tab = "level" }: { tab?: ClassTab }) {
       </header>
       <Tabs
         key={classroom.id}
-        label="Detail kelas rangkap"
+        label="Detail kelas"
         value={tab}
         onValueChange={(value) =>
           router.push(`${classPath(classroom.id)}/${value}`)

@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import { LayoutPanelTop, Printer } from "lucide-react";
+import { LayoutPanelTop, Pencil, Printer } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Collapsible } from "@/components/ui/collapsible";
@@ -15,6 +16,10 @@ import { usePreview } from "@/features/shared/components/preview-provider";
 import { ClassUnavailable } from "@/features/shared/components/class-unavailable";
 import { RotationGrid } from "@/features/sesi/components/rotation-grid";
 import { SessionTaskSummary } from "@/features/sesi/components/session-task-summary";
+import { sessionTurnLabel } from "@/features/sesi/constants/plan-editing";
+import { validateSessionPlan, getStudentPacket } from "@/features/sesi/constants/scheduler";
+import { PlanStatus } from "./plan-status";
+import { StudentPacketView } from "./student-packet";
 
 export function SessionDetailView({ sessionId }: { sessionId: string }) {
   const { classroom, sessions } = usePreview();
@@ -24,9 +29,12 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
   );
   if (!classroom || !session) return <ClassUnavailable />;
   const path = classPath(classroom.id);
+  const validation = validateSessionPlan(session, session.roster, session.grades, session.plan);
+  const packet = validation.valid ? getStudentPacket(session, session.plan, session.grades) : null;
   const title = `${session.lessonSubject}, ${displayDate(session.date)}`;
   return (
-    <div className="space-y-ui-md">
+    <>
+    <div className="print-hidden space-y-ui-md">
       <div className="print-hidden">
         <Breadcrumbs
           items={[
@@ -46,39 +54,38 @@ export function SessionDetailView({ sessionId }: { sessionId: string }) {
           <div className="mt-2 flex flex-wrap gap-x-ui-sm gap-y-1 text-sm text-muted">
             <span>Fokus {session.focus === "literasi" ? "Literasi" : "Numerasi"}</span>
             <span>Durasi {session.duration} menit</span>
-            <span>Bergantian setiap {session.blockMinutes} menit</span>
+            <span>{sessionTurnLabel(session.plan)}</span>
             <span>{session.roster.length} siswa</span>
           </div>
         </div>
         <div className="print-hidden flex flex-wrap gap-ui-sm">
+          <Button variant="secondary" nativeButton={false} role="link" render={<Link href={`${path}/sesi/${session.id}/ubah`} />}><Pencil size={16} aria-hidden="true" />Ubah sesi</Button>
           <Dialog
             open={boardOpen}
             onOpenChange={setBoardOpen}
             title="Versi papan tulis"
             description={`${title}. Panduan tugas belajar tiap kelompok.`}
             trigger={
-              <Button variant="secondary">
+              <Button variant="secondary" disabled={!validation.valid}>
                 <LayoutPanelTop size={16} aria-hidden="true" />
                 Versi papan tulis
               </Button>
             }
           >
-            <SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic}
-              board
-              roster={session.roster}
-              gradePair={session.grades}
-            />
+            {packet && <StudentPacketView packet={packet} board />}
           </Dialog>
-          <Button variant="primary" onClick={() => window.print()}>
+          <Button variant="primary" disabled={!validation.valid} onClick={() => { if (validateSessionPlan(session, session.roster, session.grades, session.plan).valid) window.print(); }}>
             <Printer size={16} aria-hidden="true" />
             Cetak / Simpan PDF
           </Button>
         </div>
       </header>
-      <p className="text-sm text-muted">Siapkan materi dan tugas sesuai tujuan belajar tiap kelas. Jadwal ini menyediakan pembagian waktu dan panduan kemampuan.</p>
-      <RotationGrid focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} />
-      <div className="print-hidden"><Collapsible label="Lihat tugas tiap kelompok"><SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} /></Collapsible></div>
-      <div className="hidden print:block"><SessionTaskSummary focus={session.focus} lessonSubject={session.lessonSubject} topic={session.topic} roster={session.roster} gradePair={session.grades} /></div>
+      <PlanStatus validation={validation} />
+      <p className="text-sm text-muted">Materi tatap muka disiapkan guru. Latihan dasar ini mengikuti fokus kemampuan; periksa kesesuaiannya sebelum digunakan.</p>
+      <RotationGrid plan={session.plan} grades={session.grades} lessonSubject={session.lessonSubject} topic={session.topic} />
+      <Collapsible label="Periksa tugas tiap kelompok"><SessionTaskSummary plan={session.plan} roster={session.roster} grades={session.grades} /></Collapsible>
     </div>
+    {packet && <StudentPacketView packet={packet} />}
+    </>
   );
 }

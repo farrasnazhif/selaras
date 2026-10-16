@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { IconButton } from "@/components/ui/icon-button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { EmptyState } from "@/components/ui/empty-state";
-import { CLASS_KEYS, GROUP_KEYS } from "@/features/kelas/constants/preview";
+import { GROUP_KEYS } from "@/features/kelas/constants/preview";
 import { GROUP_LABELS, GROUP_LEVELS } from "@/features/kelas/constants/groups";
 import { LITERACY_LEVELS, NUMERACY_LEVELS } from "@/features/kelas/constants/reference-content";
 import { usePreview } from "@/features/shared/components/preview-provider";
@@ -19,7 +19,7 @@ const groupSurfaces = {
 };
 
 export function GroupsStep() {
-  const { grades, students, groupSubject, moveStudent } = usePreview();
+  const { grades, students, groupSubject, moveStudent, classKeys } = usePreview();
   const levels = groupSubject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
   const [message, setMessage] = useState("");
   return (
@@ -32,7 +32,7 @@ export function GroupsStep() {
           </p>
         </div>
       </div>
-      {CLASS_KEYS.map((classKey) => (
+      {classKeys.map((classKey) => (
         <section key={classKey} aria-labelledby={`groups-${classKey}`}>
           <div className="mb-ui-sm flex items-center gap-ui-sm">
             <h2 id={`groups-${classKey}`} className="text-xl font-extrabold">

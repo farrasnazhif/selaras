@@ -40,6 +40,27 @@ Implementation modules are split across `src/features/kelas`, `progres`, and `se
 cross-page preview state/shell in `src/features/shared`; App Router pages live directly under
 `src/app/kelas`, `src/app/progres`, and `src/app/sesi` with no Selaras route-group directory.
 
+UI-18/DES-32 directly authorizes pure schedule types/generation/V1–V5 validation under sesi,
+draft task templates, teacher-provided phase content, identity-free A4/board output, variable
+whole-minute duration and 10/15/20-minute blocks. Update builder, rotation, tasks, detail/Jadwal,
+provider/types, print CSS, README and contract tests. Preserve subject context and manual groups.
+No backend, AI, dependencies or persistence. Tests are written but unrun; typecheck/lint/build apply.
+
+UI-19/DES-33 authorizes the mapel Select/custom-name input; block and task editor components,
+pure edit helpers/content validations; local saved-session Ubah route/action; provider updates
+that validate and save the submitted plan/snapshot without regeneration. Preserve V1–V5,
+same-phase first shared block, student-safe projection, local-only storage and shared UI. Update
+callers, README and contract tests; tests stay unrun, typecheck/lint/build apply. Confirm destructive
+regeneration, keep cancel non-mutating, and preserve other in-memory sessions and roster history.
+
+UI-20/DES-34 adds seeded independent 1/2 class cards, pure fixed-pair validation/merge helpers,
+floating selection/next flow and constituent-card composition. Adapt provider/single-class tabs,
+presentation and session guards; preserve existing 2+3 and identity/history. UI-21/DES-35 adds
+shared optional photo input in task editing, local data URL snapshots, content validation and
+teacher/student/print rendering. Reuse Dropzone/file validation; abort pending reads and keep
+old content on errors/cancel. Write affected contracts without running tests; typecheck/lint/build
+apply. No backend, permanent upload, AI/OCR or browser persistence.
+
 ## Working agreement
 
 Current direct implementation scope (`UI-17`, `DES-31`): separate teacher-entered subject/topic

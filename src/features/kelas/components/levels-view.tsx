@@ -6,7 +6,6 @@ import { Select } from "@/components/ui/select";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
 import { Table, type TableColumn } from "@/components/ui/table";
-import { CLASS_KEYS } from "@/features/kelas/constants/preview";
 import { LITERACY_LEVELS, NUMERACY_LEVELS } from "@/features/kelas/constants/reference-content";
 import type { PreviewStudent } from "@/features/shared/types/preview";
 import { usePreview } from "@/features/shared/components/preview-provider";
@@ -14,7 +13,7 @@ import { DiagnosticGuide, LevelRubrics } from "./level-rubrics";
 import { ObservationDialog } from "./observation-dialog";
 
 export function LevelsView() {
-  const { students, grades, setLevel } = usePreview();
+  const { students, grades, setLevel, classKeys } = usePreview();
   const columns: TableColumn<PreviewStudent>[] = [
     { id: "no", label: "No", value: (student) => String(students.indexOf(student) + 1).padStart(2, "0") },
     { id: "name", label: "Nama siswa", value: (student) => student.name, render: (student) => <span className="font-bold">{student.name}</span> },
@@ -26,7 +25,7 @@ export function LevelsView() {
   return (
     <div className="space-y-ui-group text-ink">
       <DiagnosticGuide />
-      {students.length ? CLASS_KEYS.map((key) => <ClassLevels key={key} grade={grades[key]} rows={students.filter((student) => student.classKey === key)} columns={columns} />) : <EmptyState title="Belum ada siswa" description="Tambahkan siswa pada tab Siswa untuk mulai mencatat level." />}
+      {students.length ? classKeys.map((key) => <ClassLevels key={key} grade={grades[key]} rows={students.filter((student) => student.classKey === key)} columns={columns} />) : <EmptyState title="Belum ada siswa" description="Tambahkan siswa pada tab Siswa untuk mulai mencatat level." />}
       <LevelRubrics />
     </div>
   );

@@ -533,6 +533,101 @@ Ini menggantikan batas preview dua pilihan mapel dan rotasi literasi saja pada U
 dua pilihan tersebut kini adalah fokus kemampuan. Kurikulum sekolah, tujuan/materi tiap mapel,
 dan validasi pedagogisnya tetap Q-13. Parameter produksi/tie-breaker tetap Q-01.
 
+### UI-18 — Penyusun sesi lokal, V1–V5, dan lembar aman [proposal pengguna]
+
+**UI-18-AC-01:** fungsi TypeScript murni menghasilkan jadwal deterministik dengan pembuka/
+penutup 5 menit dan blok inti 10/15/20 menit. Durasi menit bulat harus habis dibagi setelah
+pengurangan 10 menit; maksimal 240 menit merupakan batas teknis preview. Lintas fase perlu
+minimal dua blok inti. Satu fase memiliki blok inti pertama bersama. Berikutnya bergantian;
+kelas dengan level minimum lebih rendah didahulukan, seri memakai kelas pertama. Parameter
+pedagogis produksi tetap Q-01.
+**UI-18-AC-02:** pemeriksa independen memeriksa V1 tepat satu penugasan guru (boleh kedua
+kelas bersama), V2 tepat satu kegiatan per kelompok beranggota dan cakupan tugas, V3 waktu
+berurutan/durasi tepat, V4 tiap kelas mendapat blok inti bersama guru, V5 tugas mandiri level
+1–2 tanpa membaca. Periksa ulang sebelum simpan/cetak; invalid menampilkan sebab dan diblokir.
+**UI-18-AC-03:** template draf asli literasi/numerasi 1–5 berisi latihan nyata dan gambar
+hitam-putih untuk kegiatan tanpa membaca. Guru memeriksa kesesuaian sebelum digunakan; ini
+bukan konten kurikulum/ASER tervalidasi. Level 6 perlu isian tugas guru per kelas, sesuai
+capaian kelas; tidak diganti latihan dasar. Kelas kosong/siswa tanpa level menghalangi susun.
+**UI-18-AC-04:** simpan snapshot roster/kelompok/tugas/blok dalam memori; perubahan berikutnya
+tidak mengubah sesi lama. Builder, detail, Jadwal, papan tulis dan cetak memakai snapshot sama.
+Mapel/topik UI-17 tetap tersedia; latihan mengikuti fokus kemampuan. Guru menyiapkan tatap muka.
+**UI-18-AC-05:** guru melihat anggota/level/petunjuk. Papan tulis/lembar A4 memakai proyeksi
+terpisah: kelas, nama kelompok netral, nomor kegiatan dan isi latihan; tanpa nama/ID siswa,
+nomor/nama level, atau label fase. Setiap kelompok mulai halaman baru; kegiatan kelompok
+campuran dibagikan secara lisan saat pembukaan. Konten panjang boleh berlanjut, tidak dipotong.
+Petunjuk 1–2 diberikan lisan saat pembukaan; lembar tidak memerlukan membaca. Cetak browser.
+**UI-18-AC-06:** tulis kontrak fase sama/lintas, V1–V5, parameter invalid, kelompok campuran,
+snapshot dan proyeksi tanpa identitas. Tes tidak dijalankan sesuai instruksi pengguna.
+Typecheck/lint/build tetap berlaku; tidak ada AI/backend/persistensi baru.
+
+Tugas isian guru dipisahkan per kelas dan fokus; mengganti fokus tidak memakai tugas fokus lain.
+Ini menggantikan rotasi konstan/panduan saja UI-17. Konten fase diisi guru sementara;
+peninjauan pedagogis/kurikulum tetap Q-13. Aturan warna kelompok tetap UI-15.
+
+### UI-19 — Penyunting sesi dan pilihan mapel [instruksi pengguna]
+
+**UI-19-AC-01:** Mata pelajaran memakai Select Bahasa Indonesia, Matematika, PPKn/Pendidikan
+Pancasila, SBdP/Seni, PJOK, IPAS, dan Lainnya. Lainnya menampilkan Input wajib; nama tersimpan
+sebagai nama mapel sebenarnya, bukan label Lainnya. Pilihan ini bukan daftar kurikulum nasional.
+**UI-19-AC-02:** guru dapat mengubah, menambah, menghapus, dan mengurutkan blok inti dengan
+kontrol keyboard. Setiap blok inti boleh 10/15/20 menit dan memilih kelas bersama guru serta
+catatan kegiatan. Pembuka/penutup tetap 5 menit. Rentang waktu dan durasi total dihitung ulang;
+blok pertama satu fase tetap harus bersama. V1–V5 diperiksa pada hasil suntingan.
+**UI-19-AC-03:** guru dapat mengubah judul, petunjuk, bacaan, soal, dan jenis aktivitas; menambah
+atau menghapus kegiatan per kelompok/level anggotanya. Kegiatan visual memakai pola gambar
+atau jumlah benda yang dapat disunting. Siswa 1–2 tidak mendapat pilihan tertulis; level 6
+memakai tugas kelas dari guru. Siswa boleh menerima beberapa kegiatan, tetapi harus memiliki
+minimal satu tugas. Setiap blok mandiri mengacu daftar kegiatan kelompok terbaru.
+**UI-19-AC-04:** sesi tersimpan memiliki aksi Ubah sesi pada route lokal Bahasa Indonesia
+`/kelas/[classId]/sesi/[sessionId]/ubah`. Simpan mempertahankan ID dan memperbarui snapshot
+sesi itu saja. Batal/kembali tidak mengubah sesi lama. Roster tersimpan tetap menjadi dasar
+suntingan; bukan otomatis mengambil level/kelompok terbaru.
+**UI-19-AC-05:** perubahan metadata perlu diterapkan sebelum menyunting blok/tugas atau
+mencetak. Perubahan mapel/topik/tanggal saja mempertahankan suntingan. Perubahan fokus,
+durasi, panjang blok, atau tugas awal yang memerlukan penyusunan ulang meminta konfirmasi
+sebelum mengganti suntingan. Pembatalan mempertahankan isian form dan draf saat ini.
+**UI-19-AC-06:** simpan memakai rencana hasil suntingan, bukan menghasilkan ulang diam-diam.
+Validasi konten dan V1–V5 berlaku sebelum simpan/cetak; proyeksi A4/papan tetap tanpa identitas
+atau label level. Konten bebas dicetak apa adanya dan diperiksa guru. Semua perubahan tetap
+memori saja, tanpa backend/AI. Tes kontrak ditulis tanpa dijalankan sesuai instruksi pengguna.
+
+Ini memperluas UI-18: pemeriksaan V2 mengizinkan rangkaian tugas per siswa, V3 mengizinkan
+campuran blok 10/15/20 menit. Durasi yang tidak habis dibagi hanya menghalangi generator awal,
+bukan rencana manual yang seluruh bloknya valid dan jumlah menitnya tepat.
+
+### UI-20 — Kelas mandiri dan alur gabung [instruksi pengguna dan tiga referensi UI]
+
+**UI-20-AC-01:** daftar Kelas menyediakan kartu mandiri Kelas 1 dan Kelas 2, masing-masing
+32 siswa fiktif. Kartu membuka detail Siswa/Level/Progres satu kelas; penjadwalan menunggu
+kelas digabung. Kartu memakai banner yang sudah tersedia, ikon, maksimal tiga avatar dan jumlah.
+**UI-20-AC-02:** tombol Gabungkan kelas melayang kanan bawah memasuki mode pilih. Guru memilih
+tepat dua kelas mandiri, melihat batas 2 pilihan, lalu menekan tombol panah lanjut. Batal tidak
+mengubah data. Pilihan aktif berborder ungu; pilihan tak cocok/nonmandiri tidak bisa dipilih.
+Pasangan baru dibatasi 1+2, 3+4, 5+6 (kedua urutan diterima), bukan 2+3 atau 4+5.
+**UI-20-AC-03:** setelah digabung, daftar menampilkan dua kartu sumber dengan tanda plus di
+antaranya dalam satu panel. Kartu mandiri sumber diganti pasangan itu, tanpa menggandakan siswa.
+Detail pasangan mempertahankan kelas asal, ID siswa, histori dan penyesuaian kelompok. Pasangan
+lama 2+3 dan sesi demonya dipertahankan; aturan baru tidak menghapus fixture lama.
+**UI-20-AC-04:** penyimpanan tetap memori; aksi/provider memvalidasi pasangan, dua ID berbeda,
+status mandiri, dan keberadaan kelas sebelum perubahan. Pasangan tidak sah tidak mengubah state.
+Tampilan responsif menumpuk dua kartu pada layar sempit; aksi melayang memiliki label keyboard.
+
+### UI-21 — Foto opsional pada tugas kelompok [instruksi pengguna]
+
+**UI-21-AC-01:** dialog tugas menyediakan pilihan foto JPG/PNG/WebP opsional, maksimal 5 MB,
+pratinjau, keterangan aksesibel, ganti dan hapus. Gunakan shared Dropzone; jangan upload ke
+layanan/server. Baca file sebagai data URL dalam memori, periksa format/ukuran dan decoding;
+batalkan pembacaan saat dialog ditutup. Kesalahan mempertahankan isian dan foto sebelumnya.
+**UI-21-AC-02:** foto yang disimpan tampil pada preview tugas guru, detail, papan tulis dan
+lembar cetak dari snapshot yang sama. Membatalkan dialog tidak mengganti foto tugas lama.
+Tidak menyimpan nama file atau identitas roster ke keluaran siswa. Teks/foto bebas tetap
+perlu diperiksa guru agar tidak berisi identitas dan label kemampuan.
+**UI-21-AC-03:** pada level 1–2, guru harus menyatakan bahwa foto tidak memerlukan membaca;
+foto pengganti perlu konfirmasi ulang. V5 memeriksa pernyataan itu serta struktur kegiatan,
+bukan melakukan OCR atau mengklaim isi gambar diaudit otomatis. Tanpa foto alur tetap bekerja.
+Tidak menambah backend, penyimpanan lampiran permanen, AI/OCR atau persistensi browser.
+
 ## 8. Model data konseptual [USULAN]
 
 | Entitas             | Field inti                                                                                            | Relasi                     |

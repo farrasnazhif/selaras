@@ -1,3 +1,5 @@
+import type { SessionPlan } from "@/features/sesi/types/schedule";
+
 export type ClassKey = "first" | "second";
 export type GroupKey = "A" | "B" | "C";
 
@@ -15,6 +17,8 @@ export type PreviewStudent = {
 export type Subject = "literasi" | "numerasi";
 export type PreviewClassroom = {
   id: string;
+  independent?: true;
+  sourceIds?: Record<ClassKey, string>;
   grades: Record<ClassKey, string>;
 };
 export type PreviewSession = {
@@ -25,10 +29,14 @@ export type PreviewSession = {
   focus: Subject;
   date: string;
   duration: string;
-  blockMinutes: string;
+  blockMinutes: "10" | "15" | "20";
+  phaseTasks: Record<Subject, Record<ClassKey, string>>;
+  plan: SessionPlan;
   roster: PreviewStudent[];
   grades: Record<ClassKey, string>;
 };
+export type SessionDraft = Omit<PreviewSession, "id" | "classroomId">;
+
 export type PreviewAssessment = {
   id: string;
   studentId: string;

@@ -1,53 +1,26 @@
-"use client";
-
-import { BookOpen, Clock3, Users } from "lucide-react";
+import { Clock3, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CLASS_KEYS } from "@/features/kelas/constants/preview";
-import { SESSION_ROTATION } from "@/features/sesi/constants/reference-content";
-import { getIndependentTasks } from "@/features/sesi/constants/independent-tasks";
-import { usePreview } from "@/features/shared/components/preview-provider";
-import type { ClassKey, PreviewStudent, Subject } from "@/features/shared/types/preview";
+import { GROUP_LABELS } from "@/features/kelas/constants/groups";
+import type { ClassKey } from "@/features/shared/types/preview";
+import type { SessionPlan } from "@/features/sesi/types/schedule";
 
-export function RotationGrid({ focus, lessonSubject, topic, roster, gradePair }: {
-  focus: Subject;
-  lessonSubject: string;
-  topic: string;
-  roster?: PreviewStudent[];
-  gradePair?: Record<ClassKey, string>;
-}) {
-  const preview = usePreview();
-  const grades = gradePair ?? preview.grades;
-  const students = roster ?? preview.getStudentsForSubject(focus);
-  return (
-    <section aria-label={`Jadwal belajar ${lessonSubject}`} className="overflow-hidden rounded-window border border-line bg-surface text-ink">
-      <div className="hidden grid-cols-[72px_minmax(0,1fr)_minmax(0,1fr)] bg-inset md:grid">
-        <div className="p-ui-sm text-xs font-bold">Menit</div>
-        {CLASS_KEYS.map((key) => <div key={key} className="flex flex-wrap items-center justify-between gap-2 border-l border-line p-ui-sm text-xs"><span className="font-bold">Kelas {grades[key]}</span><span className="text-muted">{students.filter((student) => student.classKey === key).length} siswa</span></div>)}
-      </div>
-      <ol className="divide-y divide-line">
-        {SESSION_ROTATION.map((block, index) => (
-          <li key={block.start} className="grid md:grid-cols-[72px_minmax(0,1fr)_minmax(0,1fr)]">
-            <div className="flex items-center gap-2 bg-inset px-ui-sm py-ui-sm text-center text-xs md:flex-col md:justify-center"><Clock3 size={14} className="md:hidden" aria-hidden="true" /><span className="font-bold tabular-nums">{String(block.start).padStart(2, "0")}–{String(block.end).padStart(2, "0")}</span><span className="text-xs text-muted">{block.end - block.start} menit</span></div>
-            {block.shared ? <div className="flex flex-wrap items-start gap-ui-sm bg-inset p-ui-sm md:col-span-2"><Badge tone="neutral">Bersama</Badge><div className="min-w-0 flex-1"><h3 className="text-sm font-bold">{block.shared.title}</h3><p className="mt-1 text-xs leading-relaxed text-muted">{block.shared.description}</p></div><span className="hidden text-xs text-muted xl:block">Kedua kelas</span></div> : CLASS_KEYS.map((key) => {
-              const guided = block.teacher === key;
-              return (
-                <div key={key} className={`min-w-0 border-t border-line p-ui-sm md:border-t-0 ${guided ? "border-l-[3px] border-l-primary" : "md:border-l"}`}>
-                  <div className="mb-ui-sm flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-muted md:hidden">Kelas {grades[key]}</span>
-                    <Badge tone={guided ? "primary" : "neutral"}>{guided ? "Bersama guru" : "Mandiri"}</Badge>
-                    {guided && <span className="text-xs text-muted">Bagian {index}</span>}
-                  </div>
-                  <h3 className="break-words text-sm font-bold">{guided ? `Pendampingan ${lessonSubject}` : "Tugas mandiri sesuai kemampuan"}</h3>
-                  {guided ? <p className="mt-2 break-words text-xs leading-relaxed text-muted">{topic ? `Bahas ${topic} sesuai tujuan belajar Kelas ${grades[key]}.` : `Gunakan materi ${lessonSubject} sesuai tujuan belajar Kelas ${grades[key]}.`} Dampingi siswa sesuai kebutuhan dan tinjau pekerjaannya.</p> : <ul className="mt-2 space-y-2">
-                    {getIndependentTasks(students.filter((student) => student.classKey === key), focus, grades[key]).map((task) => <li key={task.level ?? "unassessed"} className="flex flex-wrap items-center gap-2 text-xs leading-relaxed"><span className="font-semibold">{task.title}</span><span className="text-muted">{task.students.length} siswa</span>{task.mode === "non-reading" && <Badge tone="primary">Tanpa membaca</Badge>}{task.mode === "phase" && <Badge tone="warning">Belum dipilih</Badge>}</li>)}
-                  </ul>}
-                  <div className="mt-ui-sm flex items-start gap-2 border-t border-line pt-ui-sm text-xs text-muted">{guided ? <Users size={14} className="shrink-0" aria-hidden="true" /> : <BookOpen size={14} className="shrink-0" aria-hidden="true" />}{guided ? "Materi disiapkan guru untuk kelas ini." : "Sesuaikan panduan kemampuan dengan materi pelajaran. Lihat tugas tiap kelompok untuk pembagian anggota."}</div>
-                </div>
-              );
-            })}
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
+export function RotationGrid({ plan, grades, lessonSubject, topic }: { plan: SessionPlan; grades: Record<ClassKey, string>; lessonSubject: string; topic: string }) {
+  return <section aria-label={`Jadwal belajar ${lessonSubject}`} className="overflow-hidden rounded-window border border-line bg-surface text-ink">
+    <div className="hidden grid-cols-[72px_minmax(0,1fr)_minmax(0,1fr)] bg-inset md:grid"><div className="p-ui-sm text-xs font-bold">Menit</div>{CLASS_KEYS.map((key) => <div key={key} className="border-l border-line p-ui-sm text-sm font-bold">Kelas {grades[key]}</div>)}</div>
+    <ol className="divide-y divide-line">{plan.blocks.map((block) => {
+      const shared = block.teacherAssignments[0]?.length === 2;
+      return <li key={block.start} className="grid md:grid-cols-[72px_minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="flex items-center gap-2 bg-inset p-ui-sm text-xs md:flex-col md:justify-center"><Clock3 size={14} className="md:hidden" aria-hidden="true" /><span className="font-bold tabular-nums">{block.start}–{block.end}</span><span>{block.end - block.start} menit</span></div>
+        {shared ? <div className="space-y-ui-sm bg-inset p-ui-sm md:col-span-2"><Badge tone="primary">Bersama guru, kedua kelas</Badge><h3 className="text-sm font-bold">{block.kind === "opening" ? "Pembukaan dan penjelasan tugas" : block.kind === "closing" ? "Penutup dan tinjauan hasil" : "Belajar bersama"}</h3><p className="break-words text-sm text-muted">{block.kind === "opening" ? "Jelaskan pembagian kegiatan tiap kelompok. Peragakan tugas gambar dan benda konkret secara lisan." : block.kind === "closing" ? "Tinjau hasil kedua kelas dan kumpulkan pekerjaan kelompok." : block.note || `Gunakan materi ${lessonSubject}${topic ? ` tentang ${topic}` : ""} yang disiapkan untuk kedua kelas.`}</p><ul className="flex flex-wrap gap-x-ui-sm gap-y-1 text-xs text-muted">{block.activities.map((activity) => <li key={`${activity.classKey}-${activity.group}`}>Kelas {grades[activity.classKey]}, Kelompok {GROUP_LABELS[activity.group]}</li>)}</ul></div> : CLASS_KEYS.map((classKey) => {
+          const guided = block.teacherAssignments[0]?.includes(classKey);
+          return <div key={classKey} className={`min-w-0 space-y-ui-sm border-t border-line p-ui-sm md:border-t-0 ${guided ? "border-l-[3px] border-l-primary" : "md:border-l"}`}>
+            <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs font-semibold md:hidden">Kelas {grades[classKey]}</span><Badge tone={guided ? "primary" : "neutral"}>{guided ? "Bersama guru" : "Mandiri"}</Badge></div>
+            <p className="break-words text-sm">{guided && block.note ? block.note : guided ? `Pendampingan ${lessonSubject}${topic ? `: ${topic}` : ""}. Materi tatap muka disiapkan guru.` : "Kerjakan kegiatan kelompok yang telah dijelaskan saat pembukaan."}</p>
+            <ul className="space-y-2 text-sm">{block.activities.filter((activity) => activity.classKey === classKey).map((activity) => <li key={activity.group} className="flex items-start gap-2">{guided && <Users size={15} className="mt-0.5 shrink-0" aria-hidden="true" />}<div><span className="font-bold">Kelompok {GROUP_LABELS[activity.group]}</span>{!guided && <ul className="mt-1 space-y-1 text-xs text-muted">{activity.taskIds.map((id, index) => <li key={id}>Kegiatan {index + 1}: {plan.tasks.find((task) => task.id === id)?.template?.title ?? "Tugas belum diisi"}</li>)}</ul>}</div></li>)}</ul>
+          </div>;
+        })}
+      </li>;
+    })}</ol>
+  </section>;
 }

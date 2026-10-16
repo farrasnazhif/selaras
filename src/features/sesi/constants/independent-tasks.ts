@@ -1,5 +1,7 @@
 import { GRADE_OPTIONS, phaseForGrade } from "../../kelas/constants/preview.ts";
 import { LITERACY_LEVELS, NUMERACY_LEVELS } from "../../kelas/constants/reference-content.ts";
+import { TASK_TEMPLATES } from "./task-templates.ts";
+import type { TaskTemplate } from "../types/schedule.ts";
 import type { PreviewStudent, Subject } from "@/features/shared/types/preview";
 
 const PRACTICE = {
@@ -23,8 +25,7 @@ type TaskGuidance = {
   instruction: string;
 };
 
-// shortcut: guidance only, replace with reviewed worksheets and phase tasks when the content bank is approved.
-export function getIndependentTasks(members: PreviewStudent[], subject: Subject, grade: string) {
+export function getIndependentTasks(members: PreviewStudent[], subject: Subject, grade: string, phaseTask = "") {
   const levels = subject === "literasi" ? LITERACY_LEVELS : NUMERACY_LEVELS;
   const field = subject === "literasi" ? "literacy" : "numeracy";
   const phase = GRADE_OPTIONS.some((option) => option.value === grade) ? phaseForGrade(grade) : null;
@@ -50,5 +51,11 @@ export function getIndependentTasks(members: PreviewStudent[], subject: Subject,
       instruction: phase ? `Pilih tugas ${subject} berdasarkan capaian fase ${phase} untuk kelas ${grade}. Tugas fase belum dipilih.` : "Fase kelas belum tersedia. Tetapkan kelas sebelum memilih tugas fase.",
     }];
     return [{ level, students, mode: "unassessed", title: "Belum dinilai", instruction: "Tetapkan level siswa sebelum memilih tugas mandiri." }];
-  });
+  }).map((task) => ({
+    ...task,
+    template: task.level === "6" ? phaseTask.trim() ? {
+      id: `class-task-${grade}`, title: `Kegiatan kelas ${grade}`, instruction: "Kerjakan tugas berikut.",
+      requiresReading: true, content: { kind: "written", questions: [phaseTask.trim()] },
+    } satisfies TaskTemplate : null : task.level ? TASK_TEMPLATES[subject][task.level] ?? null : null,
+  }));
 }

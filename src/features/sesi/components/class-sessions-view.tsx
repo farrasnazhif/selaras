@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { classPath, displayDate } from "@/features/shared/constants/presentation";
+import { sessionTurnLabel } from "@/features/sesi/constants/plan-editing";
 import { usePreview } from "@/features/shared/components/preview-provider";
 
 export function ClassSessionsView() {
   const { classroom, sessions } = usePreview();
   if (!classroom) return null;
+  if (classroom.independent) return <Card><EmptyState title="Gabungkan kelas untuk membuat sesi" description="Pilih pasangan kelas pada halaman Kelas. Jadwal mengatur pendampingan dua kelas dalam satu sesi." action={<Button variant="primary" nativeButton={false} role="link" render={<Link href="/kelas" />}>Pilih kelas untuk digabung</Button>} /></Card>;
   const items = sessions.filter(
     (session) => session.classroomId === classroom.id,
   );
@@ -58,7 +60,7 @@ export function ClassSessionsView() {
                   </span>
                   <span className="flex items-center gap-1.5">
                     <CalendarDays size={14} aria-hidden="true" />
-                    Bergantian setiap {session.blockMinutes} menit
+                    {sessionTurnLabel(session.plan)}
                   </span>
                 </div>
               </Card>

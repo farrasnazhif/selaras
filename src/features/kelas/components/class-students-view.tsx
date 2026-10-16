@@ -6,7 +6,6 @@ import { Pagination } from "@/components/ui/pagination";
 import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
 import { Table, type TableColumn } from "@/components/ui/table";
-import { CLASS_KEYS } from "@/features/kelas/constants/preview";
 import { GROUP_LABELS } from "@/features/kelas/constants/groups";
 import { getStudentPage } from "@/features/kelas/constants/student-list";
 import type { ClassKey, GroupKey, PreviewStudent } from "@/features/shared/types/preview";
@@ -17,7 +16,7 @@ import { GroupsStep } from "@/features/kelas/components/groups-step";
 import { GroupGuide } from "@/features/kelas/components/group-guide";
 
 export function ClassStudentsView() {
-  const { groupSubject, setGroupSubject } = usePreview();
+  const { groupSubject, setGroupSubject, classKeys } = usePreview();
   return (
     <div className="space-y-ui-group text-ink">
       <div className="flex flex-wrap items-end gap-ui-sm">
@@ -27,8 +26,8 @@ export function ClassStudentsView() {
         </div>
         <GroupGuide />
       </div>
-      <div className="grid items-start gap-ui-md xl:grid-cols-2">
-        {CLASS_KEYS.map((key) => (
+      <div className={`grid items-start gap-ui-md ${classKeys.length > 1 ? "xl:grid-cols-2" : ""}`}>
+        {classKeys.map((key) => (
           <StudentClassCard key={key} classKey={key} />
         ))}
       </div>

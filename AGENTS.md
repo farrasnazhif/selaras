@@ -21,8 +21,10 @@ navigation, fictional students, and local React state (`UI-01`/`UI-02`). The lat
 supply example levels/rubrics and literacy session content; production contracts remain open.
 There are no backend calls or product schemas.
 
-**Planned, not implemented:** Selaras domain logic, persisted student records, level history,
-automatic grouping/scheduling, reviewed teaching content, dedicated PDF export, and persisted progress. No Selaras schema or feature
+**Planned, not implemented:** account-backed Selaras records, persisted level history,
+reviewed curriculum content, and persisted progress. Local grouping, phase-aware scheduling,
+V1–V5 checks, and browser-based A4 output now exist under UI-18; they do not establish a
+production persistence contract. No Selaras schema or feature
 tickets exist yet. Proposed routes, tables, level names, API contracts, and owners in PRD.md are
 not accepted implementation contracts. Resolve affected `Q-*` questions before Ready tickets.
 Login/demo access and persistence are still open; preserve the existing private-access boundary.
@@ -163,9 +165,27 @@ Supabase variables and Auth URLs, and applying reviewed migrations to the intend
 
 UI conventions:
 
+- UI-20/DES-34 adds independent classes and a floating combine flow for fixed new pairs 1+2,
+  3+4, 5+6. Preserve the legacy 2+3 demo. Merge rosters without changing student IDs/history;
+  standalone details render only their first class and cannot schedule until paired. Combined
+  cards retain both banners/identities around a plus. The floating action alone uses 64 px circle.
+- UI-21/DES-35 permits optional memory-only task photos (JPG/PNG/WebP, 5 MB), with decoding,
+  cancel cleanup and shared upload UI. No storage service. Keep photos in saved task snapshots;
+  V5 requires teacher declaration for low-level non-reading suitability. Do not claim OCR checks.
+
+- UI-19/DES-33 permits local draft/saved-session editing and a mapel Select with custom Lainnya.
+  Save edited snapshots, preserving saved roster and session ID. Revalidate content and V1–V5;
+  allow mixed 10/15/20-minute core blocks and multiple tasks per student, with full coverage.
+  Confirm regeneration before replacing manual edits. Keep 1–2 non-reading and student output safe.
+
+- UI-18/DES-32 adds pure local phase-aware scheduling and independent V1–V5 checks. Save/print
+  validated snapshots only. Draft exercises serve literacy/numeracy 1–5; teachers provide level-six
+  tasks. Board/A4 sheets use a separate projection without roster identifiers, names, levels or
+  phase labels. No AI/backend/persistence. Longer group sheets may continue without clipping.
+
 - UI-17/DES-31 separates session lessonSubject/topic from literacy/numeracy focus. Accept
   teacher-entered subject names; grouping and saved roster snapshots use focus. Use the existing
-  70-minute alternating preview structure for all subjects with neutral teaching prompts; do not
+  phase-aware structure from UI-18 for all subjects with neutral teaching prompts; do not
   substitute literacy material or claim curriculum content/other-subject assessments are available.
   Carry mapel/topic/focus through session lists, detail, Jadwal, board and print. No backend.
 

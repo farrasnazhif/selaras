@@ -967,3 +967,67 @@
   .selaras-shell .ui-table th { background: white; color: black; }
   .selaras-shell .ui-table-scroll { border-color: #dddddd; }
 }
+
+/* Student output is constructed without identities; print never includes teacher previews. */
+@page selaras {
+  size: A4 portrait;
+  margin: 12mm;
+}
+@media print {
+  .student-packet {
+    display: block !important;
+    page: selaras;
+    color: #000;
+    background: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+    margin: 0;
+  }
+  .student-packet .student-schedule,
+  .student-packet .student-group-sheet {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+  .student-packet .student-schedule {
+    break-before: page;
+  }
+  .student-packet .student-group-sheet {
+    break-before: page;
+  }
+  .student-packet .student-activity,
+  .student-packet tr {
+    break-inside: avoid;
+  }
+  .student-packet table,
+  .student-packet td,
+  .student-packet th {
+    border-color: #555;
+    color: #000;
+  }
+  .student-packet .text-base { font-size: 14px; }
+  body:has(.student-packet) [role="dialog"],
+  body:has(.student-packet) [data-base-ui-portal] {
+    display: none !important;
+  }
+}
+
+@media print {
+  .student-packet .task-photo img {
+    width: 100%;
+    height: auto;
+    max-height: 150mm;
+    object-fit: contain;
+  }
+  .student-packet .task-photo {
+    break-inside: avoid;
+  }
+}
+
+@media print {
+  .student-packet .student-activity:has(.task-photo) {
+    break-inside: auto;
+  }
+}

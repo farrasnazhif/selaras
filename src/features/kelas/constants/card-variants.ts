@@ -4,22 +4,22 @@ export const classroomCardVariants = [
   {
     banner: "/images/kelas/banner-1.png",
     icon: Atom,
-    iconColor: "text-purple-500",
+    iconColor: "text-accent",
   },
   {
     banner: "/images/kelas/banner-2.png",
     icon: Germ,
-    iconColor: "text-pink-500",
+    iconColor: "text-red",
   },
   {
     banner: "/images/kelas/banner-3.png",
     icon: Sigma,
-    iconColor: "text-blue-500",
+    iconColor: "text-cyan",
   },
   {
     banner: "/images/kelas/banner-4.png",
     icon: VectorPolygon,
-    iconColor: "text-green-500",
+    iconColor: "text-green",
   },
 ];
 
